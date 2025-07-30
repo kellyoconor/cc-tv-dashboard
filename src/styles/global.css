@@ -7,26 +7,26 @@
 }
 
 :root {
-  /* TV-optimized color palette with high contrast */
-  --primary-bg: #000000;
-  --secondary-bg: #111111;
-  --accent-bg: #1a1a1a;
-  --primary-text: #ffffff;
-  --secondary-text: #cccccc;
-  --accent-text: #888888;
-  --highlight: #0066ff;
-  --success: #00cc66;
-  --warning: #ffaa00;
-  --error: #ff4444;
+  /* Premium light color palette - luxury hotel lobby aesthetic */
+  --primary-bg: #fafaf9;        /* Warm off-white */
+  --secondary-bg: #f5f5f4;      /* Subtle warm gray */
+  --accent-bg: #e7e5e4;         /* Muted warm tone */
+  --primary-text: #1c1917;      /* Rich charcoal */
+  --secondary-text: #57534e;    /* Medium warm gray */
+  --accent-text: #a8a29e;       /* Light warm gray */
+  --highlight: #0066ff;         /* Keep vibrant blue */
+  --success: #059669;           /* Muted emerald */
+  --warning: #d97706;           /* Warm amber */
+  --error: #dc2626;             /* Refined red */
   
-  /* TV-optimized spacing (larger for 10ft viewing) */
-  --spacing-xs: 8px;
-  --spacing-sm: 16px;
-  --spacing-md: 24px;
-  --spacing-lg: 32px;
-  --spacing-xl: 48px;
-  --spacing-2xl: 64px;
-  --spacing-3xl: 96px;
+  /* Luxury spacing - dramatically increased for breathing room */
+  --spacing-xs: 12px;           /* +50% */
+  --spacing-sm: 24px;           /* +50% */
+  --spacing-md: 36px;           /* +50% */
+  --spacing-lg: 48px;           /* +50% */
+  --spacing-xl: 72px;           /* +50% */
+  --spacing-2xl: 96px;          /* +50% */
+  --spacing-3xl: 144px;         /* +50% */
   
   /* TV-optimized typography (larger fonts for readability) */
   --font-size-xs: 18px;
@@ -37,10 +37,11 @@
   --font-size-2xl: 80px;
   --font-size-3xl: 120px;
   
-  /* Grid system for TV layout */
-  --grid-gap: var(--spacing-lg);
-  --card-radius: 12px;
-  --shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  /* Luxury layout system */
+  --grid-gap: var(--spacing-xl);
+  --card-radius: 16px;
+  --subtle-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+  --soft-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 }
 
 body {
@@ -65,7 +66,7 @@ body {
   grid-template-rows: auto 1fr auto;
   gap: var(--grid-gap);
   padding: var(--spacing-xl);
-  background: linear-gradient(135deg, #000000 0%, #111111 100%);
+  background: linear-gradient(135deg, #fafaf9 0%, #f5f5f4 100%);
 }
 
 /* Grid Areas */
@@ -96,23 +97,42 @@ body {
   align-items: center;
 }
 
-/* Widget Base Styles */
+/* Widget Base Styles - Cards Without Cards */
 .widget {
-  background: var(--secondary-bg);
+  background: transparent;
   border-radius: var(--card-radius);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  padding: var(--spacing-2xl);
+  box-shadow: var(--subtle-shadow);
+  border: none;
+  position: relative;
+}
+
+.widget::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: calc(var(--card-radius) + 8px);
+  backdrop-filter: blur(20px);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.widget:hover::before {
+  opacity: 1;
 }
 
 .widget-title {
-  font-size: var(--font-size-sm);
-  font-weight: 300;
-  color: var(--secondary-text);
-  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 200;
+  color: var(--accent-text);
+  margin-bottom: var(--spacing-lg);
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
 }
 
 /* Responsive adjustments for different TV sizes */

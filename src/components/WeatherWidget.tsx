@@ -59,52 +59,34 @@ const WeatherWidget: React.FC = () => {
       <div style={{ 
         display: 'flex', 
         alignItems: 'center', 
-        justifyContent: 'space-between',
-        marginBottom: 'var(--spacing-md)'
+        justifyContent: 'center',
+        gap: 'var(--spacing-xl)'
       }}>
-        <div>
-          <div style={{ 
-            fontSize: 'var(--font-size-2xl)', 
-            fontWeight: '100',
-            lineHeight: '1'
-          }}>
-            {weather.temperature}°
-          </div>
-          <div style={{ 
-            fontSize: 'var(--font-size-sm)', 
-            color: 'var(--secondary-text)',
-            marginTop: 'var(--spacing-xs)'
-          }}>
-            {weather.condition}
-          </div>
+        <div style={{ 
+          fontSize: 'var(--font-size-3xl)', 
+          fontWeight: '100',
+          lineHeight: '1',
+          color: 'var(--primary-text)'
+        }}>
+          {weather.temperature}°
         </div>
         
         <div style={{ 
-          fontSize: 'var(--font-size-xl)',
-          opacity: 0.8
+          fontSize: 'var(--font-size-2xl)',
+          opacity: 0.9
         }}>
           {weather.icon}
         </div>
       </div>
       
       <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between',
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-sm)', 
         color: 'var(--secondary-text)',
-        marginBottom: 'var(--spacing-sm)'
+        textAlign: 'center',
+        marginTop: 'var(--spacing-lg)',
+        fontWeight: '300'
       }}>
-        <span>H: {weather.high}°</span>
-        <span>L: {weather.low}°</span>
-        <span>💧 {weather.humidity}%</span>
-      </div>
-      
-      <div style={{ 
-        fontSize: 'var(--font-size-xs)', 
-        color: 'var(--accent-text)',
-        textAlign: 'center'
-      }}>
-        📍 {weather.location}
+        {weather.condition}
       </div>
     </div>
   );

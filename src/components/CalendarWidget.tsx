@@ -41,14 +41,6 @@ const CalendarWidget: React.FC = () => {
     return iconMap[type];
   };
 
-  const getEventColor = (type: CalendarEvent['type']): string => {
-    const colorMap = {
-      meeting: 'var(--highlight)',
-      personal: 'var(--success)',
-      reminder: 'var(--warning)'
-    };
-    return colorMap[type];
-  };
 
   const today = new Date();
   const todayStr = today.toLocaleDateString('en-US', {
@@ -70,71 +62,57 @@ const CalendarWidget: React.FC = () => {
         {todayStr}
       </div>
       
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-xl)' }}>
         {events.length === 0 ? (
           <div style={{ 
             textAlign: 'center', 
             color: 'var(--accent-text)',
             fontSize: 'var(--font-size-sm)',
-            padding: 'var(--spacing-lg)'
+            padding: 'var(--spacing-lg)',
+            fontWeight: '300'
           }}>
-            📅 No events today
+            No events today
           </div>
         ) : (
-          events.map((event) => (
+          events.slice(0, 2).map((event) => (
             <div 
               key={event.id}
               style={{
                 display: 'flex',
-                alignItems: 'center',
-                padding: 'var(--spacing-sm)',
-                borderRadius: '8px',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: `1px solid ${getEventColor(event.type)}`,
-                transition: 'all 0.2s ease'
+                alignItems: 'flex-start',
+                gap: 'var(--spacing-lg)',
+                transition: 'all 0.3s ease'
               }}
             >
               <div style={{ 
-                fontSize: 'var(--font-size-md)', 
-                marginRight: 'var(--spacing-sm)'
+                fontSize: 'var(--font-size-lg)', 
+                minWidth: '48px',
+                opacity: 0.7
               }}>
                 {getEventIcon(event.type)}
               </div>
               
               <div style={{ flex: 1 }}>
                 <div style={{ 
-                  fontSize: 'var(--font-size-sm)', 
-                  fontWeight: '400',
-                  marginBottom: '4px'
+                  fontSize: 'var(--font-size-md)', 
+                  fontWeight: '300',
+                  marginBottom: 'var(--spacing-xs)',
+                  color: 'var(--primary-text)'
                 }}>
                   {event.title}
                 </div>
                 <div style={{ 
-                  fontSize: 'var(--font-size-xs)', 
+                  fontSize: 'var(--font-size-sm)', 
                   color: 'var(--secondary-text)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 'var(--spacing-xs)'
+                  fontWeight: '300'
                 }}>
-                  <span>🕐 {event.time}</span>
-                  {event.duration && <span>⏱️ {event.duration}</span>}
+                  {event.time}
                 </div>
               </div>
             </div>
           ))
         )}
       </div>
-      
-      {events.length > 0 && (
-        <div style={{ 
-          marginTop: 'var(--spacing-lg)',
-          textAlign: 'center',
-          fontSize: 'var(--font-size-xs)',
-          color: 'var(--accent-text)'
-        }}>
-          {events.length} event{events.length !== 1 ? 's' : ''} today
-        </div>
-      )}
     </div>
   );
 };

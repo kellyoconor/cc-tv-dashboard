@@ -98,100 +98,39 @@ const StocksWidget: React.FC = () => {
       
       {currentStock && (
         <div style={{
-          padding: 'var(--spacing-md)',
-          borderRadius: '8px',
-          background: 'rgba(255, 255, 255, 0.05)',
-          marginBottom: 'var(--spacing-md)'
+          textAlign: 'center'
         }}>
           <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            marginBottom: 'var(--spacing-sm)'
+            fontSize: 'var(--font-size-2xl)',
+            fontWeight: '300',
+            marginBottom: 'var(--spacing-sm)',
+            color: 'var(--primary-text)'
           }}>
-            <div>
-              <div style={{
-                fontSize: 'var(--font-size-lg)',
-                fontWeight: '600',
-                marginBottom: '4px'
-              }}>
-                {currentStock.symbol}
-              </div>
-              <div style={{
-                fontSize: 'var(--font-size-xs)',
-                color: 'var(--secondary-text)',
-                fontWeight: '300'
-              }}>
-                {currentStock.name}
-              </div>
-            </div>
-            <div style={{ fontSize: 'var(--font-size-md)' }}>
-              {formatChange(currentStock.change, currentStock.changePercent).icon}
-            </div>
+            {currentStock.symbol}
           </div>
           
           <div style={{
             fontSize: 'var(--font-size-xl)',
-            fontWeight: '300',
-            marginBottom: 'var(--spacing-xs)'
+            fontWeight: '100',
+            marginBottom: 'var(--spacing-lg)'
           }}>
             {formatPrice(currentStock.price)}
           </div>
           
           <div style={{
-            fontSize: 'var(--font-size-sm)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 'var(--spacing-sm)',
+            fontSize: 'var(--font-size-md)',
             color: formatChange(currentStock.change, currentStock.changePercent).color,
-            fontWeight: '500'
+            fontWeight: '300'
           }}>
-            {formatChange(currentStock.change, currentStock.changePercent).text}
+            <span>{formatChange(currentStock.change, currentStock.changePercent).icon}</span>
+            <span>{currentStock.changePercent.toFixed(1)}%</span>
           </div>
         </div>
       )}
-      
-      {/* Mini overview of other stocks */}
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 'var(--spacing-xs)'
-      }}>
-        {stocks.filter((_, index) => index !== currentIndex).slice(0, 2).map((stock) => {
-          const changeInfo = formatChange(stock.change, stock.changePercent);
-          return (
-            <div
-              key={stock.symbol}
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: 'var(--spacing-xs)',
-                borderRadius: '4px',
-                background: 'rgba(255, 255, 255, 0.02)',
-                fontSize: 'var(--font-size-xs)'
-              }}
-            >
-              <span style={{ fontWeight: '500' }}>{stock.symbol}</span>
-              <span>{formatPrice(stock.price)}</span>
-              <span style={{ color: changeInfo.color }}>
-                {changeInfo.icon} {stock.changePercent.toFixed(1)}%
-              </span>
-            </div>
-          );
-        })}
-      </div>
-      
-      {/* Market status */}
-      <div style={{
-        textAlign: 'center',
-        fontSize: 'var(--font-size-xs)',
-        color: 'var(--accent-text)',
-        marginTop: 'var(--spacing-md)',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-      }}>
-        <span>🟢 Market Open</span>
-        <span>Live Data</span>
-      </div>
     </div>
   );
 };
