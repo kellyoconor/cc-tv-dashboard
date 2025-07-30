@@ -1,0 +1,9 @@
+/* Base reset for TV Dashboard - keeping minimal for TV optimization */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
