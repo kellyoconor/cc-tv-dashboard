@@ -5,7 +5,7 @@ Built a complete premium ambient TV dashboard optimized for 10-foot viewing, fol
 
 ## Development Process
 
-Development Time
+## Development Time
 Total Duration: ~2 hours
 Planning & Research: 15 minutes
 Setup & Architecture: 20 minutes
