@@ -39,9 +39,11 @@ const TimeDisplay: React.FC = () => {
       <div style={{ 
         fontSize: 'var(--font-size-3xl)', 
         fontWeight: '100',
-        letterSpacing: '-2px',
-        lineHeight: '1',
-        marginBottom: 'var(--spacing-sm)'
+        letterSpacing: '-3px',
+        lineHeight: '0.9',
+        marginBottom: 'var(--spacing-md)',
+        color: 'var(--primary-text)',
+        textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
       }}>
         {formatTime(currentTime)}
       </div>
@@ -49,16 +51,19 @@ const TimeDisplay: React.FC = () => {
       <div style={{ 
         fontSize: 'var(--font-size-lg)', 
         color: 'var(--secondary-text)',
-        fontWeight: '300',
-        marginBottom: 'var(--spacing-xs)'
+        fontWeight: '200',
+        marginBottom: 'var(--spacing-sm)',
+        letterSpacing: '0.5px'
       }}>
         {formatDate(currentTime)}
       </div>
       
       <div style={{ 
-        fontSize: 'var(--font-size-md)', 
+        fontSize: 'var(--font-size-sm)', 
         color: 'var(--accent-text)',
-        fontWeight: '300'
+        fontWeight: '300',
+        letterSpacing: '1px',
+        textTransform: 'uppercase'
       }}>
         {getTimeOfDay(currentTime)}
       </div>
