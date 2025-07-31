@@ -37,13 +37,13 @@ const TimeDisplay: React.FC = () => {
   return (
     <div className="widget time-display">
       <div style={{ 
+        fontFamily: 'var(--font-primary)',
         fontSize: 'var(--font-size-3xl)', 
-        fontWeight: '100',
-        letterSpacing: '-3px',
-        lineHeight: '0.9',
-        marginBottom: 'var(--spacing-md)',
-        color: 'var(--primary-text)',
-        textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
+        fontWeight: 'var(--weight-semibold)',
+        letterSpacing: '-1px',
+        lineHeight: '1.1',
+        marginBottom: 'var(--spacing-xs)',
+        color: 'var(--primary-text)'
       }}>
         {formatTime(currentTime)}
       </div>
@@ -51,8 +51,8 @@ const TimeDisplay: React.FC = () => {
       <div style={{ 
         fontSize: 'var(--font-size-lg)', 
         color: 'var(--secondary-text)',
-        fontWeight: '200',
-        marginBottom: 'var(--spacing-sm)',
+        fontWeight: 'var(--weight-regular)',
+        marginBottom: 'var(--spacing-xs)',
         letterSpacing: '0.5px'
       }}>
         {formatDate(currentTime)}
@@ -60,8 +60,8 @@ const TimeDisplay: React.FC = () => {
       
       <div style={{ 
         fontSize: 'var(--font-size-sm)', 
-        color: 'var(--accent-text)',
-        fontWeight: '300',
+        color: 'var(--muted-text)',
+        fontWeight: 'var(--weight-medium)',
         letterSpacing: '1px',
         textTransform: 'uppercase'
       }}>

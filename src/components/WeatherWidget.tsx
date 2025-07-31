@@ -63,8 +63,9 @@ const WeatherWidget: React.FC = () => {
         gap: 'var(--spacing-xl)'
       }}>
         <div style={{ 
-          fontSize: 'var(--font-size-3xl)', 
-          fontWeight: '100',
+          fontFamily: 'var(--font-primary)',
+          fontSize: 'var(--font-size-2xl)', 
+          fontWeight: 'var(--weight-semibold)',
           lineHeight: '1',
           color: 'var(--primary-text)'
         }}>

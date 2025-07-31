@@ -1,5 +1,9 @@
 /* TV Dashboard Global Styles - Optimized for 10ft viewing */
 
+/* Designer Typography System */
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Canela+Deck:wght@100..900&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -7,55 +11,81 @@
 }
 
 :root {
-  /* High-end hotel lobby afternoon palette - warm sophisticated balance */
-  --primary-bg: #2a292a;        /* Warm charcoal base - polished concrete */
-  --secondary-bg: #3a393a;      /* Elevated warm gray surface */
-  --accent-bg: #4a494a;         /* Lighter accent surface */
-  --primary-text: #f5f4f3;      /* Warm off-white - afternoon natural light */
-  --secondary-text: #d6d3d1;    /* Soft warm light gray */ 
-  --accent-text: #a8a29e;       /* Muted warm accent */
-  --highlight: #3b82f6;         /* Refined blue - less harsh */
-  --success: #10b981;           /* Elegant emerald */
-  --warning: #f59e0b;           /* Rich amber */
-  --error: #ef4444;             /* Sophisticated red */
+  /* Exclusive luxury family palette - sophisticated blues with warmth */
+  --primary-bg: #f8fafe;        /* Softest celestial blue - morning sky */
+  --secondary-bg: #eef7ff;      /* Light cloud blue - breathable luxury */
+  --accent-bg: #e3f2fd;         /* Gentle sky blue accent */
+  --surface-elevated: #ffffff;  /* Pure white for cards - pristine */
+  --primary-text: #0d47a1;      /* Deep navy - sophisticated authority */
+  --secondary-text: #1565c0;    /* Rich sapphire - engaging warmth */
+  --accent-text: #1976d2;       /* Medium blue - friendly luxury */
+  --muted-text: #64b5f6;        /* Light blue - subtle details */
+  --highlight: #42a5f5;         /* Bright sky blue - joyful interaction */
+  --gold-accent: #ffb300;       /* Warm gold - luxury touches */
+  --success: #4caf50;           /* Fresh green - positive family vibes */
+  --warning: #ff9800;           /* Warm orange - gentle alerts */
+  --error: #f44336;             /* Soft red - family-friendly warnings */
   
-  /* Luxury spacing - dramatically increased for breathing room */
-  --spacing-xs: 12px;           /* +50% */
-  --spacing-sm: 24px;           /* +50% */
-  --spacing-md: 36px;           /* +50% */
-  --spacing-lg: 48px;           /* +50% */
-  --spacing-xl: 72px;           /* +50% */
-  --spacing-2xl: 96px;          /* +50% */
-  --spacing-3xl: 144px;         /* +50% */
+  /* Widget-specific color themes - custom luxury palette */
+  --time-theme: #5B8FB8;      /* Blue - classic, trustworthy */
+  --weather-theme: #5BB8B8;   /* Teal/Cyan - natural, sky/water */
+  --calendar-theme: #B8823D;  /* Orange/Bronze - warm, scheduling */
+  --news-theme: #7B5FB8;      /* Blue-Purple - information, media */
+  --stocks-theme: #5BB85B;    /* Green - money, growth, success */
+  --lifestyle-theme: #B854B8; /* Purple/Magenta - luxury, personal */
   
-  /* TV-optimized typography (larger fonts for readability) */
-  --font-size-xs: 18px;
-  --font-size-sm: 24px;
-  --font-size-md: 32px;
-  --font-size-lg: 48px;
-  --font-size-xl: 64px;
-  --font-size-2xl: 80px;
-  --font-size-3xl: 120px;
+  /* Unified Typography System */
+  --font-primary: "Inter Tight", -apple-system, BlinkMacSystemFont, sans-serif;
   
-  /* Luxury layout system - afternoon light depth */
-  --grid-gap: var(--spacing-xl);
-  --card-radius: 16px;
-  --subtle-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
-  --soft-shadow: 0 4px 24px rgba(0, 0, 0, 0.20);
-  --gentle-glow: 0 0 32px rgba(255, 255, 255, 0.02);
+  /* Baseline Grid System (8px) */
+  --baseline: 8px;
+  --spacing-xs: calc(var(--baseline) * 2);     /* 16px */
+  --spacing-sm: calc(var(--baseline) * 3);     /* 24px */
+  --spacing-md: calc(var(--baseline) * 4);     /* 32px */
+  --spacing-lg: calc(var(--baseline) * 6);     /* 48px */
+  --spacing-xl: calc(var(--baseline) * 8);     /* 64px */
+  --spacing-2xl: calc(var(--baseline) * 12);   /* 96px */
+  
+  /* Harmonious Typography Scale (1.2 ratio) */
+  --font-size-xs: 14px;   /* Labels */
+  --font-size-sm: 18px;   /* Body text */
+  --font-size-md: 22px;   /* Secondary numbers */
+  --font-size-lg: 26px;   /* Subheadings */
+  --font-size-xl: 32px;   /* Primary numbers */
+  --font-size-2xl: 38px;  /* Large numbers */
+  --font-size-3xl: 48px;  /* Hero numbers */
+  
+  /* Typography weights */
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  
+  /* Unified Luxury System */
+  --grid-gap: var(--spacing-lg);
+  --card-radius: 20px;
+  --card-padding: var(--spacing-lg);
+  
+  /* Single accent color throughout */
+  --accent-color: rgba(91, 143, 184, 0.08);
+  --accent-hover: rgba(91, 143, 184, 0.12);
+  --accent-line: rgba(91, 143, 184, 0.3);
+  
+  /* Unified shadows */
+  --shadow-subtle: 0 4px 24px rgba(13, 71, 161, 0.03);
+  --shadow-hover: 0 8px 32px rgba(13, 71, 161, 0.06);
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--primary-bg);
   color: var(--primary-text);
-  overflow: hidden; /* Prevent scrolling on TV */
+  overflow: hidden;
   font-size: var(--font-size-sm);
-  line-height: 1.4;
+  line-height: 1.5;
+  font-weight: var(--weight-regular);
 }
 
 /* TV Dashboard Container */
@@ -67,7 +97,7 @@ body {
   grid-template-rows: auto 1fr auto;
   gap: var(--grid-gap);
   padding: var(--spacing-xl);
-  background: linear-gradient(135deg, #2a292a 0%, #2d2c2d 50%, #2a292a 100%);
+  background: linear-gradient(135deg, #f8fafe 0%, #eef7ff 50%, #f8fafe 100%);
 }
 
 /* Grid Areas */
@@ -98,16 +128,19 @@ body {
   align-items: center;
 }
 
-/* Widget Base Styles - Sophisticated Material Depth */
+/* Unified Widget System - One Cohesive Object */
 .widget {
-  background: rgba(58, 57, 58, 0.4);
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.7) 0%, 
+    rgba(255, 255, 255, 0.9) 100%);
   border-radius: var(--card-radius);
-  padding: var(--spacing-2xl);
-  box-shadow: var(--subtle-shadow);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: var(--card-padding);
+  box-shadow: var(--shadow-subtle);
+  border: 1px solid var(--accent-color);
   position: relative;
-  backdrop-filter: blur(20px);
-  transition: all 0.4s ease;
+  backdrop-filter: blur(20px) saturate(110%);
+  -webkit-backdrop-filter: blur(20px) saturate(110%);
+  transition: all 0.3s ease;
 }
 
 .widget::before {
@@ -118,9 +151,9 @@ body {
   right: 0;
   bottom: 0;
   background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.06) 0%, 
-    rgba(255, 255, 255, 0.02) 50%,
-    rgba(255, 255, 255, 0.04) 100%);
+    rgba(66, 165, 245, 0.04) 0%, 
+    rgba(25, 118, 210, 0.02) 50%,
+    rgba(66, 165, 245, 0.06) 100%);
   border-radius: var(--card-radius);
   z-index: -1;
   opacity: 0;
@@ -129,22 +162,63 @@ body {
 
 .widget:hover {
   transform: translateY(-2px);
-  box-shadow: var(--soft-shadow);
-  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--accent-hover);
 }
+
+/* All hover states identical - handled by unified .widget:hover above */
 
 .widget:hover::before {
   opacity: 1;
 }
 
 .widget-title {
+  font-family: var(--font-primary);
   font-size: var(--font-size-xs);
-  font-weight: 200;
-  color: var(--accent-text);
-  margin-bottom: var(--spacing-lg);
+  font-weight: var(--weight-medium);
+  color: var(--muted-text);
+  margin-bottom: var(--spacing-sm);
   text-transform: uppercase;
-  letter-spacing: 3px;
+  letter-spacing: 1px;
+  position: relative;
 }
+
+.widget-title::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 24px;
+  height: 2px;
+  background: var(--accent-line);
+  border-radius: 1px;
+}
+
+/* Typography Classes */
+.numerals {
+  font-family: var(--font-primary);
+  font-weight: var(--numerals-weight);
+  font-size: var(--numerals-size);
+}
+
+.heading {
+  font-family: var(--font-secondary);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-ratio);
+}
+
+.label {
+  font-family: var(--font-primary);
+  font-weight: var(--label-weight);
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+}
+
+/* All widgets identical - pure unity */
+/* No widget-specific styles needed - unified system above handles everything */
+
+/* All accent lines identical - handled by unified .widget-title::after above */
 
 /* Responsive adjustments for different TV sizes */
 @media (max-width: 1920px) {
@@ -179,14 +253,16 @@ body {
   outline: 3px solid var(--highlight);
   outline-offset: 4px;
   transform: scale(1.02);
+  box-shadow: 0 0 0 6px rgba(66, 165, 245, 0.2);
 }
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
   :root {
-    --primary-text: #ffffff;
-    --secondary-text: #ffffff;
-    --primary-bg: #000000;
-    --secondary-bg: #000000;
+    --primary-text: #0d47a1;
+    --secondary-text: #1565c0;
+    --primary-bg: #ffffff;
+    --secondary-bg: #f8fafe;
+    --surface-elevated: #ffffff;
   }
 }
