@@ -1,0 +1,420 @@
+/* SAMSUNG DAILY BOARD - TV DASHBOARD AESTHETIC */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* SAMSUNG TV SYSTEM */
+:root {
+  /* Samsung Dark Background */
+  --tv-bg: linear-gradient(135deg, #0a0a0f 0%, #1a1a25 100%);
+  
+  /* Samsung Glass System */
+  --glass-card: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-subtle: rgba(255, 255, 255, 0.03);
+  
+  /* TV Typography Scale */
+  --mega-title: 84px;
+  --card-hero: 56px;
+  --card-detail: 24px;
+  --card-meta: 18px;
+  --hud-large: 44px;
+  --category-tag: 14px;
+  
+  /* Samsung Spacing */
+  --space-micro: 6px;
+  --space-xs: 12px;
+  --space-sm: 18px;
+  --space-md: 24px;
+  --space-lg: 36px;
+  --space-xl: 48px;
+  --space-2xl: 72px;
+  --space-3xl: 96px;
+  --space-hero: 120px;
+  
+  /* TV Shadow System */
+  --shadow-card: 0 24px 80px rgba(0, 0, 0, 0.4);
+  --shadow-lifted: 0 32px 100px rgba(0, 0, 0, 0.5);
+  --shadow-floating: 0 48px 140px rgba(0, 0, 0, 0.6);
+  
+  /* Samsung Animation */
+  --ease-tv: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* TV BASE */
+body {
+  background: var(--tv-bg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  color: white;
+}
+
+/* SAMSUNG DASHBOARD */
+.premium-carousel {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-areas: 
+    "status status"
+    "header header"
+    "cards cards";
+  grid-template-rows: 80px 120px 1fr;
+  padding: var(--space-2xl);
+  box-sizing: border-box;
+  background: var(--tv-bg);
+}
+
+/* STATUS BAR */
+.fixed-hud {
+  grid-area: status;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--space-xl);
+  background: var(--glass-subtle);
+  backdrop-filter: blur(30px) saturate(150%);
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+}
+
+.hud-time {
+  font-size: var(--hud-large);
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: -0.8px;
+}
+
+.hud-weather {
+  font-size: 20px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* SECTION HEADER */
+.section-header {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--space-xl);
+}
+
+.section-title {
+  font-size: var(--mega-title);
+  font-weight: 800;
+  color: white;
+  margin: 0;
+  letter-spacing: -2px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.section-indicator {
+  font-size: var(--category-tag);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  background: var(--glass-subtle);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* SAMSUNG CARD VIEWPORT */
+.card-viewport {
+  grid-area: cards;
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tile-container {
+  display: flex;
+  height: 100%;
+  max-height: 600px;
+  will-change: transform;
+  gap: var(--space-2xl);
+}
+
+/* SAMSUNG DAILY BOARD CARDS */
+.content-tile {
+  flex: 0 0 1000px;
+  width: 1000px;
+  height: 100%;
+  max-height: 560px;
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: all 0.8s var(--ease-tv);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-tile.active {
+  transform: scale(1.05) translateY(-12px);
+  box-shadow: var(--shadow-floating);
+  z-index: 10;
+}
+
+.content-tile:hover:not(.active) {
+  transform: scale(1.02) translateY(-6px);
+  box-shadow: var(--shadow-lifted);
+}
+
+/* CARD BACKGROUND SYSTEM */
+.tile-background-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.floating-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.4;
+  animation: samsungFloat 25s ease-in-out infinite;
+}
+
+.orb-1 {
+  width: 300px;
+  height: 300px;
+  top: -10%;
+  right: -5%;
+  animation-delay: 0s;
+}
+
+.orb-2 {
+  width: 200px;
+  height: 200px;
+  bottom: -10%;
+  left: -5%;
+  animation-delay: 12s;
+  opacity: 0.3;
+}
+
+@keyframes samsungFloat {
+  0%, 100% { 
+    transform: translate(0, 0) scale(1);
+    opacity: 0.4;
+  }
+  33% { 
+    transform: translate(40px, -60px) scale(1.1);
+    opacity: 0.6;
+  }
+  66% { 
+    transform: translate(-30px, 40px) scale(0.9);
+    opacity: 0.3;
+  }
+}
+
+/* SOPHISTICATED OVERLAY */
+.tile-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(180deg, 
+      rgba(0, 0, 0, 0.0) 0%,
+      rgba(0, 0, 0, 0.05) 25%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.5) 75%,
+      rgba(0, 0, 0, 0.85) 100%),
+    radial-gradient(ellipse at bottom, 
+      rgba(0, 0, 0, 0.4) 0%, 
+      transparent 70%);
+  z-index: 5;
+}
+
+/* CATEGORY BADGE */
+.tile-header {
+  position: absolute;
+  top: var(--space-2xl);
+  left: var(--space-2xl);
+  z-index: 10;
+}
+
+.category-badge {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: var(--space-xs) var(--space-md);
+  font-size: var(--category-tag);
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  transition: all 0.3s var(--ease-smooth);
+}
+
+.content-tile:hover .category-badge {
+  background: rgba(0, 0, 0, 0.85);
+  transform: scale(1.05);
+}
+
+/* SAMSUNG CONTENT AREA */
+.tile-content {
+  position: absolute;
+  bottom: var(--space-hero);
+  left: var(--space-hero);
+  right: var(--space-hero);
+  z-index: 8;
+  color: white;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.tile-title {
+  font-size: var(--card-hero);
+  font-weight: 700;
+  color: white;
+  margin: 0 0 var(--space-md) 0;
+  letter-spacing: -1px;
+  text-shadow: 
+    0 6px 24px rgba(0, 0, 0, 0.9), 
+    0 3px 12px rgba(0, 0, 0, 0.8),
+    0 1px 6px rgba(0, 0, 0, 0.7);
+  line-height: 1.1;
+  transition: all 0.4s var(--ease-smooth);
+}
+
+.tile-subtitle {
+  font-size: var(--card-detail);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  line-height: 1.4;
+  text-shadow: 
+    0 3px 15px rgba(0, 0, 0, 0.9),
+    0 1px 8px rgba(0, 0, 0, 0.8);
+  max-width: 85%;
+  transition: all 0.4s var(--ease-smooth);
+}
+
+.content-tile:hover .tile-title {
+  transform: translateY(-3px);
+  text-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.9), 
+    0 4px 16px rgba(0, 0, 0, 0.8);
+}
+
+.content-tile:hover .tile-subtitle {
+  transform: translateY(-2px);
+  color: rgba(255, 255, 255, 1);
+}
+
+/* SAMSUNG ACCENT BAR */
+.tile-accent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  z-index: 10;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    currentColor 3%, 
+    currentColor 97%, 
+    transparent 100%);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* RESPONSIVE TV SCALING */
+@media (max-width: 1800px) {
+  :root {
+    --mega-title: 72px;
+    --card-hero: 48px;
+    --card-detail: 22px;
+  }
+  
+  .content-tile {
+    flex: 0 0 900px;
+    width: 900px;
+    max-height: 500px;
+  }
+}
+
+@media (max-width: 1600px) {
+  :root {
+    --mega-title: 64px;
+    --card-hero: 42px;
+    --card-detail: 20px;
+  }
+  
+  .content-tile {
+    flex: 0 0 800px;
+    width: 800px;
+    max-height: 450px;
+  }
+  
+  .tile-content {
+    bottom: var(--space-2xl);
+    left: var(--space-2xl);
+    right: var(--space-2xl);
+  }
+}
+
+@media (max-width: 1400px) {
+  :root {
+    --mega-title: 56px;
+    --card-hero: 36px;
+    --card-detail: 18px;
+  }
+  
+  .content-tile {
+    flex: 0 0 700px;
+    width: 700px;
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .premium-carousel {
+    grid-template-rows: 70px 100px 1fr;
+    padding: var(--space-xl);
+  }
+  
+  .content-tile {
+    flex: 0 0 650px;
+    width: 650px;
+    max-height: 360px;
+  }
+}
+
+/* ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.3s !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .section-title, .tile-title {
+    color: white;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, 1);
+  }
+  
+  .tile-subtitle {
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 1);
+  }
+}

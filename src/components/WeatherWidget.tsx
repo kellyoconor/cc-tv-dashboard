@@ -8,6 +8,8 @@ interface WeatherData {
   low: number;
   humidity: number;
   icon: string;
+  backgroundImage: string;
+  description: string;
 }
 
 const WeatherWidget: React.FC = () => {
@@ -18,7 +20,9 @@ const WeatherWidget: React.FC = () => {
     high: 78,
     low: 65,
     humidity: 68,
-    icon: '🌤️'
+    icon: '🌤️',
+    backgroundImage: 'https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=400&h=240&fit=crop',
+    description: 'Perfect weather for outdoor activities'
   });
 
   const getWeatherIcon = (condition: string): string => {
@@ -54,40 +58,22 @@ const WeatherWidget: React.FC = () => {
 
   return (
     <div className="widget weather-widget">
-      <div className="widget-title">Weather</div>
-      
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center',
-        gap: 'var(--spacing-xl)'
-      }}>
-        <div style={{ 
-          fontFamily: 'var(--font-primary)',
-          fontSize: 'var(--font-size-2xl)', 
-          fontWeight: 'var(--weight-semibold)',
-          lineHeight: '1',
-          color: 'var(--primary-text)'
-        }}>
-          {weather.temperature}°
-        </div>
-        
-        <div style={{ 
-          fontSize: 'var(--font-size-2xl)',
-          opacity: 0.9
-        }}>
-          {weather.icon}
-        </div>
+      {/* Temperature and icon */}
+      <div className="flex items-center justify-between mb-md">
+        <div className="heading-lg">{weather.temperature}°</div>
+        <div style={{ fontSize: '24px', opacity: 0.8 }}>{weather.icon}</div>
       </div>
       
-      <div style={{ 
-        fontSize: 'var(--font-size-sm)', 
-        color: 'var(--secondary-text)',
-        textAlign: 'center',
-        marginTop: 'var(--spacing-lg)',
-        fontWeight: '300'
-      }}>
-        {weather.condition}
+      {/* Condition */}
+      <div className="body-lg mb-sm">{weather.condition}</div>
+      
+      {/* Location */}
+      <div className="body-base mb-md">{weather.location}</div>
+      
+      {/* High/Low */}
+      <div className="flex justify-between body-sm">
+        <span>High {weather.high}°</span>
+        <span>Low {weather.low}°</span>
       </div>
     </div>
   );

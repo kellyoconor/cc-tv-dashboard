@@ -6,6 +6,10 @@ interface Stock {
   price: number;
   change: number;
   changePercent: number;
+  shares: number;
+  totalValue: number;
+  logoUrl: string;
+  sector: string;
 }
 
 const StocksWidget: React.FC = () => {
@@ -15,28 +19,33 @@ const StocksWidget: React.FC = () => {
       name: 'Apple Inc.',
       price: 185.25,
       change: 2.15,
-      changePercent: 1.17
-    },
-    {
-      symbol: 'GOOGL',
-      name: 'Alphabet Inc.',
-      price: 142.80,
-      change: -1.25,
-      changePercent: -0.87
+      changePercent: 1.17,
+      shares: 15,
+      totalValue: 2778.75,
+      logoUrl: 'https://logo.clearbit.com/apple.com',
+      sector: 'Technology'
     },
     {
       symbol: 'TSLA',
       name: 'Tesla Inc.',
       price: 248.50,
       change: 5.30,
-      changePercent: 2.18
+      changePercent: 2.18,
+      shares: 8,
+      totalValue: 1988.00,
+      logoUrl: 'https://logo.clearbit.com/tesla.com',
+      sector: 'Automotive'
     },
     {
-      symbol: 'MSFT',
-      name: 'Microsoft Corp.',
-      price: 378.90,
-      change: 1.45,
-      changePercent: 0.38
+      symbol: 'NVDA',
+      name: 'NVIDIA Corp.',
+      price: 875.30,
+      change: 12.45,
+      changePercent: 1.44,
+      shares: 3,
+      totalValue: 2625.90,
+      logoUrl: 'https://logo.clearbit.com/nvidia.com',
+      sector: 'Technology'
     }
   ]);
 
@@ -80,54 +89,66 @@ const StocksWidget: React.FC = () => {
   const formatPrice = (price: number): string => {
     return `$${price.toFixed(2)}`;
   };
+  
+  const formatValue = (value: number): string => {
+    if (value >= 1000) {
+      return `$${(value / 1000).toFixed(1)}k`;
+    }
+    return `$${value.toFixed(0)}`;
+  };
 
   const formatChange = (change: number, changePercent: number): { text: string; color: string; icon: string } => {
     const isPositive = change >= 0;
     return {
-      text: `${isPositive ? '+' : ''}${change.toFixed(2)} (${isPositive ? '+' : ''}${changePercent.toFixed(2)}%)`,
-      color: isPositive ? 'var(--success)' : 'var(--error)',
-      icon: isPositive ? '📈' : '📉'
+      text: `${isPositive ? '+' : ''}${changePercent.toFixed(1)}%`,
+      color: isPositive ? '#00C851' : '#FF4444',
+      icon: isPositive ? '▲' : '▼'
     };
+  };
+  
+  const getTotalPortfolioValue = (): number => {
+    return stocks.reduce((total, stock) => total + stock.totalValue, 0);
+  };
+  
+  const getTotalPortfolioChange = (): number => {
+    const totalValue = getTotalPortfolioValue();
+    const totalChange = stocks.reduce((total, stock) => {
+      const dailyChange = (stock.change * stock.shares);
+      return total + dailyChange;
+    }, 0);
+    return (totalChange / (totalValue - totalChange)) * 100;
   };
 
   const currentStock = stocks[currentIndex];
 
+  const totalPortfolioValue = getTotalPortfolioValue();
+  const totalPortfolioChange = getTotalPortfolioChange();
+  const changeColorClass = totalPortfolioChange >= 0 ? 'text-green' : 'text-red';
+  
   return (
     <div className="widget stocks-widget">
-      <div className="widget-title">Market Watch</div>
+      {/* Label */}
+      <div className="label mb-xs">Portfolio</div>
       
+      {/* Total value */}
+      <div className="heading-md mb-xs">
+        {formatValue(totalPortfolioValue)}
+      </div>
+      
+      {/* Change */}
+      <div className={`body-lg mb-md flex items-center gap-xs ${changeColorClass}`}>
+        <span>{totalPortfolioChange >= 0 ? '↑' : '↓'}</span>
+        <span>{totalPortfolioChange >= 0 ? '+' : ''}{totalPortfolioChange.toFixed(1)}%</span>
+      </div>
+      
+      {/* Current stock */}
       {currentStock && (
-        <div style={{
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: 'var(--font-size-2xl)',
-            fontWeight: '300',
-            marginBottom: 'var(--spacing-sm)',
-            color: 'var(--primary-text)'
-          }}>
-            {currentStock.symbol}
+        <div>
+          <div className="body-base mb-xs">
+            {currentStock.symbol} • {currentStock.shares} shares
           </div>
-          
-          <div style={{
-            fontSize: 'var(--font-size-xl)',
-            fontWeight: '100',
-            marginBottom: 'var(--spacing-lg)'
-          }}>
-            {formatPrice(currentStock.price)}
-          </div>
-          
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 'var(--spacing-sm)',
-            fontSize: 'var(--font-size-md)',
-            color: formatChange(currentStock.change, currentStock.changePercent).color,
-            fontWeight: '300'
-          }}>
-            <span>{formatChange(currentStock.change, currentStock.changePercent).icon}</span>
-            <span>{currentStock.changePercent.toFixed(1)}%</span>
+          <div className="body-sm">
+            {formatPrice(currentStock.price)} • {formatChange(currentStock.change, currentStock.changePercent).text}
           </div>
         </div>
       )}
