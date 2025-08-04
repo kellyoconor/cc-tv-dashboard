@@ -1,412 +1,829 @@
-/* Samsung Daily Board - One UI Design Language */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-/* One UI Design Tokens */
+/* Samsung Daily Board - RESPONSIVE TV OPTIMIZED */
 :root {
-  /* Samsung One UI Colors */
-  --samsung-bg: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
-  --one-ui-surface: rgba(255, 255, 255, 0.08);
-  --one-ui-surface-elevated: rgba(255, 255, 255, 0.12);
-  --one-ui-border: rgba(255, 255, 255, 0.15);
-  --samsung-blue: #1885F2;
-  --samsung-blue-light: #4A9EFF;
+  /* Base colors */
+  --primary-bg: #1a1a2e;
+  --secondary-bg: #16213e;
+  --accent-purple: #8B5DFF;
+  --accent-blue: #4A9EFF;
+  --text-white: #ffffff;
+  --text-light: #e0e0e0;
+  --text-dark: #333333;
   
-  /* One UI Typography */
-  --samsung-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Samsung One', sans-serif;
-  --text-primary: #FFFFFF;
-  --text-secondary: #B3B3B3;
-  --text-tertiary: #808080;
-  
-  /* Widget Typography Scale */
-  --widget-title: 14px;
-  --widget-primary: 24px;
-  --widget-secondary: 12px;
-  --temperature-size: 48px;
-  
-  /* One UI Spacing */
-  --space-xs: 8px;
-  --space-sm: 12px;
-  --space-md: 16px;
-  --space-lg: 20px;
-  --space-xl: 24px;
-  --space-2xl: 32px;
-  
-  /* One UI Shadows (Elevation) */
-  --shadow-1: 0 1px 3px rgba(0, 0, 0, 0.12);
-  --shadow-2: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --shadow-3: 0 8px 24px rgba(0, 0, 0, 0.18);
-  --shadow-elevated: 0 16px 48px rgba(0, 0, 0, 0.25);
-  
-  /* Animation */
-  --ease-one-ui: cubic-bezier(0.33, 0, 0.2, 1);
+  /* Responsive scaling variables - DEFAULT (Small TVs 32-43") */
+  --widget-width: 380px; /* Increased from 320px to match reference */
+  --widget-height: 480px; /* Increased from 400px */
+  --widget-gap: 28px;
+  --widget-padding: 24px;
+  --border-radius: 16px;
+  --font-size-title: 16px;
+  --font-size-main: 48px;
+  --font-size-small: 14px;
+  --font-size-tiny: 12px;
+  --time-font-size: 48px;
+  --date-font-size: 18px;
+  --elevation-distance: 20px;
+  --elevation-scale: 1.05;
+  --container-padding: 60px;
 }
 
-/* Samsung Daily Board Container */
-.samsung-daily-board {
+/* Medium TVs (50-65") */
+@media (min-width: 1600px) {
+  :root {
+    --widget-width: 440px; /* Increased from 380px to match reference */
+    --widget-height: 560px; /* Increased from 480px */
+    --widget-gap: 32px;
+    --widget-padding: 28px;
+    --border-radius: 20px;
+    --font-size-title: 18px;
+    --font-size-main: 56px;
+    --font-size-small: 16px;
+    --font-size-tiny: 14px;
+    --time-font-size: 56px;
+    --date-font-size: 20px;
+    --elevation-distance: 24px;
+    --elevation-scale: 1.06;
+    --container-padding: 80px;
+  }
+}
+
+/* Large TVs (70-85") */
+@media (min-width: 2400px) {
+  :root {
+    --widget-width: 520px; /* Increased from 440px to match reference */
+    --widget-height: 640px; /* Increased from 560px */
+    --widget-gap: 36px;
+    --widget-padding: 32px;
+    --border-radius: 24px;
+    --font-size-title: 20px;
+    --font-size-main: 64px;
+    --font-size-small: 18px;
+    --font-size-tiny: 16px;
+    --time-font-size: 64px;
+    --date-font-size: 22px;
+    --elevation-distance: 28px;
+    --elevation-scale: 1.07;
+    --container-padding: 100px;
+  }
+}
+
+/* Ultra Large TVs (85"+) */
+@media (min-width: 3200px) {
+  :root {
+    --widget-width: 600px; /* Increased from 520px to match reference */
+    --widget-height: 720px; /* Increased from 640px */
+    --widget-gap: 40px;
+    --widget-padding: 36px;
+    --border-radius: 28px;
+    --font-size-title: 22px;
+    --font-size-main: 72px;
+    --font-size-small: 20px;
+    --font-size-tiny: 18px;
+    --time-font-size: 72px;
+    --date-font-size: 24px;
+    --elevation-distance: 32px;
+    --elevation-scale: 1.08;
+    --container-padding: 120px;
+  }
+}
+
+/* Main Container */
+.samsung-daily-board-real {
   width: 100vw;
   height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   position: relative;
   overflow: hidden;
-  font-family: var(--samsung-font);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Ambient Background */
-.ambient-background {
+/* Dynamic Background */
+.dynamic-background {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--samsung-bg);
-  z-index: 0;
-}
-
-.ambient-background::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(ellipse at 20% 30%, rgba(24, 133, 242, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(74, 158, 255, 0.08) 0%, transparent 50%);
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460);
+  background-size: 400% 400%;
+  animation: flow 20s ease-in-out infinite;
   z-index: 1;
 }
 
-/* Widget Grid System */
-.widget-grid {
+.flow-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(139, 93, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(74, 158, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(139, 93, 255, 0.05) 0%, transparent 50%);
+  animation: flow 30s ease-in-out infinite reverse;
+}
+
+@keyframes flow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Time Display - Responsive */
+.time-display-corner {
+  position: absolute;
+  top: var(--container-padding);
+  left: var(--container-padding);
+  z-index: 20;
+  color: var(--text-white);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.current-time {
+  font-size: var(--time-font-size);
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.current-date {
+  font-size: var(--date-font-size);
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+/* Widgets Container - Responsive */
+.widgets-container {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: grid;
-  grid-template-columns: repeat(4, 200px);
-  grid-template-rows: repeat(3, 160px);
-  gap: var(--space-xl);
+  display: flex;
+  gap: var(--widget-gap);
   z-index: 10;
-  max-width: 880px;
-  width: 100%;
-  padding: var(--space-2xl);
+  width: 100vw;
+  max-width: 100vw;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: var(--container-padding) calc(50vw - calc(var(--widget-width) * 2 + var(--widget-gap) * 1.5)) 0;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  height: calc(var(--widget-height) + var(--elevation-distance) * 2);
 }
 
-/* Widget Container Base */
-.widget-container {
-  position: relative;
+.widgets-container::-webkit-scrollbar {
+  display: none;
 }
 
-/* One UI Widget Styling */
-.widget {
-  width: 100%;
-  height: 100%;
-  background: var(--one-ui-surface);
+/* Samsung Widget Base - Responsive */
+.samsung-widget {
+  flex: 0 0 var(--widget-width);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--border-radius);
+  padding: var(--widget-padding);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid var(--one-ui-border);
-  border-radius: 16px;
-  padding: var(--space-lg);
-  box-shadow: var(--shadow-2);
-  transition: all 0.3s var(--ease-one-ui);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  min-height: var(--widget-height);
+  /* Removed max-height to allow content to fit properly */
+  display: flex;
+  flex-direction: column;
   position: relative;
-  overflow: hidden;
+  z-index: 1;
 }
 
-.widget:hover {
-  background: var(--one-ui-surface-elevated);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: var(--shadow-elevated);
+.samsung-widget:hover {
   transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
 }
 
-/* Widget Header */
+/* Premium Focus Effect - Responsive TV Style */
+.samsung-widget.focused,
+.samsung-widget.weather-card.focused,
+.samsung-widget.home-status-card.focused, 
+.samsung-widget.camera-card.focused,
+.samsung-widget.energy-card.focused,
+.samsung-widget.music-card.focused,
+.samsung-widget.notes-card.focused,
+.samsung-widget.tips-card.focused {
+  transform: translateY(calc(-1 * var(--elevation-distance))) scale(var(--elevation-scale)) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4), 0 8px 32px rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  z-index: 10 !important;
+}
+
+.samsung-widget.focused:hover {
+  transform: translateY(calc(-1 * var(--elevation-distance) - 4px)) scale(var(--elevation-scale)) !important;
+  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.45), 0 12px 40px rgba(255, 255, 255, 0.15) !important;
+}
+
+/* BASE WIDGET COLORS - ESSENTIAL! */
+.weather-card {
+  background: rgba(74, 158, 255, 0.6) !important;
+  border-color: rgba(74, 158, 255, 0.8) !important;
+  color: var(--text-white);
+}
+
+.home-status-card {
+  background: rgba(160, 160, 160, 0.5) !important;
+  border-color: rgba(160, 160, 160, 0.7) !important;
+  color: var(--text-white);
+}
+
+.camera-card {
+  background: rgba(240, 230, 220, 0.6) !important;
+  border-color: rgba(240, 230, 220, 0.8) !important;
+  color: var(--text-dark);
+}
+
+.energy-card {
+  background: rgba(120, 100, 180, 0.5) !important;
+  border-color: rgba(120, 100, 180, 0.7) !important;
+  color: var(--text-white);
+}
+
+.music-card {
+  background: rgba(180, 160, 200, 0.5) !important;
+  border-color: rgba(180, 160, 200, 0.7) !important;
+  color: var(--text-white);
+}
+
+.notes-card {
+  background: rgba(210, 180, 140, 0.7) !important;
+  border-color: rgba(210, 180, 140, 0.9) !important;
+  color: var(--text-dark);
+}
+
+.tips-card {
+  background: rgba(220, 220, 220, 0.6) !important;
+  border-color: rgba(220, 220, 220, 0.8) !important;
+  color: var(--text-dark);
+}
+
+/* Widget Hover States */
+.weather-card:hover {
+  background: rgba(74, 158, 255, 0.7) !important;
+  border-color: rgba(74, 158, 255, 0.9) !important;
+}
+
+.home-status-card:hover {
+  background: rgba(160, 160, 160, 0.6) !important;
+  border-color: rgba(160, 160, 160, 0.8) !important;
+}
+
+.camera-card:hover {
+  background: rgba(240, 230, 220, 0.7) !important;
+  border-color: rgba(240, 230, 220, 0.9) !important;
+}
+
+.energy-card:hover {
+  background: rgba(120, 100, 180, 0.6) !important;
+  border-color: rgba(120, 100, 180, 0.8) !important;
+}
+
+.music-card:hover {
+  background: rgba(180, 160, 200, 0.6) !important;
+  border-color: rgba(180, 160, 200, 0.8) !important;
+}
+
+.notes-card:hover {
+  background: rgba(210, 180, 140, 0.8) !important;
+  border-color: rgba(210, 180, 140, 1.0) !important;
+}
+
+.tips-card:hover {
+  background: rgba(220, 220, 220, 0.7) !important;
+  border-color: rgba(220, 220, 220, 0.9) !important;
+}
+
+/* Widget Colors - Enhanced when focused */
+.samsung-widget.weather-card.focused {
+  background: rgba(74, 158, 255, 0.7) !important;
+}
+
+.samsung-widget.home-status-card.focused {
+  background: rgba(160, 160, 160, 0.6) !important;
+}
+
+.samsung-widget.camera-card.focused {
+  background: rgba(240, 230, 220, 0.7) !important;
+}
+
+.samsung-widget.energy-card.focused {
+  background: rgba(120, 100, 180, 0.6) !important;
+}
+
+.samsung-widget.music-card.focused {
+  background: rgba(180, 160, 200, 0.6) !important;
+}
+
+.samsung-widget.notes-card.focused {
+  background: rgba(210, 180, 140, 0.8) !important;
+}
+
+.samsung-widget.tips-card.focused {
+  background: rgba(220, 220, 220, 0.7) !important;
+}
+
+/* Widget Header - Responsive */
 .widget-header {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-md);
+  margin-bottom: calc(var(--widget-padding) / 2);
+  gap: 12px;
+}
+
+.widget-icon {
+  font-size: calc(var(--font-size-title) + 4px);
+  opacity: 0.9;
 }
 
 .widget-title {
-  font-size: var(--widget-title);
-  font-weight: 500;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: var(--font-size-title);
+  font-weight: 600;
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* Widget Icons */
-div[class$="-icon"] {
-  font-size: 20px;
-  opacity: 0.8;
+/* Navigation Hint - Responsive */
+.navigation-hint {
+  position: absolute;
+  bottom: var(--container-padding);
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: var(--font-size-small);
+  font-weight: 400;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 12px 20px;
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  z-index: 5;
 }
 
-/* Weather Widget Specific */
-.weather-widget {
-  background: linear-gradient(135deg, var(--one-ui-surface) 0%, rgba(24, 133, 242, 0.1) 100%);
+/* Scroll Indicator - Responsive */
+.scroll-indicator {
+  position: absolute;
+  bottom: calc(var(--container-padding) + 80px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
 }
 
+.scroll-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.scroll-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.scroll-dot.active {
+  background: rgba(255, 255, 255, 0.8);
+  transform: scale(1.2);
+}
+
+/* RESPONSIVE WIDGET CONTENT STYLES */
+
+/* Weather Widget - Responsive */
 .weather-content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-.temperature {
-  font-size: var(--temperature-size);
-  font-weight: 200;
-  color: var(--text-primary);
-  line-height: 0.9;
-  margin-bottom: var(--space-xs);
-}
-
-.condition {
-  font-size: var(--widget-primary);
-  font-weight: 400;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.location {
-  font-size: var(--widget-secondary);
-  font-weight: 400;
-  color: var(--text-secondary);
-}
-
-/* SmartThings Widget */
-.smartthings-widget {
-  background: linear-gradient(135deg, var(--one-ui-surface) 0%, rgba(67, 233, 123, 0.1) 100%);
-}
-
-.smartthings-content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.device-type {
-  font-size: var(--widget-primary);
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.device-status {
-  font-size: var(--widget-secondary);
-  font-weight: 400;
-  color: var(--text-secondary);
-}
-
-/* Notes Widget */
-.notes-widget {
-  background: linear-gradient(135deg, var(--one-ui-surface) 0%, rgba(255, 193, 7, 0.1) 100%);
-}
-
-.notes-content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-.note-item {
-  font-size: var(--widget-secondary);
-  font-weight: 400;
-  color: var(--text-primary);
-  line-height: 1.3;
-  padding: var(--space-xs) 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.note-item:last-child {
-  border-bottom: none;
-}
-
-.note-more {
-  font-size: var(--widget-secondary);
-  font-weight: 400;
-  color: var(--text-secondary);
-  font-style: italic;
-}
-
-/* Music Widget */
-.music-widget {
-  background: linear-gradient(135deg, var(--one-ui-surface) 0%, rgba(156, 39, 176, 0.1) 100%);
-}
-
-.music-content {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: calc(100% - 40px);
 }
 
-.track-info {
+.weather-main {
+  text-align: center;
+  margin: calc(var(--widget-padding) / 2) 0;
+}
+
+.weather-icon-large {
+  width: calc(var(--widget-width) * 0.35);
+  height: calc(var(--widget-width) * 0.35);
+  margin: 0 auto calc(var(--widget-padding) / 2) auto;
+  position: relative;
+}
+
+.cloud-sun-icon {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.cloud {
+  position: absolute;
+  width: 70%;
+  height: 40%;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 30px;
+  top: 40%;
+  left: 20%;
+}
+
+.cloud::before {
+  content: '';
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  top: -40%;
+  left: 25%;
+}
+
+.cloud::after {
+  content: '';
+  position: absolute;
+  width: 35%;
+  height: 35%;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  top: -25%;
+  right: 25%;
+}
+
+.sun {
+  position: absolute;
+  width: 35%;
+  height: 35%;
+  background: #ffd700;
+  border-radius: 50%;
+  top: 15%;
+  right: 15%;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+}
+
+.temperature-display {
+  font-size: var(--font-size-main);
+  font-weight: 300;
+  color: var(--text-white);
+  text-align: center;
+  margin: calc(var(--widget-padding) / 2) 0;
+}
+
+.weather-condition {
+  font-size: var(--font-size-small);
+  color: var(--text-white);
+  opacity: 0.9;
+}
+
+.hourly-forecast {
+  display: flex;
+  justify-content: space-around;
+  margin-top: auto;
+  padding-top: var(--widget-padding);
+}
+
+.hourly-item {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  align-items: center;
+  gap: 8px;
 }
 
-.track-name {
-  font-size: var(--widget-secondary);
+.hour {
+  font-size: var(--font-size-tiny);
   font-weight: 500;
-  color: var(--text-primary);
+  opacity: 0.9;
 }
 
-.artist-name {
-  font-size: var(--widget-secondary);
-  font-weight: 400;
-  color: var(--text-secondary);
+.hourly-icon {
+  font-size: calc(var(--font-size-title) + 4px);
 }
 
-.music-controls {
+.hourly-temp {
+  font-size: var(--font-size-small);
+  font-weight: 500;
+}
+
+/* Home Status Widget - Responsive */
+.home-status-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(var(--widget-padding) * 1.2);
+  margin: var(--widget-padding) 0;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--widget-padding) / 1.5);
+}
+
+.status-icon-container {
+  width: calc(var(--font-size-title) * 2.5);
+  height: calc(var(--font-size-title) * 2.5);
+  border-radius: calc(var(--border-radius) / 2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.status-icon {
+  font-size: calc(var(--font-size-title) + 4px);
+}
+
+.temp-icon { color: #ff6b35; }
+.humidity-icon { color: #4a9eff; }
+.light-icon { color: #ffd700; }
+
+.status-value {
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.pagination-dots {
   display: flex;
   justify-content: center;
-  margin-top: var(--space-md);
+  gap: 8px;
+  margin-top: auto;
 }
 
-.play-pause {
-  background: var(--samsung-blue);
-  border: none;
+.dot {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Camera Widget - Responsive */
+.camera-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.camera-feed {
+  flex: 1;
+  border-radius: calc(var(--border-radius) / 1.5);
+  overflow: hidden;
+  margin-bottom: calc(var(--widget-padding) / 1.5);
+  background: #f0f0f0;
+}
+
+.camera-image {
+  width: 100%;
+  height: calc(var(--widget-height) * 0.4); /* Reduced from 0.45 to leave more room for text */
+  object-fit: cover;
+}
+
+.camera-info {
+  text-align: center;
+}
+
+.camera-name {
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 4px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.camera-location {
+  font-size: var(--font-size-tiny);
+  color: var(--text-white);
+  margin-bottom: 8px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  opacity: 0.9;
+}
+
+.camera-timestamp {
+  font-size: var(--font-size-tiny);
+  color: var(--text-white);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  opacity: 0.8;
+}
+
+/* Energy Widget - Responsive */
+.energy-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(var(--widget-padding) / 2);
+}
+
+.energy-percentage {
+  text-align: center;
+  margin-bottom: calc(var(--widget-padding) / 2);
+}
+
+.energy-big-text {
+  font-size: calc(var(--font-size-main) * 0.8);
+  font-weight: 300;
+  color: var(--text-white);
+  display: block;
+}
+
+.energy-message {
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: calc(var(--widget-padding) / 1.5);
+  line-height: 1.4;
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.energy-progress {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--widget-padding) / 1.5);
+}
+
+.progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progress-label {
+  font-size: var(--font-size-tiny);
+  color: var(--text-white);
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  opacity: 0.9;
+}
+
+.progress-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-fill.current { background: #4a9eff; }
+.progress-fill.target { background: rgba(255, 255, 255, 0.4); }
+
+.progress-value {
+  font-size: var(--font-size-tiny);
+  font-weight: 600;
+  color: var(--text-white);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Music Widget - Responsive */
+.music-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: space-between;
+}
+
+.album-artwork {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: calc(var(--widget-padding) / 2) 0;
+}
+
+.album-cover {
+  width: calc(var(--widget-width) * 0.35);
+  height: calc(var(--widget-width) * 0.35);
+  border-radius: calc(var(--border-radius) / 1.5);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+.play-pause-button {
+  width: calc(var(--widget-width) * 0.15);
+  height: calc(var(--widget-width) * 0.15);
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s var(--ease-one-ui);
-  font-size: 16px;
+  transition: all 0.3s ease;
 }
 
-.play-pause:hover {
-  background: var(--samsung-blue-light);
-  transform: scale(1.05);
+.play-pause-button:hover {
+  background: white;
+  transform: scale(1.1);
 }
 
-/* Energy Widget */
-.energy-widget {
-  background: linear-gradient(135deg, var(--one-ui-surface) 0%, rgba(76, 175, 80, 0.1) 100%);
+.pause-icon {
+  font-size: calc(var(--font-size-title) + 4px);
+  color: var(--text-dark);
 }
 
-.energy-content {
+.track-info {
+  margin-top: auto;
+}
+
+.track-name {
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 4px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.artist-name {
+  font-size: var(--font-size-tiny);
+  color: var(--text-white);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  opacity: 0.9;
+}
+
+/* Notes Widget - Responsive */
+.notes-content {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  justify-content: center;
+  text-align: center;
 }
 
-.usage-amount {
-  font-size: var(--widget-primary);
-  font-weight: 500;
-  color: var(--text-primary);
+.note-message {
+  font-size: calc(var(--font-size-main) * 0.6);
+  font-weight: 700;
+  margin-bottom: var(--widget-padding);
+  color: var(--text-dark);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
 }
 
-.usage-comparison {
-  font-size: var(--widget-secondary);
-  font-weight: 400;
+.note-from {
+  font-size: var(--font-size-tiny);
+  color: var(--text-dark);
+  margin-bottom: 4px;
+  opacity: 0.8;
 }
 
-.usage-comparison.down {
-  color: #4CAF50;
+.note-date {
+  font-size: var(--font-size-tiny);
+  color: var(--text-dark);
+  opacity: 0.7;
 }
 
-.usage-comparison.up {
-  color: #FF5722;
+/* Tips Widget - Responsive */
+.tips-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: calc(var(--widget-padding) / 1.5);
 }
 
-/* Widget Size Variants */
-.size-2x2 {
-  grid-column: span 2;
-  grid-row: span 2;
+.tip-illustration {
+  display: flex;
+  justify-content: center;
 }
 
-.size-2x1 {
-  grid-column: span 2;
-  grid-row: span 1;
+.widget-preview {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
-.size-1x1 {
-  grid-column: span 1;
-  grid-row: span 1;
+.preview-item {
+  width: calc(var(--widget-width) * 0.12);
+  height: calc(var(--widget-height) * 0.08);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  transition: all 0.3s ease;
 }
 
-/* Edit Button (One UI Style) */
-.edit-button {
-  position: absolute;
-  bottom: var(--space-2xl);
-  right: var(--space-2xl);
-  background: var(--one-ui-surface);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--one-ui-border);
-  border-radius: 24px;
-  padding: var(--space-md) var(--space-xl);
-  font-size: var(--widget-title);
-  font-weight: 500;
-  color: var(--text-primary);
-  cursor: pointer;
-  transition: all 0.3s var(--ease-one-ui);
-  z-index: 20;
+.preview-item.highlighted {
+  background: rgba(255, 255, 255, 0.6);
+  transform: scale(1.1);
 }
 
-.edit-button:hover {
-  background: var(--one-ui-surface-elevated);
-  border-color: var(--samsung-blue);
-  color: var(--samsung-blue);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-3);
-}
-
-/* Status Bar */
-.status-bar {
-  position: absolute;
-  top: var(--space-2xl);
-  right: var(--space-2xl);
-  z-index: 20;
-}
-
-.current-time {
-  font-size: 18px;
-  font-weight: 300;
-  color: var(--text-secondary);
-  background: var(--one-ui-surface);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--one-ui-border);
-  border-radius: 12px;
-  padding: var(--space-sm) var(--space-md);
-}
-
-/* Responsive Design */
-@media (max-width: 1200px) {
-  .widget-grid {
-    grid-template-columns: repeat(3, 180px);
-    gap: var(--space-lg);
-  }
-}
-
-@media (max-width: 900px) {
-  .widget-grid {
-    grid-template-columns: repeat(2, 200px);
-    grid-template-rows: repeat(4, 140px);
-    gap: var(--space-md);
-  }
-  
-  :root {
-    --temperature-size: 36px;
-    --widget-primary: 20px;
-  }
-}
-
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.2s !important;
-    transition-duration: 0.2s !important;
-  }
-}
-
-@media (prefers-contrast: high) {
-  .widget {
-    border: 2px solid rgba(255, 255, 255, 0.3);
-  }
-  
-  .widget-title, .temperature, .condition {
-    color: #FFFFFF;
-  }
+.tip-message {
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
