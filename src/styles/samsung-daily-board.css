@@ -1,0 +1,412 @@
+/* Samsung Daily Board - One UI Design Language */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* One UI Design Tokens */
+:root {
+  /* Samsung One UI Colors */
+  --samsung-bg: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+  --one-ui-surface: rgba(255, 255, 255, 0.08);
+  --one-ui-surface-elevated: rgba(255, 255, 255, 0.12);
+  --one-ui-border: rgba(255, 255, 255, 0.15);
+  --samsung-blue: #1885F2;
+  --samsung-blue-light: #4A9EFF;
+  
+  /* One UI Typography */
+  --samsung-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Samsung One', sans-serif;
+  --text-primary: #FFFFFF;
+  --text-secondary: #B3B3B3;
+  --text-tertiary: #808080;
+  
+  /* Widget Typography Scale */
+  --widget-title: 14px;
+  --widget-primary: 24px;
+  --widget-secondary: 12px;
+  --temperature-size: 48px;
+  
+  /* One UI Spacing */
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 20px;
+  --space-xl: 24px;
+  --space-2xl: 32px;
+  
+  /* One UI Shadows (Elevation) */
+  --shadow-1: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-2: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-3: 0 8px 24px rgba(0, 0, 0, 0.18);
+  --shadow-elevated: 0 16px 48px rgba(0, 0, 0, 0.25);
+  
+  /* Animation */
+  --ease-one-ui: cubic-bezier(0.33, 0, 0.2, 1);
+}
+
+/* Samsung Daily Board Container */
+.samsung-daily-board {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--samsung-font);
+}
+
+/* Ambient Background */
+.ambient-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--samsung-bg);
+  z-index: 0;
+}
+
+.ambient-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at 20% 30%, rgba(24, 133, 242, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(74, 158, 255, 0.08) 0%, transparent 50%);
+  z-index: 1;
+}
+
+/* Widget Grid System */
+.widget-grid {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  grid-template-columns: repeat(4, 200px);
+  grid-template-rows: repeat(3, 160px);
+  gap: var(--space-xl);
+  z-index: 10;
+  max-width: 880px;
+  width: 100%;
+  padding: var(--space-2xl);
+}
+
+/* Widget Container Base */
+.widget-container {
+  position: relative;
+}
+
+/* One UI Widget Styling */
+.widget {
+  width: 100%;
+  height: 100%;
+  background: var(--one-ui-surface);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--one-ui-border);
+  border-radius: 16px;
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-2);
+  transition: all 0.3s var(--ease-one-ui);
+  position: relative;
+  overflow: hidden;
+}
+
+.widget:hover {
+  background: var(--one-ui-surface-elevated);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-elevated);
+  transform: translateY(-4px);
+}
+
+/* Widget Header */
+.widget-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.widget-title {
+  font-size: var(--widget-title);
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Widget Icons */
+div[class$="-icon"] {
+  font-size: 20px;
+  opacity: 0.8;
+}
+
+/* Weather Widget Specific */
+.weather-widget {
+  background: linear-gradient(135deg, var(--one-ui-surface) 0%, rgba(24, 133, 242, 0.1) 100%);
+}
+
+.weather-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.temperature {
+  font-size: var(--temperature-size);
+  font-weight: 200;
+  color: var(--text-primary);
+  line-height: 0.9;
+  margin-bottom: var(--space-xs);
+}
+
+.condition {
+  font-size: var(--widget-primary);
+  font-weight: 400;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.location {
+  font-size: var(--widget-secondary);
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+/* SmartThings Widget */
+.smartthings-widget {
+  background: linear-gradient(135deg, var(--one-ui-surface) 0%, rgba(67, 233, 123, 0.1) 100%);
+}
+
+.smartthings-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.device-type {
+  font-size: var(--widget-primary);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.device-status {
+  font-size: var(--widget-secondary);
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+/* Notes Widget */
+.notes-widget {
+  background: linear-gradient(135deg, var(--one-ui-surface) 0%, rgba(255, 193, 7, 0.1) 100%);
+}
+
+.notes-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.note-item {
+  font-size: var(--widget-secondary);
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.3;
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.note-item:last-child {
+  border-bottom: none;
+}
+
+.note-more {
+  font-size: var(--widget-secondary);
+  font-weight: 400;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Music Widget */
+.music-widget {
+  background: linear-gradient(135deg, var(--one-ui-surface) 0%, rgba(156, 39, 176, 0.1) 100%);
+}
+
+.music-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100% - 40px);
+}
+
+.track-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.track-name {
+  font-size: var(--widget-secondary);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.artist-name {
+  font-size: var(--widget-secondary);
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.music-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-md);
+}
+
+.play-pause {
+  background: var(--samsung-blue);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-one-ui);
+  font-size: 16px;
+}
+
+.play-pause:hover {
+  background: var(--samsung-blue-light);
+  transform: scale(1.05);
+}
+
+/* Energy Widget */
+.energy-widget {
+  background: linear-gradient(135deg, var(--one-ui-surface) 0%, rgba(76, 175, 80, 0.1) 100%);
+}
+
+.energy-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.usage-amount {
+  font-size: var(--widget-primary);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.usage-comparison {
+  font-size: var(--widget-secondary);
+  font-weight: 400;
+}
+
+.usage-comparison.down {
+  color: #4CAF50;
+}
+
+.usage-comparison.up {
+  color: #FF5722;
+}
+
+/* Widget Size Variants */
+.size-2x2 {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.size-2x1 {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.size-1x1 {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+/* Edit Button (One UI Style) */
+.edit-button {
+  position: absolute;
+  bottom: var(--space-2xl);
+  right: var(--space-2xl);
+  background: var(--one-ui-surface);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--one-ui-border);
+  border-radius: 24px;
+  padding: var(--space-md) var(--space-xl);
+  font-size: var(--widget-title);
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.3s var(--ease-one-ui);
+  z-index: 20;
+}
+
+.edit-button:hover {
+  background: var(--one-ui-surface-elevated);
+  border-color: var(--samsung-blue);
+  color: var(--samsung-blue);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-3);
+}
+
+/* Status Bar */
+.status-bar {
+  position: absolute;
+  top: var(--space-2xl);
+  right: var(--space-2xl);
+  z-index: 20;
+}
+
+.current-time {
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--text-secondary);
+  background: var(--one-ui-surface);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--one-ui-border);
+  border-radius: 12px;
+  padding: var(--space-sm) var(--space-md);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .widget-grid {
+    grid-template-columns: repeat(3, 180px);
+    gap: var(--space-lg);
+  }
+}
+
+@media (max-width: 900px) {
+  .widget-grid {
+    grid-template-columns: repeat(2, 200px);
+    grid-template-rows: repeat(4, 140px);
+    gap: var(--space-md);
+  }
+  
+  :root {
+    --temperature-size: 36px;
+    --widget-primary: 20px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.2s !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .widget {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .widget-title, .temperature, .condition {
+    color: #FFFFFF;
+  }
+}
