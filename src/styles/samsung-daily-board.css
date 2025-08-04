@@ -426,6 +426,7 @@
   border-radius: 30px;
   top: 40%;
   left: 20%;
+  animation: cloudDrift 12s ease-in-out infinite;
 }
 
 .cloud::before {
@@ -459,6 +460,7 @@
   top: 15%;
   right: 15%;
   box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+  animation: sunGlow 8s ease-in-out infinite;
 }
 
 .temperature-display {
@@ -467,12 +469,24 @@
   color: var(--text-white);
   text-align: center;
   margin: calc(var(--widget-padding) / 2) 0;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.temperature-display.updating {
+  transform: scale(1.05);
+  color: #4a9eff;
 }
 
 .weather-condition {
   font-size: var(--font-size-small);
   color: var(--text-white);
   opacity: 0.9;
+  transition: opacity 0.6s ease, color 0.4s ease;
+}
+
+.weather-condition.updating {
+  opacity: 0.6;
+  color: #4a9eff;
 }
 
 .hourly-forecast {
@@ -487,6 +501,16 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.hourly-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .hour {
@@ -497,11 +521,55 @@
 
 .hourly-icon {
   font-size: calc(var(--font-size-title) + 4px);
+  transition: transform 0.3s ease;
+}
+
+.hourly-item:hover .hourly-icon {
+  transform: scale(1.2);
 }
 
 .hourly-temp {
   font-size: var(--font-size-small);
   font-weight: 500;
+}
+
+/* Weather Card Animations */
+@keyframes cloudDrift {
+  0%, 100% { 
+    transform: translateX(0px); 
+  }
+  25% { 
+    transform: translateX(3px); 
+  }
+  50% { 
+    transform: translateX(-2px); 
+  }
+  75% { 
+    transform: translateX(1px); 
+  }
+}
+
+@keyframes sunGlow {
+  0%, 100% { 
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.4);
+  }
+}
+
+@keyframes weatherPulse {
+  0%, 100% { 
+    transform: translateY(calc(-1 * var(--elevation-distance))) scale(var(--elevation-scale));
+  }
+  50% { 
+    transform: translateY(calc(-1 * var(--elevation-distance))) scale(calc(var(--elevation-scale) + 0.01));
+  }
+}
+
+/* Enhanced weather card focus state with subtle pulse */
+.samsung-widget.weather-card.focused {
+  animation: weatherPulse 4s ease-in-out infinite;
 }
 
 /* Home Status Widget - Responsive */

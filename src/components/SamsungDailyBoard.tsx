@@ -10,6 +10,7 @@ interface Widget {
 const SamsungDailyBoard: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [focusedIndex, setFocusedIndex] = useState(0); // TV remote focus management
+  const [weatherUpdating, setWeatherUpdating] = useState(false); // For update animations
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const widgets: Widget[] = useMemo(() => [
@@ -139,6 +140,20 @@ const SamsungDailyBoard: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // Simulate weather updates with animation
+  useEffect(() => {
+    const weatherUpdateTimer = setInterval(() => {
+      setWeatherUpdating(true);
+      
+      // Remove updating class after animation completes
+      setTimeout(() => {
+        setWeatherUpdating(false);
+      }, 800);
+    }, 45000); // Update every 45 seconds
+
+    return () => clearInterval(weatherUpdateTimer);
+  }, []);
+
   // Memoized widget components to prevent unnecessary re-renders
   const widgetComponents = useMemo(() => [
     // Weather Widget
@@ -155,8 +170,8 @@ const SamsungDailyBoard: React.FC = () => {
               <div className="sun"></div>
             </div>
           </div>
-          <div className="temperature-display">16°C</div>
-          <div className="weather-condition">Partly Cloudy</div>
+          <div className={`temperature-display ${weatherUpdating ? 'updating' : ''}`}>16°C</div>
+          <div className={`weather-condition ${weatherUpdating ? 'updating' : ''}`}>Partly Cloudy</div>
         </div>
         <div className="hourly-forecast">
           <div className="hourly-item">
@@ -321,7 +336,7 @@ const SamsungDailyBoard: React.FC = () => {
         <div className="tip-message">Press and hold the widget to change order</div>
       </div>
     </div>
-  ], [focusedIndex]); // Only re-create when focusedIndex changes
+  ], [focusedIndex, weatherUpdating]); // Re-create when focusedIndex or weatherUpdating changes
 
   return (
     <div className="samsung-daily-board-real" tabIndex={0}>
