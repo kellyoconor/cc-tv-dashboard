@@ -288,20 +288,30 @@ const SamsungDailyBoard: React.FC = () => {
       </div>
       <div className="music-content">
         <div className="album-artwork">
-          <div 
-            className="album-cover"
-            style={{
-              backgroundImage: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)'
-            }}
-          >
+          <div className="album-cover">
             <div className="play-pause-button">
               <span className="pause-icon">▶️</span>
             </div>
           </div>
         </div>
+        
+        {/* Audio Visualization */}
+        <div className="audio-visualizer">
+          <div className="audio-bar"></div>
+          <div className="audio-bar"></div>
+          <div className="audio-bar"></div>
+          <div className="audio-bar"></div>
+          <div className="audio-bar"></div>
+        </div>
+        
         <div className="track-info">
           <div className="track-name">Never too late</div>
           <div className="artist-name">Blue Illusion</div>
+          
+          {/* Track Progress */}
+          <div className="track-progress">
+            <div className="progress-fill-music"></div>
+          </div>
         </div>
       </div>
     </div>,

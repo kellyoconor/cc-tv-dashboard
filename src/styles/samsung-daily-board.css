@@ -755,13 +755,13 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
-/* Music Widget - Responsive */
+/* Music Widget - Exciting Redesign */
 .music-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  text-align: center;
-  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
 }
 
 .album-artwork {
@@ -770,58 +770,259 @@
   align-items: center;
   justify-content: center;
   margin: calc(var(--widget-padding) / 2) 0;
+  position: relative;
 }
 
 .album-cover {
-  width: calc(var(--widget-width) * 0.35);
-  height: calc(var(--widget-width) * 0.35);
-  border-radius: calc(var(--border-radius) / 1.5);
+  width: calc(var(--widget-width) * 0.45); /* Larger for more impact */
+  height: calc(var(--widget-width) * 0.45);
+  border-radius: 50%; /* Full circle for vinyl record effect */
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background: 
+    conic-gradient(from 0deg at 50% 50%, 
+      #ff006e 0deg, 
+      #8338ec 60deg, 
+      #3a86ff 120deg, 
+      #06ffa5 180deg, 
+      #ffbe0b 240deg, 
+      #fb5607 300deg, 
+      #ff006e 360deg
+    );
+  box-shadow: 
+    0 0 30px rgba(255, 0, 110, 0.3),
+    0 0 60px rgba(131, 56, 236, 0.2),
+    inset 0 0 50px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  animation: vinylIdle 20s linear infinite;
+}
+
+.album-cover::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 25%;
+  height: 25%;
+  background: #000;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.album-cover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 40%);
+  pointer-events: none;
 }
 
 .play-pause-button {
-  width: calc(var(--widget-width) * 0.15);
-  height: calc(var(--widget-width) * 0.15);
-  background: rgba(255, 255, 255, 0.9);
+  width: calc(var(--widget-width) * 0.12);
+  height: calc(var(--widget-width) * 0.12);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    0 2px 6px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  z-index: 3;
+  position: relative;
 }
 
 .play-pause-button:hover {
-  background: white;
-  transform: scale(1.1);
+  background: linear-gradient(135deg, #ffffff 0%, #e9ecef 100%);
+  transform: scale(1.15);
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.25),
+    0 3px 10px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .pause-icon {
-  font-size: calc(var(--font-size-title) + 4px);
-  color: var(--text-dark);
+  font-size: calc(var(--font-size-title) + 2px);
+  color: #333;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
 }
+
+/* Audio Visualization Bars */
+.audio-visualizer {
+  position: absolute;
+  bottom: calc(var(--widget-padding) * 1.5);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 3px;
+  align-items: end;
+  height: 20px;
+}
+
+.audio-bar {
+  width: 3px;
+  background: linear-gradient(to top, #ff006e, #8338ec);
+  border-radius: 2px;
+  animation: audioBar 1.5s ease-in-out infinite;
+  opacity: 0.7;
+}
+
+.audio-bar:nth-child(1) { animation-delay: 0.1s; height: 8px; }
+.audio-bar:nth-child(2) { animation-delay: 0.2s; height: 15px; }
+.audio-bar:nth-child(3) { animation-delay: 0.3s; height: 12px; }
+.audio-bar:nth-child(4) { animation-delay: 0.4s; height: 18px; }
+.audio-bar:nth-child(5) { animation-delay: 0.5s; height: 10px; }
 
 .track-info {
   margin-top: auto;
+  padding-top: calc(var(--widget-padding) / 2);
+  position: relative;
+  z-index: 2;
 }
 
 .track-name {
   font-size: var(--font-size-small);
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-white);
-  margin-bottom: 4px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  margin-bottom: 6px;
+  text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.6),
+    0 1px 2px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, #ffffff 0%, #ff006e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: textGlow 3s ease-in-out infinite;
 }
 
 .artist-name {
   font-size: var(--font-size-tiny);
   color: var(--text-white);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-  opacity: 0.9;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  opacity: 0.85;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Progress Bar */
+.track-progress {
+  width: 80%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 1px;
+  margin: 8px auto 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill-music {
+  height: 100%;
+  width: 35%; /* Simulated progress */
+  background: linear-gradient(90deg, #ff006e, #8338ec);
+  border-radius: 1px;
+  animation: progressPulse 2s ease-in-out infinite;
+}
+
+/* Music Card Background Glow */
+.music-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.music-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(circle at 30% 40%, rgba(255, 0, 110, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 70% 60%, rgba(131, 56, 236, 0.1) 0%, transparent 50%);
+  animation: musicGlow 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.music-card .widget-header,
+.music-card .music-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Music Card Animations */
+@keyframes vinylIdle {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes audioBar {
+  0%, 100% { 
+    transform: scaleY(0.3);
+    opacity: 0.6;
+  }
+  50% { 
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes textGlow {
+  0%, 100% { 
+    background: linear-gradient(135deg, #ffffff 0%, #ff006e 100%);
+  }
+  50% { 
+    background: linear-gradient(135deg, #8338ec 0%, #3a86ff 100%);
+  }
+}
+
+@keyframes progressPulse {
+  0%, 100% { 
+    opacity: 0.8;
+    transform: scaleX(1);
+  }
+  50% { 
+    opacity: 1;
+    transform: scaleX(1.02);
+  }
+}
+
+@keyframes musicGlow {
+  0%, 100% { 
+    transform: rotate(0deg) scale(1);
+    opacity: 0.4;
+  }
+  50% { 
+    transform: rotate(180deg) scale(1.1);
+    opacity: 0.6;
+  }
+}
+
+/* Enhanced music card focus state */
+.samsung-widget.music-card.focused .album-cover {
+  animation: vinylFocused 15s linear infinite;
+  box-shadow: 
+    0 0 40px rgba(255, 0, 110, 0.5),
+    0 0 80px rgba(131, 56, 236, 0.3),
+    inset 0 0 50px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes vinylFocused {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Notes Widget - Responsive */
