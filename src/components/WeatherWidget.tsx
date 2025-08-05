@@ -16,7 +16,7 @@ const WeatherWidget: React.FC = () => {
   const [weather, setWeather] = useState<WeatherData>({
     temperature: 72,
     condition: 'Partly Cloudy',
-    location: 'San Francisco, CA',
+    location: 'Philadelphia, PA',
     high: 78,
     low: 65,
     humidity: 68,
