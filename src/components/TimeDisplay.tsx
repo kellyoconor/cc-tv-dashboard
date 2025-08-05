@@ -27,45 +27,43 @@ const TimeDisplay: React.FC = () => {
     });
   };
 
-  const getTimeOfDay = (date: Date) => {
+  const getPersonalGreeting = (date: Date) => {
     const hour = date.getHours();
-    if (hour < 12) return 'Good Morning';
-    if (hour < 17) return 'Good Afternoon';
-    return 'Good Evening';
+    const name = 'Sarah'; // Could be dynamic
+    if (hour < 12) return `Good morning, ${name}`;
+    if (hour < 17) return `Good afternoon, ${name}`;
+    return `Good evening, ${name}`;
+  };
+
+  const getContextualInfo = (date: Date) => {
+    const hour = date.getHours();
+    if (hour < 8) return 'Early start today';
+    if (hour < 12) return 'Great day ahead';
+    if (hour < 17) return 'Hope your day is going well';
+    if (hour < 20) return 'Time to unwind';
+    return 'Enjoy your evening';
   };
 
   return (
     <div className="widget time-display">
-      <div style={{ 
-        fontSize: 'var(--font-size-3xl)', 
-        fontWeight: '100',
-        letterSpacing: '-3px',
-        lineHeight: '0.9',
-        marginBottom: 'var(--spacing-md)',
-        color: 'var(--primary-text)',
-        textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
-      }}>
+      {/* Large time display */}
+      <div className="heading-xl mb-md">
         {formatTime(currentTime)}
       </div>
       
-      <div style={{ 
-        fontSize: 'var(--font-size-lg)', 
-        color: 'var(--secondary-text)',
-        fontWeight: '200',
-        marginBottom: 'var(--spacing-sm)',
-        letterSpacing: '0.5px'
-      }}>
+      {/* Personal greeting */}
+      <div className="body-lg mb-sm">
+        {getPersonalGreeting(currentTime)}
+      </div>
+      
+      {/* Date */}
+      <div className="body-base mb-sm">
         {formatDate(currentTime)}
       </div>
       
-      <div style={{ 
-        fontSize: 'var(--font-size-sm)', 
-        color: 'var(--accent-text)',
-        fontWeight: '300',
-        letterSpacing: '1px',
-        textTransform: 'uppercase'
-      }}>
-        {getTimeOfDay(currentTime)}
+      {/* Contextual message */}
+      <div className="body-sm">
+        {getContextualInfo(currentTime)}
       </div>
     </div>
   );

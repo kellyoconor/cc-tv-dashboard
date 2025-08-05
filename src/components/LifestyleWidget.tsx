@@ -2,51 +2,51 @@ import React, { useState, useEffect } from 'react';
 
 interface LifestyleContent {
   id: string;
-  type: 'quote' | 'tip' | 'fact';
+  type: 'goal' | 'achievement' | 'inspiration' | 'wellness';
   content: string;
   author?: string;
   category: string;
+  imageUrl?: string;
+  progress?: number;
+  personalNote?: string;
 }
 
 const LifestyleWidget: React.FC = () => {
   const [lifestyleContent] = useState<LifestyleContent[]>([
     {
       id: '1',
-      type: 'quote',
-      content: 'The best time to plant a tree was 20 years ago. The second best time is now.',
-      author: 'Chinese Proverb',
-      category: 'Motivation'
+      type: 'goal',
+      content: 'Read 24 books this year',
+      category: 'Personal Growth',
+      progress: 65,
+      personalNote: 'Currently reading "Atomic Habits" - loving it so far!',
+      imageUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=240&fit=crop'
     },
     {
       id: '2',
-      type: 'tip',
-      content: 'Take a 5-minute walk every hour to boost creativity and reduce stress.',
-      category: 'Wellness'
+      type: 'achievement',
+      content: 'Completed 30-day meditation streak',
+      category: 'Mindfulness',
+      personalNote: 'Feeling more centered and focused each morning',
+      imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=240&fit=crop'
     },
     {
       id: '3',
-      type: 'fact',
-      content: 'Drinking water first thing in the morning kickstarts your metabolism by up to 30%.',
-      category: 'Health'
+      type: 'wellness',
+      content: 'Stay hydrated with 8 glasses of water daily',
+      category: 'Health',
+      progress: 75,
+      personalNote: 'Using my new smart water bottle to track intake',
+      imageUrl: 'https://images.unsplash.com/photo-1550317138-10000687d72b?w=400&h=240&fit=crop'
     },
     {
       id: '4',
-      type: 'quote',
-      content: 'Progress, not perfection, is the goal.',
-      author: 'Unknown',
-      category: 'Growth'
-    },
-    {
-      id: '5',
-      type: 'tip',
-      content: 'Use the 20-20-20 rule: Every 20 minutes, look at something 20 feet away for 20 seconds.',
-      category: 'Digital Wellness'
-    },
-    {
-      id: '6',
-      type: 'fact',
-      content: 'Studies show that plants in your workspace can increase productivity by 15%.',
-      category: 'Productivity'
+      type: 'inspiration',
+      content: 'Your potential is endless',
+      author: 'Sarah (to herself)',
+      category: 'Daily Affirmation',
+      personalNote: 'Reminder to trust in my abilities',
+      imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=240&fit=crop'
     }
   ]);
 
@@ -63,136 +63,71 @@ const LifestyleWidget: React.FC = () => {
 
   const getTypeIcon = (type: LifestyleContent['type']): string => {
     const iconMap = {
-      quote: '💭',
-      tip: '💡',
-      fact: '🧠'
+      goal: '🎯',
+      achievement: '🏆',
+      inspiration: '✨',
+      wellness: '🌱'
     };
     return iconMap[type];
   };
 
   const getTypeColor = (type: LifestyleContent['type']): string => {
     const colorMap = {
-      quote: '#9966ff',
-      tip: '#ffaa00',
-      fact: '#00ccff'
+      goal: 'var(--accent-primary)',
+      achievement: '#FFD700',
+      inspiration: '#FF6B9D',
+      wellness: '#00C851'
     };
     return colorMap[type];
-  };
-
-  const getCategoryIcon = (category: string): string => {
-    const iconMap: { [key: string]: string } = {
-      'Motivation': '🚀',
-      'Wellness': '🌱',
-      'Health': '💚',
-      'Growth': '📈',
-      'Digital Wellness': '💻',
-      'Productivity': '⚡'
-    };
-    return iconMap[category] || '✨';
   };
 
   const currentContent = lifestyleContent[currentIndex];
 
   return (
     <div className="widget lifestyle-widget">
-      <div className="widget-title">Daily Inspiration</div>
+      {/* Category with icon */}
+      <div className="flex items-center gap-xs mb-xs">
+        <span>{getTypeIcon(currentContent.type)}</span>
+        <div className="label">{currentContent.category}</div>
+      </div>
       
-      {currentContent && (
-        <div style={{
-          padding: 'var(--spacing-md)',
-          borderRadius: '8px',
-          background: 'rgba(255, 255, 255, 0.05)',
-          border: `1px solid ${getTypeColor(currentContent.type)}`,
-          minHeight: '180px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between'
-        }}>
-          <div>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginBottom: 'var(--spacing-sm)',
-              fontSize: 'var(--font-size-xs)',
-              color: 'var(--secondary-text)'
-            }}>
-              <span style={{ marginRight: 'var(--spacing-xs)' }}>
-                {getTypeIcon(currentContent.type)}
-              </span>
-              <span style={{ 
-                color: getTypeColor(currentContent.type),
-                textTransform: 'uppercase',
-                fontWeight: '500',
-                letterSpacing: '1px'
-              }}>
-                {currentContent.type}
-              </span>
-            </div>
-            
-            <div style={{
-              fontSize: currentContent.type === 'quote' ? 'var(--font-size-sm)' : 'var(--font-size-sm)',
-              fontWeight: currentContent.type === 'quote' ? '300' : '400',
-              lineHeight: '1.4',
-              marginBottom: 'var(--spacing-md)',
-              fontStyle: currentContent.type === 'quote' ? 'italic' : 'normal'
-            }}>
-              {currentContent.type === 'quote' && '"'}{currentContent.content}{currentContent.type === 'quote' && '"'}
-            </div>
-            
-            {currentContent.author && (
-              <div style={{
-                fontSize: 'var(--font-size-xs)',
-                color: 'var(--secondary-text)',
-                fontWeight: '300',
-                marginBottom: 'var(--spacing-sm)'
-              }}>
-                — {currentContent.author}
-              </div>
-            )}
+      {/* Main content */}
+      <div className="heading-md mb-sm" style={{ lineHeight: 1.3 }}>
+        {currentContent.content}
+      </div>
+      
+      {/* Progress */}
+      {currentContent.progress !== undefined && (
+        <div className="mb-sm">
+          <div className="flex justify-between items-center mb-xs">
+            <span className="body-sm">Progress</span>
+            <span className="body-sm text-accent" style={{ fontWeight: 600 }}>
+              {currentContent.progress}%
+            </span>
           </div>
-          
           <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            fontSize: 'var(--font-size-xs)',
-            color: 'var(--accent-text)'
+            height: '3px',
+            background: 'var(--border)',
+            borderRadius: '2px',
+            overflow: 'hidden'
           }}>
-            <span>
-              {getCategoryIcon(currentContent.category)} {currentContent.category}
-            </span>
-            <span>
-              {currentIndex + 1}/{lifestyleContent.length}
-            </span>
+            <div style={{
+              height: '100%',
+              width: `${currentContent.progress}%`,
+              background: 'var(--blue)',
+              borderRadius: '2px',
+              transition: 'width 0.5s ease'
+            }} />
           </div>
         </div>
       )}
       
-      {/* Progress indicator */}
-      <div style={{
-        marginTop: 'var(--spacing-md)',
-        height: '3px',
-        background: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: '2px',
-        overflow: 'hidden'
-      }}>
-        <div style={{
-          height: '100%',
-          width: `${((currentIndex + 1) / lifestyleContent.length) * 100}%`,
-          background: 'linear-gradient(90deg, var(--highlight), var(--success))',
-          borderRadius: '2px',
-          transition: 'width 0.3s ease'
-        }} />
-      </div>
-      
-      <div style={{
-        textAlign: 'center',
-        fontSize: 'var(--font-size-xs)',
-        color: 'var(--accent-text)',
-        marginTop: 'var(--spacing-sm)'
-      }}>
-        Updates every 15 seconds
-      </div>
+      {/* Personal note */}
+      {currentContent.personalNote && (
+        <div className="body-sm" style={{ fontStyle: 'italic', lineHeight: 1.4 }}>
+          "{currentContent.personalNote}"
+        </div>
+      )}
     </div>
   );
 };

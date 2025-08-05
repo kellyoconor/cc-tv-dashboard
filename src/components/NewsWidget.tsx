@@ -6,30 +6,42 @@ interface NewsItem {
   source: string;
   category: 'tech' | 'business' | 'world' | 'health' | 'science';
   publishedAt: Date;
+  imageUrl: string;
+  summary: string;
+  readTime: string;
 }
 
 const NewsWidget: React.FC = () => {
   const [news] = useState<NewsItem[]>([
     {
       id: '1',
-      headline: 'Tech Giants Report Strong Q4 Earnings',
-      source: 'Tech News',
-      category: 'tech',
-      publishedAt: new Date(Date.now() - 2 * 60 * 60 * 1000) // 2 hours ago
+      headline: 'College football recruiting class rankings update',
+      source: 'ESPN',
+      category: 'business',
+      publishedAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
+      imageUrl: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=240&fit=crop',
+      summary: 'Updated rankings show major shifts in top recruiting classes across Division I football programs.',
+      readTime: '3 min read'
     },
     {
       id: '2',
-      headline: 'Global Climate Summit Reaches Agreement',
-      source: 'World Report',
-      category: 'world',
-      publishedAt: new Date(Date.now() - 4 * 60 * 60 * 1000) // 4 hours ago
+      headline: 'Market Analysis: Tech Sector Momentum',
+      source: 'Financial Times',
+      category: 'tech',
+      publishedAt: new Date(Date.now() - 4 * 60 * 60 * 1000),
+      imageUrl: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=240&fit=crop',
+      summary: 'Technology stocks continue their upward trajectory with strong quarterly earnings reports.',
+      readTime: '5 min read'
     },
     {
       id: '3',
       headline: 'Breakthrough in Renewable Energy Storage',
       source: 'Science Daily',
       category: 'science',
-      publishedAt: new Date(Date.now() - 6 * 60 * 60 * 1000) // 6 hours ago
+      publishedAt: new Date(Date.now() - 6 * 60 * 60 * 1000),
+      imageUrl: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=400&h=240&fit=crop',
+      summary: 'New battery technology promises to revolutionize how we store and distribute clean energy.',
+      readTime: '4 min read'
     }
   ]);
 
@@ -79,95 +91,23 @@ const NewsWidget: React.FC = () => {
 
   return (
     <div className="widget news-widget">
-      <div className="widget-title">Latest News</div>
+      {/* Source */}
+      <div className="label mb-xs">{currentNews.source}</div>
       
-      {currentNews && (
-        <div style={{
-          padding: 'var(--spacing-md)',
-          borderRadius: '8px',
-          background: 'rgba(255, 255, 255, 0.05)',
-          border: `1px solid ${getCategoryColor(currentNews.category)}`,
-          minHeight: '200px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between'
-        }}>
-          <div>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginBottom: 'var(--spacing-sm)',
-              fontSize: 'var(--font-size-xs)',
-              color: 'var(--secondary-text)'
-            }}>
-              <span style={{ marginRight: 'var(--spacing-xs)' }}>
-                {getCategoryIcon(currentNews.category)}
-              </span>
-              <span style={{ 
-                color: getCategoryColor(currentNews.category),
-                textTransform: 'uppercase',
-                fontWeight: '500',
-                letterSpacing: '1px'
-              }}>
-                {currentNews.category}
-              </span>
-            </div>
-            
-            <div style={{
-              fontSize: 'var(--font-size-md)',
-              fontWeight: '400',
-              lineHeight: '1.3',
-              marginBottom: 'var(--spacing-md)',
-              display: '-webkit-box',
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden'
-            }}>
-              {currentNews.headline}
-            </div>
-          </div>
-          
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            fontSize: 'var(--font-size-xs)',
-            color: 'var(--accent-text)'
-          }}>
-            <span>📰 {currentNews.source}</span>
-            <span>🕐 {formatTimeAgo(currentNews.publishedAt)}</span>
-          </div>
-        </div>
-      )}
-      
-      {/* News indicator dots */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        gap: 'var(--spacing-xs)',
-        marginTop: 'var(--spacing-md)'
-      }}>
-        {news.map((_, index) => (
-          <div
-            key={index}
-            style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: index === currentIndex ? 'var(--highlight)' : 'var(--accent-text)',
-              transition: 'all 0.3s ease'
-            }}
-          />
-        ))}
+      {/* Headline */}
+      <div className="heading-md mb-sm" style={{ lineHeight: 1.3 }}>
+        {currentNews.headline}
       </div>
       
-      <div style={{
-        textAlign: 'center',
-        fontSize: 'var(--font-size-xs)',
-        color: 'var(--accent-text)',
-        marginTop: 'var(--spacing-sm)'
-      }}>
-        {news.length} headlines • Auto-updating
+      {/* Summary */}
+      <div className="body-base mb-md" style={{ lineHeight: 1.4 }}>
+        {currentNews.summary}
+      </div>
+      
+      {/* Metadata */}
+      <div className="flex justify-between items-center body-sm">
+        <span>{formatTimeAgo(currentNews.publishedAt)}</span>
+        <span>{currentNews.readTime}</span>
       </div>
     </div>
   );

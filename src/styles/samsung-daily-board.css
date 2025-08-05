@@ -1,0 +1,2221 @@
+/* Samsung Daily Board - RESPONSIVE TV OPTIMIZED */
+:root {
+  /* Base colors */
+  --primary-bg: #1a1a2e;
+  --secondary-bg: #16213e;
+  --accent-purple: #8B5DFF;
+  --accent-blue: #4A9EFF;
+  --text-white: #ffffff;
+  --text-light: #e0e0e0;
+  --text-dark: #333333;
+  
+  /* Responsive scaling variables - DEFAULT (Small TVs 32-43") */
+  --widget-width: 380px; /* Increased from 320px to match reference */
+  --widget-height: 480px; /* Increased from 400px */
+  --widget-gap: 28px;
+  --widget-padding: 24px;
+  --border-radius: 16px;
+  /* Typography Scale - Luxury TV Interface */
+  --font-size-display: 48px;    /* Hero numbers: temperatures, scores */
+  --font-size-title: 18px;      /* Widget headers, primary titles */
+  --font-size-body: 16px;       /* Main content, descriptions */
+  --font-size-caption: 14px;    /* Badges, metadata, timestamps */
+  
+  /* Font Weights - Semantic Hierarchy */
+  --font-weight-regular: 400;   /* Body text, details */
+  --font-weight-medium: 500;    /* Badges, labels, emphasis */
+  --font-weight-bold: 700;      /* Titles, hero data */
+  --time-font-size: 48px;
+  --date-font-size: 18px;
+  --elevation-distance: 20px;
+  --elevation-scale: 1.05;
+  --container-padding: 60px;
+}
+
+/* Medium TVs (50-65") */
+@media (min-width: 1600px) {
+  :root {
+    --widget-width: 440px; /* Increased from 380px to match reference */
+    --widget-height: 560px; /* Increased from 480px */
+    --widget-gap: 32px;
+    --widget-padding: 28px;
+    --border-radius: 20px;
+    --font-size-display: 56px;
+    --font-size-title: 20px;
+    --font-size-body: 18px;
+    --font-size-caption: 16px;
+    --time-font-size: 56px;
+    --date-font-size: 20px;
+    --elevation-distance: 24px;
+    --elevation-scale: 1.06;
+    --container-padding: 80px;
+  }
+}
+
+/* Large TVs (70-85") */
+@media (min-width: 2400px) {
+  :root {
+    --widget-width: 520px; /* Increased from 440px to match reference */
+    --widget-height: 640px; /* Increased from 560px */
+    --widget-gap: 36px;
+    --widget-padding: 32px;
+    --border-radius: 24px;
+    --font-size-display: 64px;
+    --font-size-title: 22px;
+    --font-size-body: 20px;
+    --font-size-caption: 18px;
+    --time-font-size: 64px;
+    --date-font-size: 22px;
+    --elevation-distance: 28px;
+    --elevation-scale: 1.07;
+    --container-padding: 100px;
+  }
+}
+
+/* Ultra Large TVs (85"+) */
+@media (min-width: 3200px) {
+  :root {
+    --widget-width: 600px; /* Increased from 520px to match reference */
+    --widget-height: 720px; /* Increased from 640px */
+    --widget-gap: 40px;
+    --widget-padding: 36px;
+    --border-radius: 28px;
+    --font-size-display: 72px;
+    --font-size-title: 24px;
+    --font-size-body: 22px;
+    --font-size-caption: 20px;
+    --time-font-size: 72px;
+    --date-font-size: 24px;
+    --elevation-distance: 32px;
+    --elevation-scale: 1.08;
+    --container-padding: 120px;
+  }
+}
+
+/* Live TV Transparency Foundation */
+.samsung-daily-board-real {
+  width: 100vw;
+  height: 100vh;
+  /* Remove solid background for transparency */
+  position: relative;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Simulated Video Content Backgrounds */
+.video-simulation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  transition: all 0.8s ease-in-out;
+}
+
+/* Sports/Bright Content Simulation - Toned Down */
+.video-simulation.sports {
+  background: 
+    radial-gradient(circle at 70% 30%, rgba(40, 120, 40, 0.15) 0%, transparent 60%),
+    radial-gradient(circle at 30% 70%, rgba(80, 120, 180, 0.12) 0%, transparent 50%),
+    linear-gradient(135deg, 
+      #2d4a3e 0%, 
+      #3e5c4a 25%, 
+      #4a6856 50%, 
+      #3e5c4a 75%, 
+      #2d4a3e 100%
+    );
+  background-size: 180% 180%, 120% 120%, 100% 100%;
+  animation: sportsContent 15s ease-in-out infinite;
+}
+
+/* Movie/Dark Content Simulation - Cinematic */
+.video-simulation.movie {
+  background: 
+    radial-gradient(circle at 80% 20%, rgba(60, 40, 80, 0.08) 0%, transparent 70%),
+    radial-gradient(circle at 20% 80%, rgba(40, 30, 50, 0.06) 0%, transparent 60%),
+    linear-gradient(135deg, 
+      #1a1625 0%, 
+      #242032 25%, 
+      #2a2438 50%, 
+      #242032 75%, 
+      #1a1625 100%
+    );
+  background-size: 140% 140%, 100% 100%, 100% 100%;
+  animation: movieContent 20s ease-in-out infinite;
+}
+
+/* News/Mixed Content Simulation - Professional */
+.video-simulation.news {
+  background: 
+    linear-gradient(90deg, rgba(180, 40, 60, 0.08) 0%, transparent 15%),
+    radial-gradient(circle at 60% 40%, rgba(200, 200, 220, 0.12) 0%, transparent 40%),
+    linear-gradient(135deg, 
+      #2c3e50 0%, 
+      #34495e 30%, 
+      #3c566e 50%, 
+      #34495e 70%, 
+      #2c3e50 100%
+    );
+  background-size: 100% 6%, 60% 60%, 100% 100%;
+  animation: newsContent 12s ease-in-out infinite;
+}
+
+/* Subtle Background Animations */
+@keyframes sportsContent {
+  0%, 100% { 
+    background-position: 0% 50%, 0% 0%, 0% 0%; 
+    filter: brightness(1);
+  }
+  50% { 
+    background-position: 100% 50%, 100% 100%, 0% 0%; 
+    filter: brightness(1.05);
+  }
+}
+
+@keyframes movieContent {
+  0%, 100% { 
+    background-position: 0% 50%, 100% 100%, 0% 0%;
+    filter: brightness(0.9);
+  }
+  50% { 
+    background-position: 100% 50%, 0% 0%, 0% 0%;
+    filter: brightness(0.95);
+  }
+}
+
+@keyframes newsContent {
+  0%, 100% { 
+    background-position: 0% 0%, 50% 50%, 0% 0%; 
+    filter: brightness(1);
+  }
+  33% { 
+    background-position: 100% 0%, 0% 80%, 0% 0%; 
+    filter: brightness(1.02);
+  }
+  66% { 
+    background-position: 0% 0%, 100% 20%, 0% 0%; 
+    filter: brightness(0.98);
+  }
+}
+
+/* Dynamic Background - DISABLED for Live TV Transparency */
+.dynamic-background {
+  display: none; /* Replaced with video simulation */
+}
+
+.flow-lines {
+  display: none; /* Replaced with video simulation */
+}
+
+@keyframes flow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Time Display - Responsive */
+.time-display-corner {
+  position: absolute;
+  top: var(--container-padding);
+  left: var(--container-padding);
+  z-index: 20;
+  color: var(--text-white);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.current-time {
+  font-size: var(--time-font-size);
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.current-date {
+  font-size: var(--date-font-size);
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+/* Widgets Container - Responsive */
+.widgets-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: var(--widget-gap);
+  z-index: 10;
+  width: 100vw;
+  max-width: 100vw;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: var(--container-padding) calc(50vw - calc(var(--widget-width) * 2 + var(--widget-gap) * 1.5)) 0;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  height: calc(var(--widget-height) + var(--elevation-distance) * 2);
+}
+
+.widgets-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Samsung Widget Base - True Glassmorphism (No Borders) */
+.samsung-widget {
+  flex: 0 0 var(--widget-width);
+  /* Pure glass material - no hard borders */
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(25px) saturate(200%);
+  /* REMOVED: border - let the glass material define edges */
+  border-radius: var(--border-radius);
+  padding: var(--widget-padding);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    /* Subtle inner glow for soft edge definition */
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  min-height: var(--widget-height);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.samsung-widget:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(30px) saturate(220%);
+  /* Enhanced inner glow on hover */
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+/* Premium Focus Effect - Pure Glass Material */
+.samsung-widget.focused,
+.samsung-widget.weather-card.focused,
+.samsung-widget.connected-devices-card.focused, 
+.samsung-widget.watching-card.focused,
+.samsung-widget.internet-usage-card.focused,
+.samsung-widget.music-card.focused,
+.samsung-widget.sports-card.focused,
+.samsung-widget.traffic-card.focused {
+  transform: translateY(calc(-1 * var(--elevation-distance))) scale(var(--elevation-scale)) !important;
+  /* Keep background transparent to show video simulation */
+  backdrop-filter: blur(40px) saturate(280%) brightness(1.1) !important;
+  /* Enhanced inner glow instead of borders */
+  box-shadow: 
+    0 24px 64px rgba(0, 0, 0, 0.5), 
+    0 8px 32px rgba(255, 255, 255, 0.15),
+    /* Strong inner highlight for focus definition */
+    inset 0 2px 0 rgba(255, 255, 255, 0.5),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.15) !important;
+  z-index: 10 !important;
+}
+
+.samsung-widget.focused:hover {
+  transform: translateY(calc(-1 * var(--elevation-distance) - 4px)) scale(var(--elevation-scale)) !important;
+  box-shadow: 
+    0 28px 72px rgba(0, 0, 0, 0.55), 
+    0 12px 40px rgba(255, 255, 255, 0.2),
+    /* Maximum inner glow for focused hover */
+    inset 0 2px 0 rgba(255, 255, 255, 0.6),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Modern Weather Card with Philadelphia Skyline Background */
+.samsung-widget.modern-weather {
+  background: 
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 50%,
+      rgba(0, 0, 0, 0.3) 100%
+    ),
+    url('https://s30119.comcast-corpcdn.com/wp-content/uploads/2019/03/Visit-Hero-Skyline-2000x750.png') center/cover,
+    linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: var(--text-white);
+  padding: var(--widget-padding);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  min-height: var(--widget-height);
+}
+
+/* Connected Devices Card with Sophisticated Purple Gradient */
+.samsung-widget.connected-devices-card {
+  background: linear-gradient(135deg, #4C4C66 0%, #5A5A7A 25%, #6366A3 50%, #555B8F 75%, #4A4E73 100%) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: var(--text-white);
+  padding: var(--widget-padding);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  min-height: var(--widget-height);
+}
+
+/* Watching Card with Love Island Maya Jama Background */
+.samsung-widget.watching-card {
+  background: 
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 50%,
+      rgba(0, 0, 0, 0.5) 100%
+    ),
+    url('https://hips.hearstapps.com/hmg-prod/images/maya-jama-love-island-clocks-6846ec2d6c70b.png?crop=1xw:1xh;0,0.0399xh') center/cover,
+    linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: var(--text-white);
+  padding: var(--widget-padding);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  min-height: var(--widget-height);
+}
+
+/* Internet Usage Card with Sophisticated Muted Gradient */
+.samsung-widget.internet-usage-card {
+  background: linear-gradient(135deg, #4C4C66 0%, #5A5A7A 25%, #6366A3 50%, #555B8F 75%, #4A4E73 100%) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: var(--text-white);
+  padding: var(--widget-padding);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  min-height: var(--widget-height);
+}
+
+.music-card {
+  background: rgba(180, 160, 200, 0.5) !important;
+  border-color: rgba(180, 160, 200, 0.7) !important;
+  color: var(--text-white);
+}
+
+.sports-card {
+  background: rgba(40, 78, 19, 0.7) !important;
+  border-color: rgba(58, 107, 28, 0.9) !important;
+  color: var(--text-white);
+}
+
+/* Traffic Card with Muted Purple Gradient (matches Internet Usage) */
+.samsung-widget.traffic-card {
+  background: linear-gradient(135deg, #4C4C66 0%, #5A5A7A 25%, #6366A3 50%, #555B8F 75%, #4A4E73 100%) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: var(--text-white);
+  padding: var(--widget-padding);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  overflow: hidden;
+  min-height: var(--widget-height);
+}
+
+/* Widget Hover States */
+.weather-card:hover {
+  background: rgba(74, 158, 255, 0.7) !important;
+  border-color: rgba(74, 158, 255, 0.9) !important;
+}
+
+
+
+
+
+
+
+.music-card:hover {
+  background: rgba(180, 160, 200, 0.6) !important;
+  border-color: rgba(180, 160, 200, 0.8) !important;
+}
+
+.sports-card:hover {
+  background: rgba(40, 78, 19, 0.8) !important;
+  border-color: rgba(58, 107, 28, 1.0) !important;
+}
+
+
+
+/* Widget Focus States - Keep Background Images */
+/* Focus effects are handled by the main focus selector with transform and shadows only */
+/* Individual background images and gradients are preserved */
+
+/* Widget Header - Responsive */
+.widget-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: calc(var(--widget-padding) / 2);
+  gap: 12px;
+}
+
+.widget-icon {
+  font-size: calc(var(--font-size-title) + 4px);
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.widget-title {
+  font-size: var(--font-size-title);
+  font-weight: 600;
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Navigation Hint - Responsive */
+.navigation-hint {
+  position: absolute;
+  bottom: var(--container-padding);
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: var(--font-size-small);
+  font-weight: 400;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 12px 20px;
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  z-index: 5;
+}
+
+/* Scroll Indicator - Responsive */
+.scroll-indicator {
+  position: absolute;
+  bottom: calc(var(--container-padding) + 80px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+}
+
+.scroll-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.scroll-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.scroll-dot.active {
+  background: rgba(255, 255, 255, 0.8);
+  transform: scale(1.2);
+}
+
+/* Modern Weather Widget Styles */
+
+/* Weather Top Section */
+.weather-top-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: auto;
+}
+
+/* Weather Condition Badge - Borderless Glass */
+.weather-condition-badge {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px) saturate(180%);
+  border-radius: 20px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  letter-spacing: 0.3px;
+  align-self: flex-start;
+  /* Subtle inner glow instead of border */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.weather-icon-svg {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+  color: #ffffff;
+}
+
+.detail-icon-svg {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  opacity: 0.9;
+  color: #ffffff;
+}
+
+/* Weather Badge Icon - Clean styling for Erik Flowers weather icons */
+.weather-badge-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.weather-badge-icon svg {
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+}
+
+/* Detail Icons - Professional styling */
+.detail-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--font-size-title) + 2px);
+  margin-bottom: 6px;
+  height: 28px;
+}
+
+.detail-icon svg {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+/* Device Category Icons */
+.device-icon-svg {
+  color: rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
+}
+
+.category-item:hover .device-icon-svg {
+  color: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+}
+
+/* Badge Icons */
+.badge-icon-svg {
+  color: rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+/* Security Shield Icon */
+.security-icon-svg {
+  color: #10B981;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+/* Sports Icons */
+.trophy-icon-svg {
+  color: rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
+.venue-icon-svg,
+.time-icon-svg {
+  color: rgba(255, 255, 255, 0.8);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+
+
+.feels-like {
+  text-align: right;
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.feels-like-label {
+  display: block;
+  font-size: var(--font-size-tiny);
+  opacity: 0.9;
+  margin-bottom: 4px;
+}
+
+.feels-like-temp {
+  display: block;
+  font-size: calc(var(--font-size-main) * 0.5);
+  font-weight: 700;
+}
+
+/* Weather Main Section */
+.weather-main-section {
+  margin: auto 0;
+  padding-left: 0;
+}
+
+.main-temperature {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.temperature-large {
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-white);
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
+  line-height: 0.9;
+  transition: all 0.3s ease;
+}
+
+.temperature-large.updating {
+  animation: temperaturePulse 0.8s ease-in-out;
+}
+
+.temperature-unit {
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-regular);
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.location-info {
+  font-size: var(--font-size-small);
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+/* Weather Details Grid */
+.weather-details-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: auto;
+}
+
+.weather-detail-item {
+  flex: 1;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 12px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.weather-detail-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.detail-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--font-size-title) + 2px);
+  margin-bottom: 6px;
+  height: 28px;
+}
+
+.detail-label {
+  font-size: var(--font-size-tiny);
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  margin-bottom: 2px;
+  font-weight: 400;
+}
+
+.detail-value {
+  font-size: var(--font-size-small);
+  color: var(--text-white);
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+/* Weather Widget Animations */
+
+@keyframes temperaturePulse {
+  0%, 100% {
+    transform: scale(1);
+    color: var(--text-white);
+  }
+  50% {
+    transform: scale(1.02);
+    color: #FFD700;
+  }
+}
+
+/* Enhanced Modern Weather Focus State */
+.samsung-widget.modern-weather.focused {
+  transform: translateY(calc(-1 * var(--elevation-distance))) scale(var(--elevation-scale)) !important;
+  box-shadow: 
+    0 24px 64px rgba(102, 126, 234, 0.4), 
+    0 8px 32px rgba(118, 75, 162, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  z-index: 10 !important;
+}
+
+/* Internet Usage Card Styles - REDESIGNED for better space utilization */
+
+/* Top Section - Enhanced with speed indicator */
+.internet-top-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.internet-usage-badge {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-white);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.3px;
+  align-self: flex-start;
+}
+
+.wifi-icon {
+  animation: iconBounce 3s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.connection-speed {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.speed-label {
+  font-size: var(--font-size-small);
+  font-weight: 600;
+}
+
+.speed-value {
+  font-size: var(--font-size-caption);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+}
+
+.signal-bars {
+  display: flex;
+  gap: 2px;
+  align-items: end;
+}
+
+.signal-bars .bar {
+  width: 3px;
+  background: var(--text-white);
+  border-radius: 1px;
+  animation: signalBar 2s ease-in-out infinite;
+}
+
+.signal-bars .bar:nth-child(1) { 
+  height: 6px; 
+  animation-delay: 0.1s; 
+}
+.signal-bars .bar:nth-child(2) { 
+  height: 10px; 
+  animation-delay: 0.2s; 
+}
+.signal-bars .bar:nth-child(3) { 
+  height: 14px; 
+  animation-delay: 0.3s; 
+}
+
+/* Main Section - Enhanced with additional context */
+.internet-main-section {
+  margin: auto 0;
+  padding-left: 0;
+}
+
+.usage-display {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.usage-number {
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-white);
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
+  line-height: 0.9;
+  transition: all 0.3s ease;
+}
+
+.usage-unit {
+  font-size: calc(var(--font-size-main) * 0.5);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.usage-context {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 16px;
+}
+
+.usage-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.stat-label {
+  font-size: var(--font-size-caption);
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  font-weight: 600;
+}
+
+.remaining-info {
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+
+/* Footer Section - Enhanced progress display */
+.internet-footer-section {
+  margin-top: auto;
+}
+
+.usage-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill-internet {
+  height: 100%;
+  background: linear-gradient(90deg, #6366A3, #7C7FB8);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 8px rgba(99, 102, 163, 0.3);
+  position: relative;
+}
+
+.progress-fill-internet::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3));
+  animation: progressShine 3s ease-in-out infinite;
+}
+
+.footer-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.percentage-info {
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  font-weight: 500;
+}
+
+.security-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-small);
+  color: #10B981;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  font-weight: 500;
+}
+
+.shield-icon {
+  animation: shieldPulse 4s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Internet Usage Animations */
+@keyframes signalBar {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes shieldPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+@keyframes progressShine {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Enhanced Internet Usage Focus State - REMOVED (handled by main focus rules) */
+
+/* Connected Devices Card Styles */
+
+/* Top Section */
+.devices-top-section {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: auto;
+}
+
+.connected-devices-badge {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-white);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.3px;
+  align-self: flex-start;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background: #10B981;
+  border-radius: 50%;
+  animation: statusPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+
+/* Main Device Count */
+.devices-main-section {
+  margin: auto 0;
+  text-align: left;
+}
+
+.device-count {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.count-number {
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-white);
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
+  line-height: 0.9;
+}
+
+.count-label {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Device Categories - REDESIGNED: Vertical 2-category layout instead of cramped 4-column grid */
+.device-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: auto;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.category-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.category-icon {
+  font-size: calc(var(--font-size-title) + 8px);
+  animation: deviceIconFloat 4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.category-icon:nth-child(1) { animation-delay: 0s; }
+.category-icon:nth-child(2) { animation-delay: 2s; }
+
+.category-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.category-count {
+  font-size: calc(var(--font-size-title) + 6px);
+  font-weight: 700;
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  line-height: 1;
+}
+
+.category-label {
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.category-more {
+  font-size: var(--font-size-caption);
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  font-weight: 400;
+  text-align: right;
+  opacity: 0.8;
+}
+
+/* Connected Devices Animations */
+@keyframes statusPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes deviceIconFloat {
+  0%, 100% {
+    transform: translateY(0px);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-2px);
+    opacity: 1;
+  }
+}
+
+/* Enhanced Connected Devices Focus State - REMOVED (handled by main focus rules) */
+
+/* Watching Widget Styles */
+
+/* Watching Badge */
+.watching-badge {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-white);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.3px;
+  align-self: flex-start;
+  margin-bottom: 60px;
+}
+
+.play-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: iconBounce 3s ease-in-out infinite;
+}
+
+.play-icon-svg {
+  color: var(--text-white);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+/* Show Title */
+.show-title {
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-white);
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
+  line-height: 1.1;
+  margin: auto 0;
+  margin-bottom: 20px;
+}
+
+/* Episode Progress Section */
+.episode-progress-section {
+  margin-bottom: 16px;
+  margin-top: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.progress-label {
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  font-weight: 500;
+}
+
+.episode-count {
+  font-size: var(--font-size-small);
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  font-weight: 600;
+}
+
+.episode-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill-watching {
+  height: 100%;
+  background: linear-gradient(90deg, #EC4899, #F97316);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 12px rgba(236, 72, 153, 0.4);
+}
+
+/* Next Episode Section */
+.next-episode-section {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
+}
+
+.next-episode-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.calendar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-icon-svg {
+  color: rgba(255, 255, 255, 0.8);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.next-episode-title {
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  font-weight: 500;
+}
+
+.next-episode-time {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.episode-day {
+  font-size: var(--font-size-small);
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  font-weight: 600;
+}
+
+.time-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.time-icon-svg {
+  color: rgba(255, 255, 255, 0.8);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.episode-time {
+  font-size: var(--font-size-small);
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  font-weight: 600;
+}
+
+/* Enhanced Watching Focus State - REMOVED (handled by main focus rules) */
+
+/* Traffic Widget Styles */
+
+/* Traffic Badge */
+.traffic-badge {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-white);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.3px;
+  align-self: flex-start;
+  margin-bottom: 12px;
+}
+
+/* CarPlay-Style Mini Map */
+.mini-map-container {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mini-map {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Route Info Section */
+.route-info-section {
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+.route-instruction {
+  font-size: var(--font-size-small);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.route-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.distance {
+  font-weight: 600;
+  color: #34D399;
+}
+
+.separator {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 300;
+}
+
+.eta {
+  font-weight: 500;
+}
+
+.route-name {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.traffic-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: iconBounce 3s ease-in-out infinite;
+}
+
+.traffic-icon-svg {
+  color: var(--text-white);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+
+
+/* Traffic Status Section */
+.traffic-status-section {
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+.duration-info {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.clock-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clock-icon-svg {
+  color: #F59E0B;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.duration {
+  font-size: var(--font-size-small);
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+.traffic-condition {
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  font-weight: 500;
+}
+
+
+
+/* Enhanced Traffic Focus State */
+.samsung-widget.traffic-card.focused {
+  transform: translateY(calc(-1 * var(--elevation-distance))) scale(var(--elevation-scale)) !important;
+  box-shadow: 
+    0 24px 64px rgba(20, 184, 166, 0.4), 
+    0 8px 32px rgba(6, 182, 212, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  z-index: 10 !important;
+}
+
+/* RESPONSIVE WIDGET CONTENT STYLES */
+
+/* Legacy Weather Widget - Responsive */
+.weather-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.weather-main {
+  text-align: center;
+  margin: calc(var(--widget-padding) / 2) 0;
+}
+
+.weather-icon-large {
+  width: calc(var(--widget-width) * 0.35);
+  height: calc(var(--widget-width) * 0.35);
+  margin: 0 auto calc(var(--widget-padding) / 2) auto;
+  position: relative;
+}
+
+.cloud-sun-icon {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.cloud {
+  position: absolute;
+  width: 70%;
+  height: 40%;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 30px;
+  top: 40%;
+  left: 20%;
+  animation: cloudDrift 12s ease-in-out infinite;
+}
+
+.cloud::before {
+  content: '';
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  top: -40%;
+  left: 25%;
+}
+
+.cloud::after {
+  content: '';
+  position: absolute;
+  width: 35%;
+  height: 35%;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  top: -25%;
+  right: 25%;
+}
+
+.sun {
+  position: absolute;
+  width: 35%;
+  height: 35%;
+  background: #ffd700;
+  border-radius: 50%;
+  top: 15%;
+  right: 15%;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+  animation: sunGlow 8s ease-in-out infinite;
+}
+
+.temperature-display {
+  font-size: var(--font-size-main);
+  font-weight: 300;
+  color: var(--text-white);
+  text-align: center;
+  margin: calc(var(--widget-padding) / 2) 0;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.temperature-display.updating {
+  transform: scale(1.05);
+  color: #4a9eff;
+}
+
+.weather-condition {
+  font-size: var(--font-size-small);
+  color: var(--text-white);
+  opacity: 0.9;
+  transition: opacity 0.6s ease, color 0.4s ease;
+}
+
+.weather-condition.updating {
+  opacity: 0.6;
+  color: #4a9eff;
+}
+
+.hourly-forecast {
+  display: flex;
+  justify-content: space-around;
+  margin-top: auto;
+  padding-top: var(--widget-padding);
+}
+
+.hourly-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.hourly-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.hour {
+  font-size: var(--font-size-tiny);
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.hourly-icon {
+  font-size: calc(var(--font-size-title) + 4px);
+  transition: transform 0.3s ease;
+}
+
+.hourly-item:hover .hourly-icon {
+  transform: scale(1.2);
+}
+
+.hourly-temp {
+  font-size: var(--font-size-small);
+  font-weight: 500;
+}
+
+/* Weather Card Animations */
+@keyframes cloudDrift {
+  0%, 100% { 
+    transform: translateX(0px); 
+  }
+  25% { 
+    transform: translateX(3px); 
+  }
+  50% { 
+    transform: translateX(-2px); 
+  }
+  75% { 
+    transform: translateX(1px); 
+  }
+}
+
+@keyframes sunGlow {
+  0%, 100% { 
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.4);
+  }
+}
+
+@keyframes weatherPulse {
+  0%, 100% { 
+    transform: translateY(calc(-1 * var(--elevation-distance))) scale(var(--elevation-scale));
+  }
+  50% { 
+    transform: translateY(calc(-1 * var(--elevation-distance))) scale(calc(var(--elevation-scale) + 0.01));
+  }
+}
+
+/* Enhanced weather card focus state with subtle pulse */
+.samsung-widget.weather-card.focused {
+  animation: weatherPulse 4s ease-in-out infinite;
+}
+
+/* Home Status Widget - Responsive */
+.home-status-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(var(--widget-padding) * 1.2);
+  margin: var(--widget-padding) 0;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--widget-padding) / 1.5);
+}
+
+.status-icon-container {
+  width: calc(var(--font-size-title) * 2.5);
+  height: calc(var(--font-size-title) * 2.5);
+  border-radius: calc(var(--border-radius) / 2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.status-icon {
+  font-size: calc(var(--font-size-title) + 4px);
+}
+
+.temp-icon { color: #ff6b35; }
+.humidity-icon { color: #4a9eff; }
+.light-icon { color: #ffd700; }
+
+.status-value {
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.pagination-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Camera Widget - Responsive */
+.camera-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.camera-feed {
+  flex: 1;
+  border-radius: calc(var(--border-radius) / 1.5);
+  overflow: hidden;
+  margin-bottom: calc(var(--widget-padding) / 1.5);
+  background: #f0f0f0;
+}
+
+.camera-image {
+  width: 100%;
+  height: calc(var(--widget-height) * 0.4); /* Reduced from 0.45 to leave more room for text */
+  object-fit: cover;
+}
+
+.camera-info {
+  text-align: center;
+}
+
+.camera-name {
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 4px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.camera-location {
+  font-size: var(--font-size-tiny);
+  color: var(--text-white);
+  margin-bottom: 8px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  opacity: 0.9;
+}
+
+.camera-timestamp {
+  font-size: var(--font-size-tiny);
+  color: var(--text-white);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  opacity: 0.8;
+}
+
+/* Energy Widget - Responsive */
+.energy-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(var(--widget-padding) / 2);
+}
+
+.energy-percentage {
+  text-align: center;
+  margin-bottom: calc(var(--widget-padding) / 2);
+}
+
+.energy-big-text {
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-white);
+  display: block;
+}
+
+.energy-message {
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: calc(var(--widget-padding) / 1.5);
+  line-height: 1.4;
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.energy-progress {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--widget-padding) / 1.5);
+}
+
+.progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progress-label {
+  font-size: var(--font-size-tiny);
+  color: var(--text-white);
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  opacity: 0.9;
+}
+
+.progress-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-fill.current { background: #4a9eff; }
+.progress-fill.target { background: rgba(255, 255, 255, 0.4); }
+
+.progress-value {
+  font-size: var(--font-size-tiny);
+  font-weight: 600;
+  color: var(--text-white);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Editorial Music Card - With Beautiful Taylor Swift Photo */
+.samsung-widget.editorial-music {
+  background: 
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 50%,
+      rgba(0, 0, 0, 0.8) 100%
+    ),
+    url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Taylor_Swift_2022.jpg/800px-Taylor_Swift_2022.jpg') center/cover,
+    url('https://images.seattletimes.com/wp-content/uploads/2023/07/07222023_swift_213100.jpg') center/cover,
+    linear-gradient(135deg, #667eea 0%, #764ba2 40%, #f093fb 70%, #8B5DFF 100%) !important;
+  padding: var(--widget-padding);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  min-height: var(--widget-height);
+}
+
+/* Now Playing Badge */
+.now-playing-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-white);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.3px;
+  align-self: flex-start;
+  margin-bottom: auto;
+}
+
+.badge-icon {
+  display: flex;
+  gap: 2px;
+  align-items: end;
+  height: 12px;
+}
+
+.badge-icon .audio-bar {
+  width: 2px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 1px;
+  animation: audioBar 1.5s ease-in-out infinite;
+}
+
+.badge-icon .audio-bar:nth-child(1) { height: 6px; animation-delay: 0.1s; }
+.badge-icon .audio-bar:nth-child(2) { height: 12px; animation-delay: 0.2s; }
+.badge-icon .audio-bar:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+
+/* Track Info Overlay */
+.track-info-overlay {
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+}
+
+.track-name {
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-white);
+  margin-bottom: 8px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+
+.artist-name {
+  font-size: var(--font-size-small);
+  color: var(--text-white);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+  opacity: 0.95;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  margin-bottom: 4px;
+}
+
+.album-name {
+  font-size: var(--font-size-tiny);
+  color: var(--text-white);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  opacity: 0.8;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  font-style: italic;
+  margin-bottom: 16px;
+}
+
+/* Progress Container with Time */
+.progress-container {
+  margin-top: 16px;
+}
+
+.samsung-widget.editorial-music .time-display,
+.samsung-widget.editorial-music .current-time,
+.samsung-widget.editorial-music .total-time {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px !important; /* Force smaller text */
+  color: var(--text-white);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  font-weight: 300 !important;
+  opacity: 0.9;
+}
+
+.samsung-widget.editorial-music .current-time,
+.samsung-widget.editorial-music .total-time {
+  font-size: 10px !important;
+  min-width: 30px;
+  line-height: 1 !important;
+}
+
+/* Extra specific rule to force small time text */
+.samsung-widget.music-card.editorial-music .time-display * {
+  font-size: 10px !important;
+  font-weight: 300 !important;
+}
+
+.current-time, .total-time {
+  min-width: 30px;
+  opacity: 0.9;
+}
+
+.track-progress-full {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill-music {
+  height: 100%;
+  width: 35%; /* 1:24 / 3:44 ≈ 35% */
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+/* Editorial Music Card - No additional background effects needed */
+
+/* Music Card Animations */
+@keyframes audioBar {
+  0%, 100% { 
+    transform: scaleY(0.3);
+    opacity: 0.6;
+  }
+  50% { 
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+/* Enhanced editorial music card focus state */
+.samsung-widget.editorial-music.focused {
+  transform: translateY(calc(-1 * var(--elevation-distance))) scale(var(--elevation-scale)) !important;
+  box-shadow: 
+    0 24px 64px rgba(167, 67, 151, 0.4), 
+    0 8px 32px rgba(131, 58, 180, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  z-index: 10 !important;
+}
+
+/* Sports Widget - Baseball Theme */
+.sports-card {
+  position: relative;
+  background: 
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 40%,
+      rgba(0, 0, 0, 0.6) 100%
+    ),
+    url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Citizens_Bank_Park_Phillies.jpg/1200px-Citizens_Bank_Park_Phillies.jpg?v=3') center/cover,
+    linear-gradient(135deg, #284e13 0%, #3a6b1c 50%, #1a3d0c 100%);
+  padding: var(--widget-padding);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  min-height: var(--widget-height);
+}
+
+.sports-status-badge {
+  position: absolute;
+  top: var(--widget-padding);
+  left: var(--widget-padding);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.3px;
+  align-self: flex-start;
+}
+
+.trophy-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: iconBounce 3s ease-in-out infinite;
+}
+
+
+
+.next-game {
+  position: absolute;
+  top: var(--widget-padding);
+  right: var(--widget-padding);
+  color: white;
+  font-size: var(--font-size-tiny);
+  font-weight: 500;
+  text-align: right;
+  line-height: 1.2;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.teams-scores {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  margin-top: calc(var(--widget-padding) * 1.5);
+}
+
+.team-score {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.team-name {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.score {
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-bold);
+  color: white;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.9);
+}
+
+.game-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  gap: 16px;
+}
+
+.venue, .game-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-small);
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+  opacity: 1;
+  font-weight: 600;
+}
+
+.venue-icon, .time-icon {
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Override base widget styles for sports card */
+.samsung-widget.sports-card {
+  background: 
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.4) 60%,
+      rgba(0, 0, 0, 0.8) 100%
+    ),
+    url('https://www.visitphilly.com/wp-content/uploads/2018/02/Citizens-Bank-Park-M.Kennedy-homeplate-VP-2200x1237.jpg') center/cover,
+    linear-gradient(135deg, #284e13 0%, #3a6b1c 50%, #1a3d0c 100%) !important;
+  padding: var(--widget-padding);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  min-height: var(--widget-height);
+}
+
+/* Enhanced sports card focus state */
+.samsung-widget.sports-card.focused {
+  transform: translateY(calc(-1 * var(--elevation-distance))) scale(var(--elevation-scale)) !important;
+  box-shadow: 
+    0 24px 64px rgba(40, 78, 19, 0.4), 
+    0 8px 32px rgba(58, 107, 28, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  z-index: 10 !important;
+}
+
+/* Tips Widget - Responsive */
+.tips-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  gap: calc(var(--widget-padding) / 1.5);
+}
+
+.tip-illustration {
+  display: flex;
+  justify-content: center;
+}
+
+.widget-preview {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.preview-item {
+  width: calc(var(--widget-width) * 0.12);
+  height: calc(var(--widget-height) * 0.08);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.preview-item.highlighted {
+  background: rgba(255, 255, 255, 0.6);
+  transform: scale(1.1);
+}
+
+.tip-message {
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Video Simulation Indicator - Borderless */
+.video-simulation-indicator {
+  position: absolute;
+  top: var(--container-padding);
+  right: var(--container-padding);
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(15px) saturate(150%);
+  border-radius: 8px;
+  padding: 8px 12px;
+  /* REMOVED: border - pure glass material */
+  color: rgba(255, 255, 255, 0.8);
+  font-size: var(--font-size-tiny);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  transition: all 0.3s ease;
+  /* Subtle inner highlight */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.video-simulation-indicator:hover {
+  background: rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.95);
+  transform: scale(1.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.video-simulation-indicator .sim-type {
+  color: #4CAF50;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.video-simulation-indicator .sim-type.sports {
+  color: #FFC107;
+}
+
+.video-simulation-indicator .sim-type.movie {
+  color: #9C27B0;
+}
+
+.video-simulation-indicator .sim-type.news {
+  color: #2196F3;
+}
