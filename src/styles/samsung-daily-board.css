@@ -92,40 +92,120 @@
   }
 }
 
-/* Main Container */
+/* Live TV Transparency Foundation */
 .samsung-daily-board-real {
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* Remove solid background for transparency */
   position: relative;
   overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Dynamic Background */
-.dynamic-background {
+/* Simulated Video Content Backgrounds */
+.video-simulation {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460);
-  background-size: 400% 400%;
-  animation: flow 20s ease-in-out infinite;
-  z-index: 1;
+  z-index: 0;
+  transition: all 0.8s ease-in-out;
+}
+
+/* Sports/Bright Content Simulation - Toned Down */
+.video-simulation.sports {
+  background: 
+    radial-gradient(circle at 70% 30%, rgba(40, 120, 40, 0.15) 0%, transparent 60%),
+    radial-gradient(circle at 30% 70%, rgba(80, 120, 180, 0.12) 0%, transparent 50%),
+    linear-gradient(135deg, 
+      #2d4a3e 0%, 
+      #3e5c4a 25%, 
+      #4a6856 50%, 
+      #3e5c4a 75%, 
+      #2d4a3e 100%
+    );
+  background-size: 180% 180%, 120% 120%, 100% 100%;
+  animation: sportsContent 15s ease-in-out infinite;
+}
+
+/* Movie/Dark Content Simulation - Cinematic */
+.video-simulation.movie {
+  background: 
+    radial-gradient(circle at 80% 20%, rgba(60, 40, 80, 0.08) 0%, transparent 70%),
+    radial-gradient(circle at 20% 80%, rgba(40, 30, 50, 0.06) 0%, transparent 60%),
+    linear-gradient(135deg, 
+      #1a1625 0%, 
+      #242032 25%, 
+      #2a2438 50%, 
+      #242032 75%, 
+      #1a1625 100%
+    );
+  background-size: 140% 140%, 100% 100%, 100% 100%;
+  animation: movieContent 20s ease-in-out infinite;
+}
+
+/* News/Mixed Content Simulation - Professional */
+.video-simulation.news {
+  background: 
+    linear-gradient(90deg, rgba(180, 40, 60, 0.08) 0%, transparent 15%),
+    radial-gradient(circle at 60% 40%, rgba(200, 200, 220, 0.12) 0%, transparent 40%),
+    linear-gradient(135deg, 
+      #2c3e50 0%, 
+      #34495e 30%, 
+      #3c566e 50%, 
+      #34495e 70%, 
+      #2c3e50 100%
+    );
+  background-size: 100% 6%, 60% 60%, 100% 100%;
+  animation: newsContent 12s ease-in-out infinite;
+}
+
+/* Subtle Background Animations */
+@keyframes sportsContent {
+  0%, 100% { 
+    background-position: 0% 50%, 0% 0%, 0% 0%; 
+    filter: brightness(1);
+  }
+  50% { 
+    background-position: 100% 50%, 100% 100%, 0% 0%; 
+    filter: brightness(1.05);
+  }
+}
+
+@keyframes movieContent {
+  0%, 100% { 
+    background-position: 0% 50%, 100% 100%, 0% 0%;
+    filter: brightness(0.9);
+  }
+  50% { 
+    background-position: 100% 50%, 0% 0%, 0% 0%;
+    filter: brightness(0.95);
+  }
+}
+
+@keyframes newsContent {
+  0%, 100% { 
+    background-position: 0% 0%, 50% 50%, 0% 0%; 
+    filter: brightness(1);
+  }
+  33% { 
+    background-position: 100% 0%, 0% 80%, 0% 0%; 
+    filter: brightness(1.02);
+  }
+  66% { 
+    background-position: 0% 0%, 100% 20%, 0% 0%; 
+    filter: brightness(0.98);
+  }
+}
+
+/* Dynamic Background - DISABLED for Live TV Transparency */
+.dynamic-background {
+  display: none; /* Replaced with video simulation */
 }
 
 .flow-lines {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(139, 93, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(74, 158, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 80%, rgba(139, 93, 255, 0.05) 0%, transparent 50%);
-  animation: flow 30s ease-in-out infinite reverse;
+  display: none; /* Replaced with video simulation */
 }
 
 @keyframes flow {
@@ -180,18 +260,22 @@
   display: none;
 }
 
-/* Samsung Widget Base - Responsive */
+/* Samsung Widget Base - True Glassmorphism (No Borders) */
 .samsung-widget {
   flex: 0 0 var(--widget-width);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  /* Pure glass material - no hard borders */
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(25px) saturate(200%);
+  /* REMOVED: border - let the glass material define edges */
   border-radius: var(--border-radius);
   padding: var(--widget-padding);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.35),
+    /* Subtle inner glow for soft edge definition */
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   min-height: var(--widget-height);
-  /* Removed max-height to allow content to fit properly */
   display: flex;
   flex-direction: column;
   position: relative;
@@ -200,12 +284,16 @@
 
 .samsung-widget:hover {
   transform: translateY(-4px);
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(30px) saturate(220%);
+  /* Enhanced inner glow on hover */
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
-/* Premium Focus Effect - Responsive TV Style */
+/* Premium Focus Effect - Pure Glass Material */
 .samsung-widget.focused,
 .samsung-widget.weather-card.focused,
 .samsung-widget.connected-devices-card.focused, 
@@ -215,14 +303,26 @@
 .samsung-widget.sports-card.focused,
 .samsung-widget.traffic-card.focused {
   transform: translateY(calc(-1 * var(--elevation-distance))) scale(var(--elevation-scale)) !important;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4), 0 8px 32px rgba(255, 255, 255, 0.1) !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
+  /* Keep background transparent to show video simulation */
+  backdrop-filter: blur(40px) saturate(280%) brightness(1.1) !important;
+  /* Enhanced inner glow instead of borders */
+  box-shadow: 
+    0 24px 64px rgba(0, 0, 0, 0.5), 
+    0 8px 32px rgba(255, 255, 255, 0.15),
+    /* Strong inner highlight for focus definition */
+    inset 0 2px 0 rgba(255, 255, 255, 0.5),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.15) !important;
   z-index: 10 !important;
 }
 
 .samsung-widget.focused:hover {
   transform: translateY(calc(-1 * var(--elevation-distance) - 4px)) scale(var(--elevation-scale)) !important;
-  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.45), 0 12px 40px rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 
+    0 28px 72px rgba(0, 0, 0, 0.55), 
+    0 12px 40px rgba(255, 255, 255, 0.2),
+    /* Maximum inner glow for focused hover */
+    inset 0 2px 0 rgba(255, 255, 255, 0.6),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
 }
 
 /* Modern Weather Card with Philadelphia Skyline Background */
@@ -423,9 +523,10 @@
   margin-bottom: auto;
 }
 
+/* Weather Condition Badge - Borderless Glass */
 .weather-condition-badge {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px) saturate(180%);
   border-radius: 20px;
   padding: 8px 16px;
   display: flex;
@@ -434,9 +535,11 @@
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-medium);
   color: var(--text-white);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
   letter-spacing: 0.3px;
   align-self: flex-start;
+  /* Subtle inner glow instead of border */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .weather-icon-svg {
@@ -890,15 +993,7 @@
   }
 }
 
-/* Enhanced Internet Usage Focus State */
-.samsung-widget.internet-usage-card.focused {
-  transform: translateY(calc(-1 * var(--elevation-distance))) scale(var(--elevation-scale)) !important;
-  box-shadow: 
-    0 24px 64px rgba(76, 76, 102, 0.3), 
-    0 8px 32px rgba(99, 102, 163, 0.2) !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
-  z-index: 10 !important;
-}
+/* Enhanced Internet Usage Focus State - REMOVED (handled by main focus rules) */
 
 /* Connected Devices Card Styles */
 
@@ -1048,15 +1143,7 @@
   }
 }
 
-/* Enhanced Connected Devices Focus State */
-.samsung-widget.connected-devices-card.focused {
-  transform: translateY(calc(-1 * var(--elevation-distance))) scale(var(--elevation-scale)) !important;
-  box-shadow: 
-    0 24px 64px rgba(76, 76, 102, 0.3), 
-    0 8px 32px rgba(99, 102, 163, 0.2) !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
-  z-index: 10 !important;
-}
+/* Enhanced Connected Devices Focus State - REMOVED (handled by main focus rules) */
 
 /* Watching Widget Styles */
 
@@ -1212,15 +1299,7 @@
   font-weight: 600;
 }
 
-/* Enhanced Watching Focus State */
-.samsung-widget.watching-card.focused {
-  transform: translateY(calc(-1 * var(--elevation-distance))) scale(var(--elevation-scale)) !important;
-  box-shadow: 
-    0 24px 64px rgba(102, 126, 234, 0.4), 
-    0 8px 32px rgba(118, 75, 162, 0.3) !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  z-index: 10 !important;
-}
+/* Enhanced Watching Focus State - REMOVED (handled by main focus rules) */
 
 /* Traffic Widget Styles */
 
@@ -2092,4 +2171,51 @@
   line-height: 1.4;
   color: var(--text-white);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Video Simulation Indicator - Borderless */
+.video-simulation-indicator {
+  position: absolute;
+  top: var(--container-padding);
+  right: var(--container-padding);
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(15px) saturate(150%);
+  border-radius: 8px;
+  padding: 8px 12px;
+  /* REMOVED: border - pure glass material */
+  color: rgba(255, 255, 255, 0.8);
+  font-size: var(--font-size-tiny);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  transition: all 0.3s ease;
+  /* Subtle inner highlight */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.video-simulation-indicator:hover {
+  background: rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.95);
+  transform: scale(1.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.video-simulation-indicator .sim-type {
+  color: #4CAF50;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.video-simulation-indicator .sim-type.sports {
+  color: #FFC107;
+}
+
+.video-simulation-indicator .sim-type.movie {
+  color: #9C27B0;
+}
+
+.video-simulation-indicator .sim-type.news {
+  color: #2196F3;
 }

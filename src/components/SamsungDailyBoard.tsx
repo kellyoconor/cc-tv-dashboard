@@ -106,25 +106,7 @@ const SamsungDailyBoard: React.FC = () => {
     }
   ], []);
 
-  // TV Remote Navigation - Arrow Keys
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        setFocusedIndex(prev => Math.min(prev + 1, widgets.length - 1));
-      }
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        setFocusedIndex(prev => Math.max(prev - 1, 0));
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [widgets.length]);
+  // TV Remote Navigation - REMOVED (handled by comprehensive handler below)
 
   // Auto-scroll to ALWAYS center the focused widget - RESPONSIVE
   useEffect(() => {
@@ -177,9 +159,11 @@ const SamsungDailyBoard: React.FC = () => {
     return () => clearInterval(weatherUpdateTimer);
   }, []);
 
-  // Keyboard navigation for focus and video simulation toggle
+  // Auto-focus component on mount and keyboard navigation
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
+      event.preventDefault(); // Prevent default browser behavior
+      
       if (event.key === 'ArrowLeft') {
         setFocusedIndex(prev => Math.max(0, prev - 1));
       } else if (event.key === 'ArrowRight') {
@@ -198,8 +182,14 @@ const SamsungDailyBoard: React.FC = () => {
       }
     };
 
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
+    // Auto-focus the component
+    const container = document.querySelector('.samsung-daily-board-real') as HTMLElement;
+    if (container) {
+      container.focus();
+    }
+
+    document.addEventListener('keydown', handleKeyPress);
+    return () => document.removeEventListener('keydown', handleKeyPress);
   }, [widgets.length]);
 
   // Memoized widget components to prevent unnecessary re-renders
@@ -610,6 +600,11 @@ const SamsungDailyBoard: React.FC = () => {
     <div className="samsung-daily-board-real" tabIndex={0}>
       {/* Video Simulation Background */}
       <div className={`video-simulation ${videoSimulation}`}></div>
+
+      {/* Video Simulation Indicator */}
+      <div className="video-simulation-indicator">
+        Simulating: <span className={`sim-type ${videoSimulation}`}>{videoSimulation}</span>
+      </div>
 
       {/* Time Display - Top Left */}
       <div className="time-display-corner">
