@@ -11,6 +11,7 @@ const SamsungDailyBoard: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [focusedIndex, setFocusedIndex] = useState(0); // TV remote focus management
   const [weatherUpdating, setWeatherUpdating] = useState(false); // For update animations
+  const [videoSimulation, setVideoSimulation] = useState<'sports' | 'movie' | 'news'>('sports'); // Live TV simulation
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const widgets: Widget[] = useMemo(() => [
@@ -175,6 +176,31 @@ const SamsungDailyBoard: React.FC = () => {
 
     return () => clearInterval(weatherUpdateTimer);
   }, []);
+
+  // Keyboard navigation for focus and video simulation toggle
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        setFocusedIndex(prev => Math.max(0, prev - 1));
+      } else if (event.key === 'ArrowRight') {
+        setFocusedIndex(prev => Math.min(widgets.length - 1, prev + 1));
+      } else if (event.key === 'v' || event.key === 'V') {
+        // Toggle video simulation background (for demo purposes)
+        setVideoSimulation(prev => {
+          if (prev === 'sports') return 'movie';
+          if (prev === 'movie') return 'news';
+          return 'sports';
+        });
+      } else if (event.key === 'Enter' || event.key === ' ') {
+        // Simulate interaction with focused widget
+        setWeatherUpdating(true);
+        setTimeout(() => setWeatherUpdating(false), 1000);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [widgets.length]);
 
   // Memoized widget components to prevent unnecessary re-renders
   const widgetComponents = useMemo(() => [
@@ -582,10 +608,8 @@ const SamsungDailyBoard: React.FC = () => {
 
   return (
     <div className="samsung-daily-board-real" tabIndex={0}>
-      {/* Dynamic Background */}
-      <div className="dynamic-background">
-        <div className="flow-lines"></div>
-      </div>
+      {/* Video Simulation Background */}
+      <div className={`video-simulation ${videoSimulation}`}></div>
 
       {/* Time Display - Top Left */}
       <div className="time-display-corner">
@@ -624,7 +648,7 @@ const SamsungDailyBoard: React.FC = () => {
 
       {/* Instructions */}
       <div className="navigation-hint">
-        Use ← → arrow keys to navigate | Current Focus: {focusedIndex}
+        Use ← → arrow keys to navigate | Press V to change video simulation | Current: {videoSimulation} | Focus: {focusedIndex}
       </div>
     </div>
   );
