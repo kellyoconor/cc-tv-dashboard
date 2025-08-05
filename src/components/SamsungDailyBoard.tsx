@@ -183,25 +183,13 @@ const SamsungDailyBoard: React.FC = () => {
       {/* Top Section */}
              <div className="weather-top-section">
          <div className="weather-condition-badge">
-           <div className="weather-badge-icon">
-             <svg 
-               width="20" 
-               height="20" 
-               viewBox="0 0 64 64" 
-               className="weather-icon-svg"
-             >
-               <defs>
-                 <linearGradient id="a" x1="22.56" y1="21.96" x2="39.2" y2="50.8" gradientUnits="userSpaceOnUse">
-                   <stop offset="0" stopColor="#f3f7fe"/>
-                   <stop offset="1" stopColor="#deeafb"/>
-                 </linearGradient>
-               </defs>
-               <circle cx="26" cy="26" r="10" stroke="#72b9d5" strokeLinecap="round" strokeLinejoin="round" strokeWidth="0.5" fill="none">
-                 <animate attributeName="stroke-dasharray" dur="6s" repeatCount="indefinite" values="0 31.416;15.708 15.708;0 31.416"/>
-               </circle>
-               <path d="M17.5,46.5c0-4.583,4.167-8.5,9-8.5a9.424,9.424,0,0,1,2,.238,7,7,0,0,1,13-2.238c.333,0,.667.084,1,.084A4.5,4.5,0,0,1,46.5,41c0,2.833-2.333,5.5-5.5,5.5Z" stroke="#e6effc" strokeLinecap="round" strokeLinejoin="round" strokeWidth="0.5" fill="url(#a)"/>
-             </svg>
-           </div>
+                     <div className="weather-badge-icon">
+            <svg width="20" height="20" viewBox="0 0 30 30" className="weather-icon-svg">
+              <path d="M4.64,16.91c0-1.15,0.36-2.17,1.08-3.07c0.73-0.9,1.66-1.56,2.8-1.98c0.21-3.01,1.29-5.56,3.24-7.66 C13.71,2.1,16.1,1.05,18.93,1.05c3.25,0,6.01,1.15,8.29,3.44c2.28,2.29,3.42,5.06,3.42,8.31c0,2.41-0.68,4.58-2.03,6.51 c-0.31,0.44-0.67,0.86-1.08,1.25c-0.41,0.39-0.83,0.73-1.27,1.03c-0.44,0.3-0.89,0.56-1.36,0.78c-0.47,0.22-0.93,0.4-1.39,0.54 c-2.26,0.69-4.65,0.69-7.18,0c-0.46-0.12-0.92-0.3-1.39-0.54c-0.47-0.24-0.92-0.52-1.36-0.84c-0.44-0.32-0.86-0.68-1.27-1.08 s-0.77-0.84-1.08-1.31C5.32,21.49,4.64,19.32,4.64,16.91z" fill="#ffffff" opacity="0.8"/>
+              <circle cx="15" cy="9" r="5" fill="#ffffff" stroke="#ffffff" stroke-width="0.5"/>
+              <path d="M20.5,18.5c0,0.28-0.22,0.5-0.5,0.5h-10c-0.28,0-0.5-0.22-0.5-0.5s0.22-0.5,0.5-0.5h10C20.28,18,20.5,18.22,20.5,18.5z" fill="#ffffff"/>
+            </svg>
+          </div>
            <span>Partly Cloudy</span>
          </div>
         <div className="feels-like">
@@ -223,16 +211,10 @@ const SamsungDailyBoard: React.FC = () => {
              <div className="weather-details-grid">
          <div className="weather-detail-item">
            <div className="detail-icon">
-             <svg width="24" height="24" viewBox="0 0 64 64" className="detail-icon-svg">
-               <defs>
-                 <linearGradient id="humidity" x1="22.56" y1="21.96" x2="39.2" y2="50.8" gradientUnits="userSpaceOnUse">
-                   <stop offset="0" stopColor="#3392d6"/>
-                   <stop offset="1" stopColor="#2078b9"/>
-                 </linearGradient>
-               </defs>
-               <path d="M32,17S42,27.6,42,36a10,10,0,0,1-20,0C22,27.6,32,17,32,17Z" fill="url(#humidity)" stroke="#2078b9" strokeMiterlimit="10" strokeWidth="1">
-                 <animateTransform attributeName="transform" dur="2s" repeatCount="indefinite" type="scale" values="1 1;1.2 0.8;1 1"/>
-               </path>
+             <svg width="24" height="24" viewBox="0 0 30 30" className="detail-icon-svg">
+               <path d="M7.5,17.22c0-.99,.81-1.8,1.8-1.8s1.8,.81,1.8,1.8-.81,1.8-1.8,1.8-1.8-.81-1.8-1.8Z M12.5,8.88c.33,.51,.25,1.2-.26,1.54-.51,.33-1.2,.25-1.54-.26-.68-1.04-1.84-1.66-3.11-1.66-2.05,0-3.71,1.66-3.71,3.71,0,.66,.54,1.2,1.2,1.2s1.2-.54,1.2-1.2c0-.73,.59-1.31,1.31-1.31,.56,0,1.08,.28,1.39,.74l.52,.8Z" fill="#ffffff"/>
+               <path d="M15,7c-4.97,0-9,4.03-9,9c0,.66,.54,1.2,1.2,1.2s1.2-.54,1.2-1.2c0-3.65,2.97-6.6,6.6-6.6s6.6,2.97,6.6,6.6c0,.66,.54,1.2,1.2,1.2s1.2-.54,1.2-1.2c0-4.97-4.03-9-9-9Z" fill="#ffffff" opacity="0.7"/>
+               <circle cx="15" cy="16" r="3" fill="#ffffff"/>
              </svg>
            </div>
            <div className="detail-label">Humidity</div>
@@ -240,15 +222,10 @@ const SamsungDailyBoard: React.FC = () => {
          </div>
          <div className="weather-detail-item">
            <div className="detail-icon">
-             <svg width="24" height="24" viewBox="0 0 64 64" className="detail-icon-svg">
-               <path d="M43.64,20a5,5,0,1,1,3.61,8.46L21.69,53.23a5,5,0,1,1-3.61-8.46Z" fill="#72b9d5" opacity="0">
-                 <animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="translate" values="-20 -11;20 11;-20 -11"/>
-                 <animate attributeName="opacity" dur="1.5s" repeatCount="indefinite" values="0;1;0"/>
-               </path>
-               <path d="M29.64,44a5,5,0,1,1,3.61,8.46L7.69,77.23a5,5,0,1,1-3.61-8.46Z" fill="#72b9d5" opacity="0">
-                 <animateTransform attributeName="transform" dur="1.5s" begin="0.5s" repeatCount="indefinite" type="translate" values="-20 -11;20 11;-20 -11"/>
-                 <animate attributeName="opacity" dur="1.5s" begin="0.5s" repeatCount="indefinite" values="0;1;0"/>
-               </path>
+             <svg width="24" height="24" viewBox="0 0 30 30" className="detail-icon-svg">
+               <path d="M3.8,11.2c0-.3,.2-.5,.5-.5H12c1.9,0,3.5,1.6,3.5,3.5s-1.6,3.5-3.5,3.5c-.3,0-.5,.2-.5,.5s.2,.5,.5,.5c2.5,0,4.5-2,4.5-4.5s-2-4.5-4.5-4.5H4.3c-.3,0-.5,.2-.5,.5Z" fill="#ffffff"/>
+               <path d="M3.8,7.2c0-.3,.2-.5,.5-.5H14c2.8,0,5.2,2.4,5.2,5.2s-2.4,5.2-5.2,5.2c-.3,0-.5,.2-.5,.5s.2,.5,.5,.5c3.4,0,6.2-2.8,6.2-6.2s-2.8-6.2-6.2-6.2H4.3c-.3,0-.5,.2-.5,.5Z" fill="#ffffff" opacity="0.7"/>
+               <path d="M3.8,15.2c0-.3,.2-.5,.5-.5H10c1.1,0,2.1,.9,2.1,2.1s-.9,2.1-2.1,2.1c-.3,0-.5,.2-.5,.5s.2,.5,.5,.5c1.7,0,3.1-1.4,3.1-3.1s-1.4-3.1-3.1-3.1H4.3c-.3,0-.5,.2-.5,.5Z" fill="#ffffff" opacity="0.5"/>
              </svg>
            </div>
            <div className="detail-label">Wind</div>
@@ -256,17 +233,11 @@ const SamsungDailyBoard: React.FC = () => {
          </div>
          <div className="weather-detail-item">
            <div className="detail-icon">
-             <svg width="24" height="24" viewBox="0 0 64 64" className="detail-icon-svg">
-               <path d="M32,21.5C23.5,21.5,16.5,28,12.5,32c4,4,11,10.5,19.5,10.5S51.5,36,55.5,32C51.5,28,44.5,21.5,32,21.5Z" fill="none" stroke="#72b9d5" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1">
-                 <animate attributeName="opacity" dur="3s" repeatCount="indefinite" values="0.5;1;0.5"/>
-               </path>
-               <circle cx="32" cy="32" r="6" fill="#72b9d5">
-                 <animate attributeName="r" dur="3s" repeatCount="indefinite" values="6;8;6"/>
-                 <animate attributeName="opacity" dur="3s" repeatCount="indefinite" values="0.8;1;0.8"/>
-               </circle>
-               <circle cx="32" cy="32" r="3" fill="#ffffff" opacity="0.8">
-                 <animate attributeName="opacity" dur="2s" repeatCount="indefinite" values="0.8;0.4;0.8"/>
-               </circle>
+             <svg width="24" height="24" viewBox="0 0 30 30" className="detail-icon-svg">
+               <path d="M15,8.5c-4.14,0-7.77,2.4-10.64,6.5c2.87,4.1,6.5,6.5,10.64,6.5s7.77-2.4,10.64-6.5c-2.87-4.1-6.5-6.5-10.64-6.5Z" fill="#ffffff" opacity="0.6"/>
+               <circle cx="15" cy="15" r="4.5" fill="#ffffff"/>
+               <circle cx="15" cy="15" r="2.5" fill="#000000" opacity="0.8"/>
+               <circle cx="16.5" cy="13.5" r="0.8" fill="#ffffff"/>
              </svg>
            </div>
            <div className="detail-label">Visibility</div>
@@ -293,55 +264,35 @@ const SamsungDailyBoard: React.FC = () => {
         </div>
       </div>
 
-      {/* Device Categories */}
+      {/* Device Categories - Redesigned: Show top 2 categories only */}
       <div className="device-categories">
-                 <div className="category-item">
-           <div className="category-icon">
-             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="device-icon-svg">
-               <rect x="5" y="4" width="14" height="20" rx="2" ry="2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-               <line x1="12" y1="18" x2="12.01" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-               <rect x="7" y="7" width="10" height="8" rx="1" fill="currentColor" opacity="0.2"/>
-             </svg>
-           </div>
-           <div className="category-count">7</div>
-           <div className="category-label">Phones &<br />Tablets</div>
-         </div>
-         <div className="category-item">
-           <div className="category-icon">
-             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="device-icon-svg">
-               <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-               <line x1="8" y1="21" x2="16" y2="21" stroke="currentColor" strokeWidth="1.5"/>
-               <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" strokeWidth="1.5"/>
-               <rect x="4" y="5" width="16" height="10" rx="1" fill="currentColor" opacity="0.2"/>
-             </svg>
-           </div>
-           <div className="category-count">4</div>
-           <div className="category-label">TV & Video</div>
-         </div>
-         <div className="category-item">
-           <div className="category-icon">
-             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="device-icon-svg">
-               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-               <polyline points="9,22 9,12 15,12 15,22" stroke="currentColor" strokeWidth="1.5" fill="currentColor" opacity="0.2"/>
-               <circle cx="12" cy="8" r="1" fill="currentColor"/>
-             </svg>
-           </div>
-           <div className="category-count">9</div>
-           <div className="category-label">Smart Home</div>
-         </div>
-         <div className="category-item">
-           <div className="category-icon">
-             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="device-icon-svg">
-               <rect x="6" y="2" width="12" height="20" rx="2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-               <circle cx="15" cy="11" r="2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-               <circle cx="9" cy="11" r="2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-               <rect x="8" y="6" width="8" height="4" rx="1" fill="currentColor" opacity="0.2"/>
-               <rect x="10" y="16" width="4" height="2" rx="1" fill="currentColor" opacity="0.2"/>
-             </svg>
-           </div>
-           <div className="category-count">3</div>
-           <div className="category-label">Gaming</div>
-         </div>
+        <div className="category-item">
+          <div className="category-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="device-icon-svg">
+              <rect x="5" y="4" width="14" height="20" rx="2" ry="2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+              <line x1="12" y1="18" x2="12.01" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              <rect x="7" y="7" width="10" height="8" rx="1" fill="currentColor" opacity="0.2"/>
+            </svg>
+          </div>
+          <div className="category-info">
+            <div className="category-count">7</div>
+            <div className="category-label">Phones & Tablets</div>
+          </div>
+        </div>
+        <div className="category-item">
+          <div className="category-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="device-icon-svg">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+              <polyline points="9,22 9,12 15,12 15,22" stroke="currentColor" strokeWidth="1.5" fill="currentColor" opacity="0.2"/>
+              <circle cx="12" cy="8" r="1" fill="currentColor"/>
+            </svg>
+          </div>
+          <div className="category-info">
+            <div className="category-count">9</div>
+            <div className="category-label">Smart Home</div>
+          </div>
+          <div className="category-more">+7 more</div>
+        </div>
       </div>
     </div>,
     
@@ -414,6 +365,7 @@ const SamsungDailyBoard: React.FC = () => {
          </div>
         <div className="connection-speed">
           <span className="speed-label">Fast</span>
+          <span className="speed-value">150 Mbps</span>
           <div className="signal-bars">
             <div className="bar"></div>
             <div className="bar"></div>
@@ -428,6 +380,19 @@ const SamsungDailyBoard: React.FC = () => {
           <span className="usage-number">333</span>
           <span className="usage-unit">GB used</span>
         </div>
+        
+        {/* Usage Context - Additional Statistics */}
+        <div className="usage-context">
+          <div className="usage-stat">
+            <span className="stat-label">Daily Avg</span>
+            <span className="stat-value">11.0 GB</span>
+          </div>
+          <div className="usage-stat">
+            <span className="stat-label">Peak Hour</span>
+            <span className="stat-value">8-10 PM</span>
+          </div>
+        </div>
+        
         <div className="remaining-info">867 GB remaining this month</div>
       </div>
 

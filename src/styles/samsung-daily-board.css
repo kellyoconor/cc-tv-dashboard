@@ -439,20 +439,40 @@
   align-self: flex-start;
 }
 
-.weather-badge-icon {
-  animation: iconBounce 3s ease-in-out infinite;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .weather-icon-svg {
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+  color: #ffffff;
 }
 
 .detail-icon-svg {
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
   opacity: 0.9;
+  color: #ffffff;
+}
+
+/* Weather Badge Icon - Clean styling for Erik Flowers weather icons */
+.weather-badge-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.weather-badge-icon svg {
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+}
+
+/* Detail Icons - Professional styling */
+.detail-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--font-size-title) + 2px);
+  margin-bottom: 6px;
+  height: 28px;
+}
+
+.detail-icon svg {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
 }
 
 /* Device Category Icons */
@@ -583,13 +603,8 @@
   justify-content: center;
   font-size: calc(var(--font-size-title) + 2px);
   margin-bottom: 6px;
-  animation: iconFloat 4s ease-in-out infinite;
   height: 28px;
 }
-
-.detail-icon:nth-child(1) { animation-delay: 0s; }
-.detail-icon:nth-child(2) { animation-delay: 1.3s; }
-.detail-icon:nth-child(3) { animation-delay: 2.6s; }
 
 .detail-label {
   font-size: var(--font-size-tiny);
@@ -607,26 +622,6 @@
 }
 
 /* Weather Widget Animations */
-
-@keyframes iconBounce {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-}
-
-@keyframes iconFloat {
-  0%, 100% {
-    transform: translateY(0px);
-    opacity: 0.8;
-  }
-  50% {
-    transform: translateY(-2px);
-    opacity: 1;
-  }
-}
 
 @keyframes temperaturePulse {
   0%, 100% {
@@ -649,14 +644,14 @@
   z-index: 10 !important;
 }
 
-/* Internet Usage Card Styles */
+/* Internet Usage Card Styles - REDESIGNED for better space utilization */
 
-/* Top Section */
+/* Top Section - Enhanced with speed indicator */
 .internet-top-section {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: auto;
+  margin-bottom: 24px;
 }
 
 .internet-usage-badge {
@@ -684,8 +679,9 @@
 
 .connection-speed {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
   color: var(--text-white);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
@@ -693,6 +689,12 @@
 .speed-label {
   font-size: var(--font-size-small);
   font-weight: 600;
+}
+
+.speed-value {
+  font-size: var(--font-size-caption);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
 }
 
 .signal-bars {
@@ -721,7 +723,7 @@
   animation-delay: 0.3s; 
 }
 
-/* Main Section */
+/* Main Section - Enhanced with additional context */
 .internet-main-section {
   margin: auto 0;
   padding-left: 0;
@@ -731,7 +733,7 @@
   display: flex;
   align-items: baseline;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .usage-number {
@@ -750,33 +752,77 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
+.usage-context {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 16px;
+}
+
+.usage-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.stat-label {
+  font-size: var(--font-size-caption);
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  font-weight: 600;
+}
+
 .remaining-info {
   font-size: var(--font-size-small);
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
   font-weight: 400;
+  margin-bottom: 16px;
 }
 
-/* Footer Section */
+/* Footer Section - Enhanced progress display */
 .internet-footer-section {
   margin-top: auto;
 }
 
 .usage-progress-bar {
   width: 100%;
-  height: 6px;
+  height: 8px;
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 3px;
-  margin-bottom: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
   overflow: hidden;
+  position: relative;
 }
 
 .progress-fill-internet {
   height: 100%;
   background: linear-gradient(90deg, #6366A3, #7C7FB8);
-  border-radius: 3px;
+  border-radius: 4px;
   transition: width 0.3s ease;
   box-shadow: 0 0 8px rgba(99, 102, 163, 0.3);
+  position: relative;
+}
+
+.progress-fill-internet::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3));
+  animation: progressShine 3s ease-in-out infinite;
 }
 
 .footer-stats {
@@ -827,6 +873,20 @@
   50% {
     transform: scale(1.1);
     opacity: 1;
+  }
+}
+
+@keyframes progressShine {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
   }
 }
 
@@ -901,24 +961,22 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
-/* Device Categories */
+/* Device Categories - REDESIGNED: Vertical 2-category layout instead of cramped 4-column grid */
 .device-categories {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   margin-top: auto;
 }
 
 .category-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
-  gap: 4px;
+  gap: 16px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(8px);
   border-radius: 12px;
-  padding: 12px 8px;
+  padding: 16px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
 }
@@ -929,18 +987,23 @@
 }
 
 .category-icon {
-  font-size: calc(var(--font-size-title) + 4px);
-  margin-bottom: 2px;
+  font-size: calc(var(--font-size-title) + 8px);
   animation: deviceIconFloat 4s ease-in-out infinite;
+  flex-shrink: 0;
 }
 
 .category-icon:nth-child(1) { animation-delay: 0s; }
-.category-icon:nth-child(2) { animation-delay: 1s; }
-.category-icon:nth-child(3) { animation-delay: 2s; }
-.category-icon:nth-child(4) { animation-delay: 3s; }
+.category-icon:nth-child(2) { animation-delay: 2s; }
+
+.category-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
 
 .category-count {
-  font-size: calc(var(--font-size-title) + 2px);
+  font-size: calc(var(--font-size-title) + 6px);
   font-weight: 700;
   color: var(--text-white);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
@@ -948,11 +1011,20 @@
 }
 
 .category-label {
-  font-size: var(--font-size-tiny);
+  font-size: var(--font-size-small);
   color: rgba(255, 255, 255, 0.85);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   font-weight: 400;
   line-height: 1.1;
+}
+
+.category-more {
+  font-size: var(--font-size-caption);
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  font-weight: 400;
+  text-align: right;
+  opacity: 0.8;
 }
 
 /* Connected Devices Animations */
