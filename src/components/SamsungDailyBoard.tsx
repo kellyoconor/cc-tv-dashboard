@@ -29,20 +29,6 @@ const SamsungDailyBoard: React.FC = () => {
       }
     },
     {
-      id: 'connected-devices',
-      type: 'connected-devices',
-      data: {
-        totalDevices: 23,
-        status: 'Online',
-        categories: [
-          { name: 'Phones & Tablets', count: 7, icon: '📱' },
-          { name: 'TV & Video', count: 4, icon: '📺' },
-          { name: 'Smart Home', count: 9, icon: '🏠' },
-          { name: 'Gaming', count: 3, icon: '🎮' }
-        ]
-      }
-    },
-    {
       id: 'watching',
       type: 'watching',
       data: {
@@ -54,18 +40,6 @@ const SamsungDailyBoard: React.FC = () => {
           time: '9:00 PM'
         },
         category: 'Your Shows'
-      }
-    },
-    {
-      id: 'internet-usage',
-      type: 'internet-usage',
-      data: {
-        usedGB: 333,
-        totalGB: 1200,
-        remainingGB: 867,
-        percentage: 28,
-        speed: 'Fast',
-        threatsBlocked: 6
       }
     },
     {
@@ -90,6 +64,32 @@ const SamsungDailyBoard: React.FC = () => {
         venue: 'Citizens Bank Park',
         gameTime: '3:15 Game Time',
         nextGame: 'Next Game vs Mets'
+      }
+    },
+    {
+      id: 'connected-devices',
+      type: 'connected-devices',
+      data: {
+        totalDevices: 23,
+        status: 'Online',
+        categories: [
+          { name: 'Phones & Tablets', count: 7, icon: '📱' },
+          { name: 'TV & Video', count: 4, icon: '📺' },
+          { name: 'Smart Home', count: 9, icon: '🏠' },
+          { name: 'Gaming', count: 3, icon: '🎮' }
+        ]
+      }
+    },
+    {
+      id: 'internet-usage',
+      type: 'internet-usage',
+      data: {
+        usedGB: 333,
+        totalGB: 1200,
+        remainingGB: 867,
+        percentage: 28,
+        speed: 'Fast',
+        threatsBlocked: 6
       }
     },
     {
@@ -262,58 +262,87 @@ const SamsungDailyBoard: React.FC = () => {
        </div>
     </div>,
     
-    // Connected Devices Widget
-    <div key="connected-devices" className={`samsung-widget connected-devices-card ${focusedIndex === 1 ? 'focused' : ''}`}>
-             {/* Top Section */}
-       <div className="devices-top-section">
-         <div className="connected-devices-badge">
-           <span className="status-dot"></span>
-           <span>Connected Devices</span>
-         </div>
-       </div>
-
-      {/* Main Device Count */}
-      <div className="devices-main-section">
-        <div className="device-count">
-          <span className="count-number">23</span>
-          <span className="count-label">devices</span>
-        </div>
+        // Connected Home Widget - Visual & Engaging
+    <div key="connected-devices" className={`samsung-widget connected-home-card ${focusedIndex === 4 ? 'focused' : ''}`}>
+      {/* Gradient Background Pattern */}
+      <div className="home-background-pattern">
+        <div className="pattern-circle pattern-1"></div>
+        <div className="pattern-circle pattern-2"></div>
+        <div className="pattern-circle pattern-3"></div>
+      </div>
+      
+      {/* Header */}
+      <div className="connected-home-header">
+        <div className="home-title">Your connected home</div>
+        <div className="home-subtitle">23 devices • all online</div>
       </div>
 
-      {/* Device Categories - Redesigned: Show top 2 categories only */}
-      <div className="device-categories">
-        <div className="category-item">
-          <div className="category-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="device-icon-svg">
-              <rect x="5" y="4" width="14" height="20" rx="2" ry="2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-              <line x1="12" y1="18" x2="12.01" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+      {/* Device Ecosystem - Visual Grid */}
+      <div className="device-ecosystem-visual">
+        <div className="device-category phones-category">
+          <div className="category-visual">
+            <div className="device-count-large">8</div>
+            <div className="device-type-label">phones</div>
+          </div>
+          <div className="category-icon-bg">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <rect x="5" y="4" width="14" height="20" rx="3" ry="3" stroke="currentColor" strokeWidth="1.8" fill="none"/>
+              <circle cx="12" cy="18" r="1.5" fill="currentColor"/>
               <rect x="7" y="7" width="10" height="8" rx="1" fill="currentColor" opacity="0.2"/>
             </svg>
           </div>
-          <div className="category-info">
-            <div className="category-count">7</div>
-            <div className="category-label">Phones & Tablets</div>
-          </div>
         </div>
-        <div className="category-item">
-          <div className="category-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="device-icon-svg">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-              <polyline points="9,22 9,12 15,12 15,22" stroke="currentColor" strokeWidth="1.5" fill="currentColor" opacity="0.2"/>
-              <circle cx="12" cy="8" r="1" fill="currentColor"/>
+        
+        <div className="device-category smart-category">
+          <div className="category-visual">
+            <div className="device-count-large">6</div>
+            <div className="device-type-label">smart home</div>
+          </div>
+          <div className="category-icon-bg">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="currentColor" strokeWidth="1.8" fill="none"/>
+              <circle cx="12" cy="8" r="2" fill="currentColor"/>
+              <circle cx="8" cy="16" r="1" fill="currentColor" opacity="0.6"/>
+              <circle cx="16" cy="16" r="1" fill="currentColor" opacity="0.6"/>
             </svg>
           </div>
-          <div className="category-info">
-            <div className="category-count">9</div>
-            <div className="category-label">Smart Home</div>
+        </div>
+        
+        <div className="device-category streaming-category">
+          <div className="category-visual">
+            <div className="device-count-large">4</div>
+            <div className="device-type-label">streaming</div>
           </div>
-          <div className="category-more">+7 more</div>
+          <div className="category-icon-bg">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="3" width="20" height="14" rx="3" ry="3" stroke="currentColor" strokeWidth="1.8" fill="none"/>
+              <polygon points="10,8 10,14 16,11" fill="currentColor"/>
+              <line x1="8" y1="21" x2="16" y2="21" stroke="currentColor" strokeWidth="1.8"/>
+              <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" strokeWidth="1.8"/>
+            </svg>
+          </div>
+        </div>
+        
+        <div className="device-category gaming-category">
+          <div className="category-visual">
+            <div className="device-count-large">2</div>
+            <div className="device-type-label">gaming</div>
+          </div>
+          <div className="category-icon-bg">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <rect x="6" y="4" width="12" height="8" rx="3" ry="3" stroke="currentColor" strokeWidth="1.8" fill="none"/>
+              <rect x="9" y="16" width="6" height="4" rx="2" ry="2" stroke="currentColor" strokeWidth="1.8" fill="none"/>
+              <line x1="12" y1="12" x2="12" y2="16" stroke="currentColor" strokeWidth="1.8"/>
+              <circle cx="9" cy="8" r="1.5" fill="currentColor"/>
+              <circle cx="15" cy="8" r="1.5" fill="currentColor"/>
+            </svg>
+          </div>
         </div>
       </div>
     </div>,
     
         // Watching Widget
-    <div key="watching" className={`samsung-widget watching-card ${focusedIndex === 2 ? 'focused' : ''}`}>
+    <div key="watching" className={`samsung-widget watching-card ${focusedIndex === 1 ? 'focused' : ''}`}>
              {/* Watching Badge */}
       <div className="watching-badge">
         <div className="play-icon">
@@ -364,76 +393,67 @@ const SamsungDailyBoard: React.FC = () => {
       </div>
     </div>,
     
-    // Internet Usage Widget
-    <div key="internet-usage" className={`samsung-widget internet-usage-card ${focusedIndex === 3 ? 'focused' : ''}`}>
-      {/* Top Section */}
-      <div className="internet-top-section">
-                 <div className="internet-usage-badge">
-           <div className="wifi-icon">
-             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="badge-icon-svg">
-               <path d="M5 12.55a11 11 0 0 1 14.08 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-               <path d="M1.42 9a16 16 0 0 1 21.16 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-               <path d="M8.53 16.11a6 6 0 0 1 6.95 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-               <line x1="12" y1="20" x2="12.01" y2="20" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-             </svg>
-           </div>
-           <span>Internet Usage</span>
-         </div>
-        <div className="connection-speed">
-          <span className="speed-label">Fast</span>
-          <span className="speed-value">150 Mbps</span>
-          <div className="signal-bars">
-            <div className="bar"></div>
-            <div className="bar"></div>
-            <div className="bar"></div>
+    // Internet Usage Widget - Clean Circular Progress
+    <div key="internet-usage" className={`samsung-widget internet-usage-clean ${focusedIndex === 5 ? 'focused' : ''}`}>
+      {/* Header Section */}
+      <div className="usage-header">
+        <div className="network-badge">
+          <div className="wifi-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12.55a11 11 0 0 1 14.08 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M1.42 9a16 16 0 0 1 21.16 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M8.53 16.11a6 6 0 0 1 6.95 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <line x1="12" y1="20" x2="12.01" y2="20" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <span>Network</span>
+        </div>
+        <div className="usage-stats">333 / 1200 GB</div>
+      </div>
+
+      {/* Section Title */}
+      <div className="section-title">MONTHLY USAGE</div>
+
+      {/* Circular Progress Center */}
+      <div className="circular-progress-container">
+        <div className="circular-progress">
+          <svg className="progress-ring" width="160" height="160" viewBox="0 0 160 160">
+            <circle
+              className="progress-ring-background"
+              cx="80"
+              cy="80"
+              r="65"
+              fill="transparent"
+              stroke="rgba(255, 255, 255, 0.1)"
+              strokeWidth="10"
+            />
+            <circle
+              className="progress-ring-fill"
+              cx="80"
+              cy="80"
+              r="65"
+              fill="transparent"
+              stroke="#00BFFF"
+              strokeWidth="10"
+              strokeLinecap="round"
+              strokeDasharray="408"
+              strokeDashoffset="294"
+              transform="rotate(-90 80 80)"
+            />
+          </svg>
+          <div className="progress-content">
+            <div className="percentage">28%</div>
+            <div className="used-label">used</div>
           </div>
         </div>
       </div>
 
-      {/* Main Usage Section */}
-      <div className="internet-main-section">
-        <div className="usage-display">
-          <span className="usage-number">333</span>
-          <span className="usage-unit">GB used</span>
-        </div>
-        
-        {/* Usage Context - Additional Statistics */}
-        <div className="usage-context">
-          <div className="usage-stat">
-            <span className="stat-label">Daily Avg</span>
-            <span className="stat-value">11.0 GB</span>
-          </div>
-          <div className="usage-stat">
-            <span className="stat-label">Peak Hour</span>
-            <span className="stat-value">8-10 PM</span>
-          </div>
-        </div>
-        
-        <div className="remaining-info">867 GB remaining this month</div>
-      </div>
-
-      {/* Progress and Footer */}
-      <div className="internet-footer-section">
-        <div className="usage-progress-bar">
-          <div className="progress-fill-internet" style={{width: '28%'}}></div>
-        </div>
-        <div className="footer-stats">
-          <div className="percentage-info">28% of 1200 GB</div>
-                     <div className="security-info">
-             <div className="shield-icon">
-               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="security-icon-svg">
-                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="1.5" fill="currentColor" opacity="0.3"/>
-                 <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-               </svg>
-             </div>
-             <span>6 threats blocked</span>
-           </div>
-        </div>
-      </div>
+      {/* Remaining Info */}
+      <div className="remaining-badge">867 GB remaining</div>
     </div>,
     
     // Music Widget - Editorial Style
-    <div key="music" className={`samsung-widget music-card editorial-music ${focusedIndex === 4 ? 'focused' : ''}`}>
+    <div key="music" className={`samsung-widget music-card editorial-music ${focusedIndex === 2 ? 'focused' : ''}`}>
       {/* Now Playing Badge */}
       <div className="now-playing-badge">
         <div className="badge-icon">
@@ -463,63 +483,46 @@ const SamsungDailyBoard: React.FC = () => {
       </div>
     </div>,
     
-    // Sports Widget
-    <div key="sports" className={`samsung-widget sports-card ${focusedIndex === 5 ? 'focused' : ''}`}>
-      {/* Final Badge */}
-      <div className="sports-status-badge">
-        <div className="trophy-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="trophy-icon-svg">
-            <path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2" stroke="currentColor" strokeWidth="1.5"/>
-            <path d="M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2" stroke="currentColor" strokeWidth="1.5"/>
-            <path d="M18 20H6a2 2 0 0 1-2-2v-1a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2z" stroke="currentColor" strokeWidth="1.5"/>
-            <rect x="6" y="3" width="12" height="12" rx="2" fill="currentColor" opacity="0.3"/>
-            <circle cx="12" cy="8" r="2" fill="currentColor"/>
+    // Sports Widget - Editorial Clean Layout
+    <div key="sports" className={`samsung-widget sports-card-clean ${focusedIndex === 3 ? 'focused' : ''}`}>
+      {/* Sports Category Badge */}
+      <div className="sports-category-badge">
+        <div className="sports-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+            <path d="M12 3c-2.5 0-4.5 2-4.5 4.5 0 1.5.7 2.8 1.8 3.7" stroke="currentColor" strokeWidth="1.5"/>
+            <path d="M12 21c2.5 0 4.5-2 4.5-4.5 0-1.5-.7-2.8-1.8-3.7" stroke="currentColor" strokeWidth="1.5"/>
+            <circle cx="12" cy="12" r="2" fill="currentColor"/>
           </svg>
         </div>
-        <span>Final</span>
+        <span>Sports</span>
+        <div className="status-indicator final">Final</div>
       </div>
       
-      {/* Next Game */}
-      <div className="next-game">
-        Next Game<br />vs Mets
+      {/* Main Matchup */}
+      <div className="matchup-header">
+        <div className="team-matchup">Phillies vs Braves</div>
+        <div className="final-score">7-4</div>
+        <div className="venue-name">Citizens Bank Park</div>
       </div>
       
-      {/* Teams and Scores */}
-      <div className="teams-scores">
-        <div className="team-score">
-          <span className="team-name">Phillies</span>
-          <span className="score">7</span>
+      {/* Season Record */}
+      <div className="season-stats">
+        <div className="season-record">Season Record: 82-65</div>
+      </div>
+      
+      {/* Next Game Info */}
+      <div className="next-game-info">
+        <div className="calendar-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+            <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.5"/>
+            <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.5"/>
+            <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.5"/>
+          </svg>
         </div>
-        <div className="team-score">
-          <span className="team-name">Braves</span>
-          <span className="score">4</span>
-        </div>
+        <span>Next: vs Cardinals, Tomorrow 7:05 PM</span>
       </div>
-      
-             {/* Game Info */}
-       <div className="game-info">
-         <div className="venue">
-           <div className="venue-icon">
-             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="venue-icon-svg">
-               <ellipse cx="12" cy="12" rx="10" ry="8" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-               <ellipse cx="12" cy="12" rx="6" ry="4" stroke="currentColor" strokeWidth="1.5" fill="currentColor" opacity="0.2"/>
-               <path d="M2 12h20" stroke="currentColor" strokeWidth="1.5"/>
-               <path d="M12 4v16" stroke="currentColor" strokeWidth="1.5"/>
-             </svg>
-           </div>
-           <span>Citizens Bank Park</span>
-         </div>
-         <div className="game-time">
-           <div className="time-icon">
-             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="time-icon-svg">
-               <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5"/>
-               <polyline points="12,6 12,12 16,14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-               <circle cx="12" cy="12" r="1" fill="currentColor"/>
-             </svg>
-           </div>
-           <span>3:15 Game Time</span>
-         </div>
-       </div>
     </div>,
     
               // Traffic Widget
