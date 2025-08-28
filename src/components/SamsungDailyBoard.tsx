@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import type { ReactElement } from 'react';
 import '../styles/samsung-daily-board.css';
+import '../styles/samsung-layout.css';
 
 interface Widget {
   id: string;
@@ -17,6 +18,8 @@ const SamsungDailyBoard: React.FC = () => {
   const [weatherUpdating, setWeatherUpdating] = useState(false); // For update animations
   const [videoSimulation, setVideoSimulation] = useState<'sports' | 'movie' | 'news'>('sports'); // Live TV simulation
   const [showWidgetSelector, setShowWidgetSelector] = useState(false); // Widget customization
+  const [samsungLayout, setSamsungLayout] = useState(false); // Samsung 4-column layout toggle
+  const [samsungPage, setSamsungPage] = useState(0); // Samsung pagination (0 = first 4 widgets, 1 = next 3)
   const [selectedWidgets, setSelectedWidgets] = useState<string[]>([
     'weather', 'watching', 'music', 'sports', 'connected-devices', 'internet-usage', 'traffic'
   ]);
@@ -233,25 +236,81 @@ const SamsungDailyBoard: React.FC = () => {
     return () => clearInterval(weatherUpdateTimer);
   }, []);
 
-  // SUPER SIMPLE: Just cycle through all widgets in order
-  const totalWidgets = 7; // Weather, Featured, Music, Sports, Connected, Internet, Traffic
+  // Grid-based navigation mapping for asymmetric layout
+  const gridNavigation = {
+    // Actual rendered positions in JSX:
+    // 0: Weather    1: Featured   3: Sports
+    // 2: Music      1: Featured   6: Traffic  
+    // 5: Internet   5: Internet   4: Connected
+    0: { up: null, down: 2, left: null, right: 1 },      // Weather
+    1: { up: null, down: null, left: 0, right: 3 },      // Featured (spans 2x2)
+    2: { up: 0, down: 5, left: null, right: 1 },         // Music
+    3: { up: null, down: 6, left: 1, right: null },      // Sports
+    6: { up: 3, down: 4, left: 1, right: null },         // Traffic
+    5: { up: 2, down: null, left: null, right: 4 },      // Internet (strip)
+    4: { up: 6, down: null, left: 5, right: null },      // Connected (strip)
+  };
 
   // Auto-focus component on mount and keyboard navigation
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
+      // Samsung mode - completely separate navigation
+      if (samsungLayout) {
+        if (event.key === 's' || event.key === 'S') {
+          event.preventDefault();
+          setSamsungLayout(false);
+          setFocusedIndex(0);
+          setSamsungPage(0);
+          return;
+        }
+        
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+          event.preventDefault();
+          
+          let newFocus = focusedIndex;
+          let newPage = samsungPage;
+          const widgetsOnPage = Math.min(4, widgets.length - samsungPage * 4);
+          
+          if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+            // Move forward
+            if (focusedIndex < widgetsOnPage - 1) {
+              newFocus = focusedIndex + 1;
+            } else if (samsungPage < Math.ceil(widgets.length / 4) - 1) {
+              // Go to next page
+              newPage = samsungPage + 1;
+              newFocus = 0;
+            }
+          } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+            // Move backward
+            if (focusedIndex > 0) {
+              newFocus = focusedIndex - 1;
+            } else if (samsungPage > 0) {
+              // Go to previous page
+              newPage = samsungPage - 1;
+              newFocus = Math.min(3, widgets.length - newPage * 4 - 1);
+            }
+          }
+          
+          console.log('Samsung nav:', event.key, 'Page:', newPage, 'Focus:', newFocus);
+          setSamsungPage(newPage);
+          setFocusedIndex(newFocus);
+        }
+        return; // Exit early for Samsung mode
+      }
+
+      // Normal mode navigation
       event.preventDefault(); // Prevent default browser behavior
       
-      // SIMPLE NAVIGATION: Left/Right cycles through ALL widgets
-      if (event.key === 'ArrowLeft') {
-        setFocusedIndex((prev) => prev === 0 ? totalWidgets - 1 : prev - 1);
-      } else if (event.key === 'ArrowRight') {
-        setFocusedIndex((prev) => (prev + 1) % totalWidgets);
-      } else if (event.key === 'ArrowUp') {
-        // Up: Jump to previous widget
-        setFocusedIndex((prev) => prev === 0 ? totalWidgets - 1 : prev - 1);
-      } else if (event.key === 'ArrowDown') {
-        // Down: Jump to next widget  
-        setFocusedIndex((prev) => (prev + 1) % totalWidgets);
+      const currentPos = gridNavigation[focusedIndex as keyof typeof gridNavigation];
+      
+      if (event.key === 'ArrowLeft' && currentPos?.left !== null) {
+        setFocusedIndex(currentPos.left);
+      } else if (event.key === 'ArrowRight' && currentPos?.right !== null) {
+        setFocusedIndex(currentPos.right);
+      } else if (event.key === 'ArrowUp' && currentPos?.up !== null) {
+        setFocusedIndex(currentPos.up);
+      } else if (event.key === 'ArrowDown' && currentPos?.down !== null) {
+        setFocusedIndex(currentPos.down);
       } else if (event.key === 'v' || event.key === 'V') {
         // Toggle video simulation background (for demo purposes)
         setVideoSimulation(prev => {
@@ -262,6 +321,12 @@ const SamsungDailyBoard: React.FC = () => {
       } else if (event.key === 'c' || event.key === 'C') {
         // Open widget customization
         setShowWidgetSelector(true);
+      } else if (event.key === 's' || event.key === 'S') {
+        // Toggle Samsung layout mode
+        setSamsungLayout(prev => !prev);
+        setFocusedIndex(0); // Reset focus when switching layouts
+        setSamsungPage(0); // Reset pagination when switching layouts
+
       } else if (event.key === 'Enter' || event.key === ' ') {
         // Simulate interaction with focused widget
         setWeatherUpdating(true);
@@ -277,7 +342,7 @@ const SamsungDailyBoard: React.FC = () => {
 
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [widgets.length]);
+  }, [focusedIndex, samsungLayout, samsungPage, widgets.length]);
 
   // Memoized widget components to prevent unnecessary re-renders
   const widgetComponents = useMemo(() => [
@@ -612,11 +677,8 @@ const SamsungDailyBoard: React.FC = () => {
       <div className="remaining-badge">867 GB remaining</div>
     </div>,
     
-    // Traffic Widget - Premium Automotive Interface (Position 6)
+    // Traffic Widget - Clean Editorial Style (Position 6)
     <div key="traffic" className={`samsung-widget traffic-card-premium ${focusedIndex === 6 ? 'focused' : ''}`}>
-       {/* Background City Aerial View */}
-       <div className="aerial-background"></div>
-       
        {/* Navigation Header */}
        <div className="nav-header">
          <div className="nav-badge">
@@ -631,70 +693,17 @@ const SamsungDailyBoard: React.FC = () => {
          <div className="arrival-time">10:13 AM</div>
        </div>
 
-       {/* Premium Route Visualization */}
-       <div className="route-visualization">
-         <svg width="100%" height="180" viewBox="0 0 300 180" className="premium-route">
-           {/* Stylized City Grid */}
-           <defs>
-             <linearGradient id="routeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-               <stop offset="0%" stopColor="#007AFF" stopOpacity="0.8"/>
-               <stop offset="50%" stopColor="#FFD60A" stopOpacity="0.6"/>
-               <stop offset="100%" stopColor="#34C759" stopOpacity="0.8"/>
-             </linearGradient>
-             <filter id="glow">
-               <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-               <feMerge> 
-                 <feMergeNode in="coloredBlur"/>
-                 <feMergeNode in="SourceGraphic"/>
-               </feMerge>
-             </filter>
-           </defs>
-           
-           {/* Stylized Background Roads */}
-           <g opacity="0.15">
-             <path d="M 0 60 Q 150 40 300 60" stroke="rgba(255,255,255,0.3)" strokeWidth="2" fill="none"/>
-             <path d="M 0 90 Q 150 70 300 90" stroke="rgba(255,255,255,0.3)" strokeWidth="2" fill="none"/>
-             <path d="M 0 120 Q 150 100 300 120" stroke="rgba(255,255,255,0.3)" strokeWidth="2" fill="none"/>
-             <path d="M 60 0 Q 80 90 100 180" stroke="rgba(255,255,255,0.3)" strokeWidth="2" fill="none"/>
-             <path d="M 120 0 Q 140 90 160 180" stroke="rgba(255,255,255,0.3)" strokeWidth="2" fill="none"/>
-             <path d="M 180 0 Q 200 90 220 180" stroke="rgba(255,255,255,0.3)" strokeWidth="2" fill="none"/>
-           </g>
-           
-           {/* Main Route Path with Curves */}
-           <path d="M 30 90 Q 100 70 150 90 Q 200 110 270 90" 
-                 stroke="url(#routeGradient)" 
-                 strokeWidth="8" 
-                 strokeLinecap="round" 
-                 fill="none"
-                 filter="url(#glow)"/>
-           
-           {/* Traffic Flow Indicators */}
-           <circle cx="80" cy="80" r="3" fill="#34C759" opacity="0.8">
-             <animate attributeName="r" values="3;4;3" dur="2s" repeatCount="indefinite"/>
-           </circle>
-           <circle cx="150" cy="90" r="3" fill="#FFD60A" opacity="0.8">
-             <animate attributeName="r" values="3;4;3" dur="2.5s" repeatCount="indefinite"/>
-           </circle>
-           <circle cx="220" cy="95" r="3" fill="#34C759" opacity="0.8">
-             <animate attributeName="r" values="3;4;3" dur="1.8s" repeatCount="indefinite"/>
-           </circle>
-           
-           {/* Current Location (Pulsing Blue) */}
-           <circle cx="30" cy="90" r="8" fill="#007AFF" opacity="0.6">
-             <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
-           </circle>
-           <circle cx="30" cy="90" r="5" fill="#007AFF"/>
-           
-           {/* Destination (Premium Pin) */}
-           <g transform="translate(270,90)">
-             <circle cx="0" cy="0" r="6" fill="#FF3B30" opacity="0.3">
-               <animate attributeName="r" values="6;8;6" dur="3s" repeatCount="indefinite"/>
-             </circle>
-             <path d="M 0 -15 C -6 -15 -10 -10 -10 -6 C -10 0 0 10 0 10 C 0 10 10 0 10 -6 C 10 -10 6 -15 0 -15 Z" 
-                   fill="#FF3B30" filter="url(#glow)"/>
-             <circle cx="0" cy="-6" r="3" fill="white"/>
-           </g>
-         </svg>
+       {/* Simple Route Display */}
+       <div className="route-display">
+         <div className="route-icon">
+           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+             <path d="M9 11H7l3-7 3 7h-2l1 4-4-4z" stroke="currentColor" strokeWidth="1.5" fill="currentColor"/>
+           </svg>
+         </div>
+         <div className="route-details">
+           <div className="route-name">I-95 North</div>
+           <div className="route-status">Light traffic</div>
+         </div>
        </div>
 
        {/* Journey Information */}
@@ -702,7 +711,7 @@ const SamsungDailyBoard: React.FC = () => {
          <div className="destination-name">Downtown Office</div>
          <div className="route-summary">
            <span className="duration-large">22 min</span>
-           <span className="route-meta">8.2 mi • I-95 North • Light traffic</span>
+           <span className="route-meta">8.2 mi • Current route</span>
          </div>
        </div>
      </div>
@@ -746,7 +755,7 @@ const SamsungDailyBoard: React.FC = () => {
   };
 
   return (
-    <div className="samsung-daily-board-real" tabIndex={0}>
+    <div className={`samsung-daily-board-real ${samsungLayout ? 'samsung-layout' : ''}`} tabIndex={0}>
       {/* Video Simulation Background */}
       <div className={`video-simulation ${videoSimulation}`}></div>
 
@@ -773,20 +782,43 @@ const SamsungDailyBoard: React.FC = () => {
         </div>
       </div>
 
-      {/* Widget Grid with Asymmetric Layout */}
+      {/* Widget Grid with Layout Toggle */}
       <div className="widgets-container" ref={scrollContainerRef}>
-        {/* Main grid widgets (first 4, then traffic) */}
-        {widgetComponents.slice(0, 4)}
-        {/* Traffic Widget in network area */}
-        {widgetComponents[6]}
-        
-        {/* Bottom Strip Container */}
-        <div className="bottom-strip">
-          {/* Internet Usage Widget */}
-          {widgetComponents[5]}
-          {/* Connected Devices Widget */}
-          {widgetComponents[4]}
-        </div>
+        {samsungLayout ? (
+          /* Samsung Layout: Paginated 4-widget view with correct focus */
+          (() => {
+            const startIndex = samsungPage * 4;
+            const endIndex = startIndex + 4;
+            return widgetComponents.slice(startIndex, endIndex).map((component, relativeIndex) => {
+              // Clone the component with updated focus class
+              const originalClassName = component.props.className;
+              const isFocused = relativeIndex === focusedIndex;
+              const newClassName = originalClassName.replace(/focused/g, '').trim() + (isFocused ? ' focused' : '');
+              
+              return React.cloneElement(component, {
+                ...component.props,
+                className: newClassName,
+                key: component.key + '-page-' + samsungPage
+              });
+            });
+          })()
+        ) : (
+          /* Normal Layout: Asymmetric grid with all widgets */
+          <>
+            {/* Main grid widgets (first 4, then traffic) */}
+            {widgetComponents.slice(0, 4)}
+            {/* Traffic Widget in network area */}
+            {widgetComponents[6]}
+            
+            {/* Bottom Strip Container */}
+            <div className="bottom-strip">
+              {/* Internet Usage Widget */}
+              {widgetComponents[5]}
+              {/* Connected Devices Widget */}
+              {widgetComponents[4]}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Focus Indicator - Grid Layout */}
@@ -807,7 +839,7 @@ const SamsungDailyBoard: React.FC = () => {
           {/* Row 3 - Strip */}
           <div className="grid-row strip">
             <span className={`grid-dot ${focusedIndex === 5 ? 'active' : ''}`}></span>
-            <span className={`grid-dot ${focusedIndex === 4 ? 'active' : ''}`}></span>
+            <span className={`grid-dot ${focusedIndex === 7 ? 'active' : ''}`}></span>
           </div>
         </div>
       </div>
@@ -877,10 +909,41 @@ const SamsungDailyBoard: React.FC = () => {
         </div>
       )}
 
-      {/* Instructions */}
-      <div className="navigation-hint">
-        Use ← → ↑ ↓ to navigate | V: video simulation | C: customize widgets | Current: {videoSimulation} | Focus: {focusedIndex}
-      </div>
+      {/* Samsung Layout - Exact Recreation */}
+      {samsungLayout && (
+        <>
+          {/* Samsung Scroll Dots - Exactly like reference */}
+          <div className="samsung-scroll-dots">
+            {Array.from({ length: Math.ceil(widgets.length / 4) }, (_, index) => (
+              <div 
+                key={index} 
+                className={`samsung-dot ${index === samsungPage ? 'active' : ''}`}
+              />
+            ))}
+          </div>
+
+          {/* Samsung Voice Prompt - Exactly like reference */}
+          <div className="samsung-voice-prompt">
+            <div className="microphone-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" fill="currentColor"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="currentColor" strokeWidth="2" fill="none"/>
+                <line x1="12" y1="19" x2="12" y2="23" stroke="currentColor" strokeWidth="2"/>
+                <line x1="8" y1="23" x2="16" y2="23" stroke="currentColor" strokeWidth="2"/>
+              </svg>
+            </div>
+            <span className="voice-prompt-text">Try Saying...</span>
+            <div className="voice-command">"Move to Daily Board"</div>
+          </div>
+        </>
+      )}
+
+      {/* Instructions - Hidden in Samsung mode */}
+      {!samsungLayout && (
+        <div className="navigation-hint">
+          Use ← → ↑ ↓ to navigate | V: video simulation | C: customize widgets | S: Samsung layout | Focus: {focusedIndex}
+        </div>
+      )}
     </div>
   );
 };
