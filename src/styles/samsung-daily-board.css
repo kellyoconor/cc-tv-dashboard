@@ -40,10 +40,10 @@
     --widget-gap: 32px;
     --widget-padding: 28px;
     --border-radius: 20px;
-    --font-size-display: 56px;
-    --font-size-title: 20px;
-    --font-size-body: 18px;
-    --font-size-caption: 16px;
+    --font-size-display: clamp(48px, 3.5vw, 56px);
+    --font-size-title: clamp(18px, 1.25vw, 20px);
+    --font-size-body: clamp(16px, 1.125vw, 18px);
+    --font-size-caption: clamp(14px, 1vw, 16px);
     --time-font-size: 56px;
     --date-font-size: 20px;
     --elevation-distance: 24px;
@@ -60,10 +60,10 @@
     --widget-gap: 36px;
     --widget-padding: 32px;
     --border-radius: 24px;
-    --font-size-display: 64px;
-    --font-size-title: 22px;
-    --font-size-body: 20px;
-    --font-size-caption: 18px;
+    --font-size-display: clamp(56px, 2.67vw, 64px);
+    --font-size-title: clamp(20px, 0.92vw, 22px);
+    --font-size-body: clamp(18px, 0.83vw, 20px);
+    --font-size-caption: clamp(16px, 0.75vw, 18px);
     --time-font-size: 64px;
     --date-font-size: 22px;
     --elevation-distance: 28px;
@@ -80,10 +80,10 @@
     --widget-gap: 40px;
     --widget-padding: 36px;
     --border-radius: 28px;
-    --font-size-display: 72px;
-    --font-size-title: 24px;
-    --font-size-body: 22px;
-    --font-size-caption: 20px;
+    --font-size-display: clamp(64px, 2.25vw, 72px);
+    --font-size-title: clamp(22px, 0.75vw, 24px);
+    --font-size-body: clamp(20px, 0.69vw, 22px);
+    --font-size-caption: clamp(18px, 0.625vw, 20px);
     --time-font-size: 72px;
     --date-font-size: 24px;
     --elevation-distance: 32px;
@@ -236,33 +236,526 @@
   opacity: 0.8;
 }
 
-/* Widgets Container - Responsive */
+/* Widgets Container - Standardized Grid Layout */
 .widgets-container {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  display: flex;
-  gap: var(--widget-gap);
+  display: grid;
+  grid-template-columns: 380px 1fr 380px;
+  grid-template-rows: 300px 300px 220px;
+  grid-template-areas: 
+    "weather featured smart-home"
+    "music featured network"
+    "strip strip strip";
+  gap: 24px;
   z-index: 10;
-  width: 100vw;
-  max-width: 100vw;
-  overflow-x: auto;
-  overflow-y: visible;
-  padding: var(--container-padding) calc(50vw - calc(var(--widget-width) * 2 + var(--widget-gap) * 1.5)) 0;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  height: calc(var(--widget-height) + var(--elevation-distance) * 2);
+  width: calc(100vw - 120px);
+  height: calc(100vh - 160px);
+  max-width: 1600px;
+  overflow: visible;
+  padding: 0;
+}
+
+/* Laptop screens - Properly sized */
+@media (max-width: 1920px) and (max-height: 1080px) {
+  .widgets-container {
+    grid-template-columns: 360px 1fr 360px;
+    grid-template-rows: 280px 280px 200px;
+    gap: 24px;
+    width: calc(100vw - 60px);
+    height: calc(100vh - 100px);
+    max-width: 1600px;
+  }
+}
+
+/* Large TVs (55-65") - Optimized Grid */
+@media (min-width: 1921px) and (max-width: 2560px) {
+  .widgets-container {
+    grid-template-columns: 420px 1fr 420px;
+    grid-template-rows: 320px 320px 240px;
+    gap: 28px;
+    max-width: 1800px;
+  }
+}
+
+/* Ultra Large TVs (75-85"+) - Premium Grid */
+@media (min-width: 2561px) {
+  .widgets-container {
+    grid-template-columns: 500px 1fr 500px;
+    grid-template-rows: 360px 360px 280px;
+    gap: 32px;
+    max-width: 2200px;
+  }
+}
+
+/* Mobile/Tablet Fallback - Stack Layout */
+@media (max-width: 1280px) {
+  .widgets-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(7, 200px);
+    grid-template-areas: 
+      "featured"
+      "weather"
+      "sports"
+      "music"
+      "traffic"
+      "internet"
+      "connected";
+    width: calc(100vw - 40px);
+    height: auto;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+  
+  .bottom-strip {
+    display: none;
+  }
+  
+  .bottom-strip .samsung-widget {
+    display: block;
+  }
 }
 
 .widgets-container::-webkit-scrollbar {
   display: none;
 }
 
+/* Grid Area Assignments */
+.weather-card { grid-area: weather; }
+.watching-card { grid-area: featured; }
+.music-card { grid-area: music; }
+.sports-card-clean { grid-area: network; }
+.connected-home-card { grid-area: smart-home; }
+.internet-usage-clean { grid-area: network; }
+.traffic-card-premium { grid-area: traffic; }
+
+/* Weather Card - Compact Top-Left Optimization */
+.samsung-widget:nth-child(1) {
+  padding: var(--widget-padding);
+}
+
+.samsung-widget:nth-child(1) .weather-top-section {
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.samsung-widget:nth-child(1) .weather-condition-badge {
+  padding: 6px 12px;
+  font-size: calc(var(--font-size-caption) - 2px);
+}
+
+.samsung-widget:nth-child(1) .weather-main-section {
+  margin-bottom: 16px;
+}
+
+.samsung-widget:nth-child(1) .weather-details-grid {
+  gap: 12px;
+}
+
+.samsung-widget:nth-child(1) .weather-detail-item {
+  padding: 8px;
+}
+
+/* Music Card - Compact Bottom-Left Optimization */
+.samsung-widget:nth-child(3) {
+  padding: var(--widget-padding);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.samsung-widget:nth-child(3) .music-top-section {
+  margin-bottom: 12px;
+  margin-top: 0;
+}
+
+.samsung-widget:nth-child(3) .album-art {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 12px;
+}
+
+.samsung-widget:nth-child(3) .track-info {
+  margin-bottom: 12px;
+}
+
+.samsung-widget:nth-child(3) .track-title {
+  font-size: calc(var(--font-size-body) - 2px);
+  line-height: 1.2;
+}
+
+.samsung-widget:nth-child(3) .artist-album {
+  font-size: calc(var(--font-size-caption) - 1px);
+}
+
+.samsung-widget:nth-child(3) .music-controls {
+  gap: 12px;
+}
+
+/* Sports Card - Compact Top-Right Optimization */
+.samsung-widget:nth-child(4) {
+  padding: var(--widget-padding);
+}
+
+.samsung-widget:nth-child(4) .sports-category-badge {
+  padding: 6px 12px;
+  margin-bottom: 12px;
+  margin-top: 0;
+}
+
+.samsung-widget:nth-child(4) .matchup-header {
+  margin-bottom: 12px;
+}
+
+.samsung-widget:nth-child(4) .team-matchup {
+  font-size: calc(var(--font-size-body) - 1px);
+  margin-bottom: 4px;
+}
+
+.samsung-widget:nth-child(4) .final-score {
+  font-size: calc(var(--font-size-title) + 2px);
+  margin-bottom: 6px;
+}
+
+.samsung-widget:nth-child(4) .venue-name {
+  font-size: calc(var(--font-size-caption) - 1px);
+}
+
+.samsung-widget:nth-child(4) .season-stats,
+.samsung-widget:nth-child(4) .next-game-info {
+  margin-bottom: 8px;
+}
+
+/* Traffic Card - Compact Bottom-Right Optimization */
+.samsung-widget:nth-child(5) {
+  padding: var(--widget-padding);
+}
+
+.samsung-widget:nth-child(5) .nav-header {
+  margin-bottom: 14px;
+  margin-top: 0;
+}
+
+.samsung-widget:nth-child(5) .nav-badge {
+  padding: 4px 10px;
+  font-size: calc(var(--font-size-caption) - 2px);
+}
+
+.samsung-widget:nth-child(5) .arrival-time {
+  font-size: calc(var(--font-size-caption) - 1px);
+}
+
+.samsung-widget:nth-child(5) .route-visualization {
+  margin-bottom: 14px;
+  height: 120px;
+}
+
+.samsung-widget:nth-child(5) .premium-route {
+  height: 120px;
+}
+
+.samsung-widget:nth-child(5) .destination-name {
+  font-size: calc(var(--font-size-body) - 1px);
+  margin-bottom: 6px;
+}
+
+.samsung-widget:nth-child(5) .duration-large {
+  font-size: calc(var(--font-size-title) + 2px);
+}
+
+.samsung-widget:nth-child(5) .route-meta {
+  font-size: calc(var(--font-size-caption) - 2px);
+}
+
+/* Widget Specific Grid Positioning */
+.samsung-widget:nth-child(1) { grid-area: weather; }    /* Weather */
+.samsung-widget:nth-child(2) { grid-area: featured; }   /* Watching - Hero Card */
+.samsung-widget:nth-child(3) { grid-area: music; }      /* Music */
+.samsung-widget:nth-child(4) { grid-area: smart-home; } /* Sports */
+.samsung-widget:nth-child(5) { grid-area: network; }    /* Traffic (moved up) */
+
+/* Ensure all cards have consistent top alignment */
+.samsung-widget > *:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Reset any positioning that might throw off alignment */
+.samsung-widget {
+  vertical-align: top;
+  align-items: flex-start;
+}
+
+/* Featured Content - Large Hero Card */
+.samsung-widget:nth-child(2) {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  /* Enhanced for hero positioning */
+  z-index: 5;
+  box-shadow: 
+    0 16px 64px rgba(0, 0, 0, 0.4),
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(30px) saturate(200%) brightness(1.05);
+  /* Ensure hero card aligns with other cards */
+  padding: var(--widget-padding);
+}
+
+.samsung-widget:nth-child(2)::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  border-radius: var(--border-radius);
+  pointer-events: none;
+}
+
+/* Featured content specific styling */
+.samsung-widget:nth-child(2) .show-title {
+  font-size: calc(var(--font-size-title) + 30px);
+  font-weight: var(--font-weight-bold);
+  text-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.8),
+    0 2px 6px rgba(0, 0, 0, 0.6);
+  position: absolute;
+  bottom: 60px;
+  left: calc(var(--widget-padding) + 8px);
+  right: calc(var(--widget-padding) + 8px);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* Bottom Strip - Multi-Widget Container */
+.bottom-strip {
+  grid-area: strip;
+  display: flex;
+  gap: calc(var(--widget-gap) + 4px);
+  width: 100%;
+  height: 100%;
+  margin-top: 8px;
+}
+
+/* Strip widgets get equal space */
+.bottom-strip .samsung-widget {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(25px) saturate(200%);
+  border-radius: calc(var(--border-radius) - 4px);
+  padding: 24px 28px;
+  min-height: 190px;
+  max-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* Ensure strip cards align at the top */
+  align-items: flex-start;
+  align-self: flex-start;
+}
+
+.bottom-strip .samsung-widget::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+}
+
+.bottom-strip .samsung-widget:first-child {
+  margin-right: 4px;
+}
+
+.bottom-strip .samsung-widget:last-child {
+  margin-left: 4px;
+}
+
+/* Internet Usage in Strip - Horizontal Layout */
+.bottom-strip .internet-usage-clean .usage-header {
+  margin-bottom: 16px;
+}
+
+.bottom-strip .internet-usage-clean .circular-progress-container {
+  margin-bottom: 16px;
+  flex: 0;
+}
+
+.bottom-strip .internet-usage-clean .progress-ring {
+  width: 80px;
+  height: 80px;
+}
+
+.bottom-strip .internet-usage-clean .percentage {
+  font-size: calc(var(--font-size-body) + 2px);
+}
+
+.bottom-strip .internet-usage-clean .used-label {
+  font-size: calc(var(--font-size-caption) - 1px);
+}
+
+.bottom-strip .internet-usage-clean .remaining-badge {
+  padding: 4px 12px;
+  font-size: calc(var(--font-size-caption) - 1px);
+}
+
+/* Connected Devices in Strip - Horizontal Grid */
+.bottom-strip .connected-home-card .device-ecosystem-visual {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.bottom-strip .connected-home-card .device-category {
+  padding: 12px 8px;
+  min-height: 65px;
+}
+
+.bottom-strip .connected-home-card .device-count-large {
+  font-size: calc(var(--font-size-body) - 2px);
+  margin-bottom: 2px;
+}
+
+.bottom-strip .connected-home-card .device-type-label {
+  font-size: calc(var(--font-size-caption) - 3px);
+}
+
+.bottom-strip .connected-home-card .home-subtitle {
+  font-size: calc(var(--font-size-caption) - 2px);
+  padding: 4px 8px;
+}
+
+/* Responsive Content Adjustments */
+
+/* Laptop screens - Balanced spacing */
+@media (max-width: 1920px) and (max-height: 1080px) {
+  .samsung-widget:nth-child(1),
+  .samsung-widget:nth-child(3),
+  .samsung-widget:nth-child(4),
+  .samsung-widget:nth-child(5) {
+    padding: 22px;
+  }
+  
+  .samsung-widget:nth-child(2) {
+    padding: 28px;
+  }
+  
+  .samsung-widget:nth-child(1) .weather-condition-badge,
+  .samsung-widget:nth-child(4) .sports-category-badge {
+    padding: 5px 10px;
+    font-size: calc(var(--font-size-caption) - 2px);
+  }
+  
+  .samsung-widget:nth-child(3) .album-art {
+    width: 55px;
+    height: 55px;
+  }
+  
+  .samsung-widget:nth-child(5) .route-visualization {
+    height: 110px;
+  }
+  
+  .bottom-strip .samsung-widget {
+    padding: 20px 26px;
+    min-height: 160px;
+    max-height: 200px;
+  }
+  
+  .navigation-hint {
+    font-size: 12px;
+    bottom: 25px;
+  }
+  
+  .grid-indicator {
+    bottom: 25px;
+  }
+}
+
+/* Large TVs - Enhanced Content */
+@media (min-width: 1921px) and (max-width: 2560px) {
+  .samsung-widget:nth-child(1),
+  .samsung-widget:nth-child(3),
+  .samsung-widget:nth-child(4),
+  .samsung-widget:nth-child(5) {
+    padding: 24px;
+  }
+  
+  .samsung-widget:nth-child(3) .album-art {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .samsung-widget:nth-child(5) .route-visualization {
+    height: 140px;
+  }
+}
+
+/* Ultra Large TVs - Premium Content */
+@media (min-width: 2561px) {
+  .samsung-widget:nth-child(1),
+  .samsung-widget:nth-child(3),
+  .samsung-widget:nth-child(4),
+  .samsung-widget:nth-child(5) {
+    padding: 32px;
+  }
+  
+  .samsung-widget:nth-child(3) .album-art {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .samsung-widget:nth-child(5) .route-visualization {
+    height: 160px;
+  }
+  
+  .bottom-strip .samsung-widget {
+    padding: 24px 32px;
+  }
+}
+
+/* Mobile/Tablet Content Adjustments */
+@media (max-width: 1280px) {
+  .samsung-widget:nth-child(1),
+  .samsung-widget:nth-child(2),
+  .samsung-widget:nth-child(3),
+  .samsung-widget:nth-child(4),
+  .samsung-widget:nth-child(5) {
+    padding: 20px !important;
+  }
+  
+  .samsung-widget:nth-child(2) .show-title {
+    font-size: calc(var(--font-size-title) + 10px) !important;
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+  }
+}
+
+/* Traffic Strip - Part of bottom strip */
+.traffic-card-premium {
+  padding: 20px var(--widget-padding);
+}
+
 /* Samsung Widget Base - True Glassmorphism (No Borders) */
 .samsung-widget {
-  flex: 0 0 var(--widget-width);
   /* Pure glass material - no hard borders */
   background: rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(25px) saturate(200%);
@@ -274,12 +767,18 @@
     /* Subtle inner glow for soft edge definition */
     inset 0 1px 0 rgba(255, 255, 255, 0.3),
     inset 0 0 0 1px rgba(255, 255, 255, 0.08);
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: 
+    transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    backdrop-filter 0.3s ease;
   min-height: var(--widget-height);
   display: flex;
   flex-direction: column;
   position: relative;
   z-index: 1;
+  /* Ensure all widgets align to the same baseline */
+  align-self: start;
+  vertical-align: top;
 }
 
 .samsung-widget:hover {
@@ -293,7 +792,7 @@
     inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 }
 
-/* Premium Focus Effect - Pure Glass Material */
+/* Premium Focus Effect - Grid-Optimized */
 .samsung-widget.focused,
 .samsung-widget.weather-card.focused,
 .samsung-widget.connected-home-card.focused, 
@@ -302,7 +801,7 @@
 .samsung-widget.music-card.focused,
 .samsung-widget.sports-card.focused,
 .samsung-widget.traffic-card.focused {
-  transform: translateY(calc(-1 * var(--elevation-distance))) scale(var(--elevation-scale)) !important;
+  transform: translateY(-8px) scale(1.02) !important;
   /* Keep background transparent to show video simulation */
   backdrop-filter: blur(40px) saturate(280%) brightness(1.1) !important;
   /* Enhanced inner glow instead of borders */
@@ -486,21 +985,38 @@
   z-index: 5;
 }
 
-/* Scroll Indicator - Responsive */
-.scroll-indicator {
+/* Grid Focus Indicator */
+.grid-indicator {
   position: absolute;
-  bottom: calc(var(--container-padding) + 80px);
+  bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 15;
 }
 
-.scroll-dots {
+.grid-dots {
   display: flex;
+  flex-direction: column;
   gap: 8px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.scroll-dot {
+.grid-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-row.strip {
+  gap: 16px;
+}
+
+.grid-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -508,9 +1024,74 @@
   transition: all 0.3s ease;
 }
 
-.scroll-dot.active {
-  background: rgba(255, 255, 255, 0.8);
+.grid-dot.hero {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.grid-dot.active {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
   transform: scale(1.2);
+}
+
+/* Accessibility & Performance */
+@media (prefers-reduced-motion: reduce) {
+  .samsung-widget,
+  .grid-dot,
+  .bottom-strip .samsung-widget {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .samsung-widget {
+    border: 2px solid rgba(255, 255, 255, 0.8);
+  }
+  
+  .grid-dot.active {
+    background: #ffffff;
+    border: 2px solid #000000;
+  }
+}
+
+/* Performance optimization - GPU acceleration */
+.samsung-widget,
+.bottom-strip .samsung-widget,
+.grid-indicator {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Responsive Grid Indicator */
+@media (max-width: 1280px) {
+  .grid-indicator {
+    display: none;
+  }
+}
+
+@media (max-width: 1920px) and (max-height: 1080px) {
+  .grid-indicator {
+    bottom: 30px;
+  }
+  
+  .grid-dots {
+    padding: 8px 12px;
+    gap: 6px;
+  }
+  
+  .grid-dot {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .grid-dot.hero {
+    width: 10px;
+    height: 10px;
+  }
 }
 
 /* Modern Weather Widget Styles */
@@ -1482,21 +2063,21 @@
 
 /* Show Title */
 .show-title {
-  font-size: var(--font-size-title);
+  position: absolute;
+  top: 50%;
+  left: var(--widget-padding);
+  transform: translateY(-50%);
+  font-size: calc(var(--font-size-title) + 20px);
   font-weight: var(--font-weight-bold);
   color: var(--text-white);
-  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
   line-height: 1.1;
-  margin: auto 0;
-  margin-bottom: 20px;
+  z-index: 3;
 }
 
-/* Episode Progress Section */
+/* Episode Progress Section - Hidden for cleaner design */
 .episode-progress-section {
-  margin-bottom: 16px;
-  margin-top: auto;
-  position: relative;
-  z-index: 2;
+  display: none;
 }
 
 .progress-header {
@@ -1603,6 +2184,138 @@
 }
 
 /* Enhanced Watching Focus State - REMOVED (handled by main focus rules) */
+
+/* Traffic Widget - Premium Automotive Interface */
+.traffic-card-premium {
+  position: relative;
+  background: 
+    linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(0, 0, 0, 0.6) 50%,
+      rgba(0, 0, 0, 0.8) 100%
+    ),
+    linear-gradient(45deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  display: flex;
+  flex-direction: column;
+  padding: var(--widget-padding);
+  min-height: var(--widget-height);
+  overflow: hidden;
+}
+
+/* Aerial Background Effect */
+.aerial-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at center, rgba(0, 122, 255, 0.1) 0%, transparent 70%),
+    linear-gradient(45deg, rgba(52, 199, 89, 0.05) 0%, rgba(255, 214, 10, 0.05) 50%, rgba(0, 122, 255, 0.05) 100%);
+  opacity: 0.6;
+  z-index: 1;
+}
+
+/* Navigation Header */
+.nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.nav-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 122, 255, 0.15);
+  border: 1px solid rgba(0, 122, 255, 0.3);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+}
+
+.nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.nav-icon svg {
+  color: rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.nav-badge span {
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.arrival-time {
+  font-size: var(--font-size-small);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Premium Route Visualization */
+.route-visualization {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.premium-route {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+/* Journey Information */
+.journey-info {
+  position: relative;
+  z-index: 2;
+}
+
+.destination-name {
+  font-size: calc(var(--font-size-title) + 2px);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-white);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.route-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.duration-large {
+  font-size: calc(var(--font-size-title) + 4px);
+  font-weight: var(--font-weight-bold);
+  color: #34C759;
+  text-shadow: 0 2px 8px rgba(52, 199, 89, 0.3);
+  line-height: 1;
+}
+
+.route-meta {
+  font-size: calc(var(--font-size-small) - 1px);
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  font-weight: 400;
+}
 
 /* Traffic Widget Styles */
 
@@ -2643,4 +3356,619 @@
 
 .video-simulation-indicator .sim-type.news {
   color: #2196F3;
+}
+
+/* Widget Customization System */
+
+/* Customization Button */
+.customization-button {
+  position: absolute;
+  top: 60px;
+  right: 60px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(0, 102, 204, 0.15);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(0, 102, 204, 0.3);
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 20;
+}
+
+.customization-button:hover {
+  background: rgba(0, 102, 204, 0.25);
+  border-color: rgba(0, 102, 204, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 102, 204, 0.3);
+}
+
+.customize-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.customize-text {
+  font-size: var(--font-size-caption);
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Widget Selector Overlay */
+.widget-selector-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.widget-selector {
+  width: 90vw;
+  max-width: 1200px;
+  height: 80vh;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.selector-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.selector-header h2 {
+  color: white;
+  font-size: var(--font-size-title);
+  margin: 0;
+}
+
+.close-selector {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.close-selector:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.selector-content {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+.widget-category {
+  margin-bottom: 32px;
+}
+
+.category-title {
+  color: white;
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.widget-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.widget-option {
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.widget-option:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.widget-option.selected {
+  background: rgba(0, 102, 204, 0.2);
+  border-color: #0066cc;
+  box-shadow: 0 0 20px rgba(0, 102, 204, 0.3);
+}
+
+.widget-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.widget-icon {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.widget-icon svg {
+  color: white;
+  width: 18px;
+  height: 18px;
+}
+
+.widget-name {
+  color: white;
+  font-size: var(--font-size-body);
+  font-weight: 500;
+}
+
+.selection-indicator {
+  color: #34d399;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.selector-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.selection-count {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: var(--font-size-caption);
+}
+
+.apply-selection {
+  background: #0066cc;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.apply-selection:hover {
+  background: #0052a3;
+  transform: translateY(-1px);
+}
+
+/* ========================================
+   RESPONSIVE CONTENT SCALING SYSTEM
+   ======================================== */
+
+/* Scale weather icons and temperature text */
+@media (max-width: 1279px) {
+  .weather-icon {
+    font-size: clamp(32px, 8vw, 48px) !important;
+  }
+  
+  .temperature {
+    font-size: clamp(24px, 6vw, 36px) !important;
+  }
+  
+  .weather-location {
+    font-size: clamp(12px, 3vw, 16px) !important;
+  }
+}
+
+/* Scale sports content */
+@media (max-width: 1279px) {
+  .team-score {
+    font-size: clamp(18px, 4vw, 24px) !important;
+  }
+  
+  .game-time, .inning-status {
+    font-size: clamp(11px, 2.5vw, 14px) !important;
+  }
+}
+
+/* Scale music/watching content */
+@media (max-width: 1279px) {
+  .show-title, .song-title {
+    font-size: clamp(16px, 4vw, 24px) !important;
+    line-height: 1.2;
+  }
+  
+  .artist-name, .episode-info {
+    font-size: clamp(12px, 3vw, 16px) !important;
+  }
+}
+
+/* Scale connected home device counts */
+@media (max-width: 1279px) {
+  .device-count-large {
+    font-size: clamp(20px, 5vw, 32px) !important;
+  }
+  
+  .device-type-label {
+    font-size: clamp(10px, 2.5vw, 14px) !important;
+  }
+}
+
+/* Scale circular progress */
+@media (max-width: 1279px) {
+  .circular-progress {
+    width: clamp(60px, 15vw, 80px) !important;
+    height: clamp(60px, 15vw, 80px) !important;
+  }
+  
+  .percentage {
+    font-size: clamp(14px, 3.5vw, 20px) !important;
+  }
+  
+  .used-label {
+    font-size: clamp(8px, 2vw, 12px) !important;
+  }
+}
+
+/* Scale traffic content */
+@media (max-width: 1279px) {
+  .duration-large {
+    font-size: clamp(18px, 4.5vw, 28px) !important;
+  }
+  
+  .destination-name {
+    font-size: clamp(12px, 3vw, 16px) !important;
+  }
+  
+  .route-summary {
+    font-size: clamp(10px, 2.5vw, 13px) !important;
+  }
+}
+
+/* Scale widget selector for smaller screens */
+@media (max-width: 1279px) {
+  .widget-selector {
+    width: 95vw;
+    height: 85vh;
+    max-width: 900px;
+  }
+  
+  .widget-options {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  
+  .widget-option {
+    padding: 16px;
+  }
+  
+  .widget-name {
+    font-size: clamp(12px, 3vw, 16px);
+  }
+}
+
+/* ========================================
+   ENHANCED RESPONSIVE SYSTEM
+   ======================================== */
+
+/* LAPTOP SCREENS (1280px-1920px) - Actually conservative sizing */
+@media (min-width: 1280px) and (max-width: 1920px) {
+  .widgets-container {
+    grid-template-columns: 280px 1fr 280px !important;
+    grid-template-rows: 200px 200px 140px !important;
+    gap: 12px !important;
+    width: calc(100vw - 30px) !important;
+    height: calc(100vh - 60px) !important;
+    max-width: 1400px !important;
+  }
+  
+  .samsung-widget:nth-child(1),
+  .samsung-widget:nth-child(3),
+  .samsung-widget:nth-child(4),
+  .samsung-widget:nth-child(5) {
+    padding: 14px !important;
+  }
+  
+  .samsung-widget:nth-child(2) {
+    padding: 18px !important;
+  }
+  
+  .bottom-strip .samsung-widget {
+    padding: 12px 16px !important;
+    min-height: 100px !important;
+    max-height: 140px !important;
+  }
+}
+
+/* TABLET LANDSCAPE (1024px-1279px) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  :root {
+    --widget-width: 280px;
+    --widget-height: 320px;
+    --widget-gap: 20px;
+    --widget-padding: 20px;
+    --font-size-hero: 28px;
+    --font-size-title: 18px;
+    --font-size-subtitle: 14px;
+    --font-size-body: 13px;
+    --font-size-caption: 11px;
+  }
+
+  .widgets-container {
+    grid-template-columns: 280px 1fr 280px;
+    grid-template-rows: 240px 240px 140px;
+    gap: 20px;
+    width: calc(100vw - 40px);
+    max-width: 1200px;
+    padding: 20px;
+  }
+
+  .samsung-widget:nth-child(1),
+  .samsung-widget:nth-child(3),
+  .samsung-widget:nth-child(4),
+  .samsung-widget:nth-child(5) {
+    padding: 16px;
+  }
+
+  .samsung-widget:nth-child(2) {
+    padding: 20px;
+  }
+
+  .navigation-hint {
+    font-size: 12px;
+    bottom: 15px;
+  }
+
+  .customization-button {
+    top: 25px;
+    right: 25px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .customize-text {
+    display: none;
+  }
+}
+
+/* TABLET PORTRAIT (768px-1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root {
+    --widget-width: 100%;
+    --widget-height: 200px;
+    --widget-gap: 16px;
+    --widget-padding: 16px;
+    --font-size-hero: 24px;
+    --font-size-title: 16px;
+    --font-size-subtitle: 13px;
+    --font-size-body: 12px;
+    --font-size-caption: 10px;
+  }
+
+  .widgets-container {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 220px 180px 180px 160px;
+    grid-template-areas: 
+      "featured featured"
+      "weather watching"
+      "music sports"
+      "strip strip";
+    gap: 16px;
+    width: calc(100vw - 32px);
+    padding: 16px;
+  }
+
+  .bottom-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+
+  .bottom-strip .samsung-widget {
+    min-height: 140px;
+  }
+
+  .customization-button {
+    top: 20px;
+    right: 20px;
+    padding: 8px;
+    font-size: 11px;
+  }
+
+  .customize-text {
+    display: none;
+  }
+
+  .navigation-hint {
+    font-size: 11px;
+    bottom: 12px;
+  }
+}
+
+/* ASPECT RATIO OPTIMIZATIONS */
+
+/* Ultra-wide TVs (21:9 aspect ratio) */
+@media (min-aspect-ratio: 21/9) and (min-width: 1920px) {
+  .widgets-container {
+    grid-template-columns: 400px 1fr 400px 400px;
+    grid-template-areas: 
+      "weather featured music sports"
+      "strip strip strip strip"
+      "strip strip strip strip";
+    max-width: 2800px;
+  }
+
+  .bottom-strip {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* Standard widescreen TVs (16:9) - enhanced */
+@media (min-aspect-ratio: 16/9) and (max-aspect-ratio: 17/9) and (min-width: 1920px) {
+  .widgets-container {
+    grid-template-columns: 380px 1fr 380px;
+    grid-template-rows: 300px 300px 220px;
+    gap: 24px;
+  }
+}
+
+/* Older 4:3 TVs or square-ish displays */
+@media (max-aspect-ratio: 4/3) and (min-width: 1024px) {
+  .widgets-container {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, 200px);
+    grid-template-areas: 
+      "featured featured"
+      "weather watching"
+      "music sports"
+      "strip strip";
+    max-width: 1200px;
+  }
+
+  .bottom-strip {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* MOBILE BREAKPOINTS (below 768px) */
+@media (max-width: 767px) {
+  :root {
+    --widget-width: 100%;
+    --widget-height: 160px;
+    --widget-gap: 12px;
+    --widget-padding: 14px;
+    --font-size-hero: 20px;
+    --font-size-title: 14px;
+    --font-size-subtitle: 12px;
+    --font-size-body: 11px;
+    --font-size-caption: 9px;
+  }
+
+  .widgets-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 200px repeat(6, 140px);
+    grid-template-areas: 
+      "featured"
+      "weather"
+      "watching"
+      "music"
+      "sports"
+      "connected"
+      "usage"
+      "traffic";
+    gap: 12px;
+    width: calc(100vw - 24px);
+    padding: 12px;
+  }
+
+  .bottom-strip {
+    display: contents; /* Break out of strip layout */
+  }
+
+  .customization-button {
+    top: 15px;
+    right: 15px;
+    padding: 6px;
+    font-size: 10px;
+  }
+
+  .customize-text {
+    display: none;
+  }
+
+  .navigation-hint {
+    font-size: 10px;
+    bottom: 10px;
+  }
+
+  .grid-indicator {
+    display: none;
+  }
+}
+
+/* HIGH DPI DISPLAYS */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .samsung-widget {
+    backdrop-filter: blur(25px) saturate(180%);
+  }
+  
+  .widget-icon svg,
+  .weather-icon {
+    transform: translateZ(0); /* GPU acceleration for crisp rendering */
+  }
+}
+
+/* REDUCED MOTION ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  .samsung-widget,
+  .customization-button,
+  .widget-option {
+    transition: none;
+  }
+  
+  .pattern-circle,
+  .video-simulation {
+    animation: none;
+  }
+}
+
+/* HIGH CONTRAST ACCESSIBILITY */
+@media (prefers-contrast: high) {
+  .samsung-widget {
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.25);
+  }
+  
+  .samsung-widget.focused {
+    border-color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.35);
+  }
+}
+
+/* Responsive customization button */
+@media (max-width: 1920px) {
+  .customization-button {
+    top: 40px;
+    right: 40px;
+    padding: 10px 14px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .customization-button {
+    top: 20px;
+    right: 20px;
+    padding: 8px 12px;
+  }
+  
+  .customize-text {
+    display: none;
+  }
 }

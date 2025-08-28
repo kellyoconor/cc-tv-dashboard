@@ -1,23 +1,34 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import type { ReactElement } from 'react';
 import '../styles/samsung-daily-board.css';
 
 interface Widget {
   id: string;
-  type: 'weather' | 'sports' | 'connected-devices' | 'watching' | 'internet-usage' | 'music' | 'traffic';
+  type: 'weather' | 'sports' | 'connected-devices' | 'watching' | 'internet-usage' | 'music' | 'traffic' | 'xfinity-mobile' | 'xfinity-home' | 'x1-dvr' | 'xfinity-stream';
+  name?: string;
+  category?: string;
   data?: any;
 }
 
+// Force refresh - widget order: weather, watching, music, sports, connected home, internet usage, traffic
 const SamsungDailyBoard: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [focusedIndex, setFocusedIndex] = useState(0); // TV remote focus management
+  const [focusedIndex, setFocusedIndex] = useState(0); // TV remote focus management  
   const [weatherUpdating, setWeatherUpdating] = useState(false); // For update animations
   const [videoSimulation, setVideoSimulation] = useState<'sports' | 'movie' | 'news'>('sports'); // Live TV simulation
+  const [showWidgetSelector, setShowWidgetSelector] = useState(false); // Widget customization
+  const [selectedWidgets, setSelectedWidgets] = useState<string[]>([
+    'weather', 'watching', 'music', 'sports', 'connected-devices', 'internet-usage', 'traffic'
+  ]);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const widgets: Widget[] = useMemo(() => [
+  // Available widgets pool - all possible widgets
+  const availableWidgets: Widget[] = useMemo(() => [
     {
       id: 'weather',
       type: 'weather',
+      name: 'Weather',
+      category: 'Lifestyle',
       data: {
         temperature: '16°C',
         condition: 'Partly Cloudy',
@@ -31,6 +42,8 @@ const SamsungDailyBoard: React.FC = () => {
     {
       id: 'watching',
       type: 'watching',
+      name: 'Continue Watching',
+      category: 'Entertainment',
       data: {
         showTitle: 'Love Island',
         currentEpisode: 12,
@@ -45,6 +58,8 @@ const SamsungDailyBoard: React.FC = () => {
     {
       id: 'music',
       type: 'music',
+      name: 'Now Playing',
+      category: 'Entertainment',
       data: {
         isPlaying: true,
         track: "You're on your own, kid",
@@ -55,6 +70,8 @@ const SamsungDailyBoard: React.FC = () => {
     {
       id: 'sports',
       type: 'sports',
+      name: 'Sports Scores',
+      category: 'Lifestyle',
       data: {
         status: 'Final',
         homeTeam: 'Phillies',
@@ -69,6 +86,8 @@ const SamsungDailyBoard: React.FC = () => {
     {
       id: 'connected-devices',
       type: 'connected-devices',
+      name: 'Connected Devices',
+      category: 'Network',
       data: {
         totalDevices: 23,
         status: 'Online',
@@ -83,6 +102,8 @@ const SamsungDailyBoard: React.FC = () => {
     {
       id: 'internet-usage',
       type: 'internet-usage',
+      name: 'Internet Usage',
+      category: 'Network',
       data: {
         usedGB: 333,
         totalGB: 1200,
@@ -95,6 +116,8 @@ const SamsungDailyBoard: React.FC = () => {
     {
       id: 'traffic',
       type: 'traffic',
+      name: 'Traffic & Navigation',
+      category: 'Lifestyle',
       data: {
         destination: 'Downtown Office',
         arrivalTime: '10:13 AM arrival',
@@ -103,39 +126,90 @@ const SamsungDailyBoard: React.FC = () => {
         trafficStatus: 'Moderate Traffic',
         status: 'Live Traffic'
       }
+    },
+    // NEW Xfinity Service Widgets
+    {
+      id: 'xfinity-mobile',
+      type: 'xfinity-mobile',
+      name: 'Xfinity Mobile',
+      category: 'Xfinity Services',
+      data: {
+        planName: 'Unlimited Premium',
+        billingCycle: 'Jan 15 - Feb 14',
+        familyMembers: [
+          { name: 'Sarah', dataUsed: 18.2, dataLimit: 'Unlimited', status: 'active' },
+          { name: 'Mike', dataUsed: 12.8, dataLimit: 'Unlimited', status: 'active' },
+          { name: 'Emma', dataUsed: 6.4, dataLimit: '5GB', status: 'warning' },
+          { name: 'Josh', dataUsed: 2.1, dataLimit: '5GB', status: 'active' }
+        ],
+        totalLines: 4,
+        savings: '$45/month vs Verizon',
+        nextBillDate: 'Feb 15'
+      }
+    },
+    {
+      id: 'xfinity-home',
+      type: 'xfinity-home',
+      name: 'Xfinity Home Security',
+      category: 'Xfinity Services',
+      data: {
+        systemStatus: 'armed-away',
+        lastActivity: '2:34 PM - Front Door',
+        zones: [
+          { name: 'Front Door', status: 'secure', lastTriggered: '2:34 PM' },
+          { name: 'Back Door', status: 'secure', lastTriggered: 'Yesterday' },
+          { name: 'Living Room', status: 'secure', lastTriggered: '11:20 AM' },
+          { name: 'Garage', status: 'secure', lastTriggered: 'Yesterday' }
+        ],
+        cameras: { active: 3, recording: 1 },
+        recentEvents: 2
+      }
+    },
+    {
+      id: 'x1-dvr',
+      type: 'x1-dvr',
+      name: 'X1 Cloud DVR',
+      category: 'Xfinity Services',
+      data: {
+        storageUsed: 75,
+        storageTotal: 100,
+        recordingConflicts: 1,
+        upcomingRecordings: [
+          { show: 'The Voice', time: '8:00 PM', channel: 'NBC', conflict: false },
+          { show: 'This Is Us', time: '9:00 PM', channel: 'NBC', conflict: true },
+          { show: 'Yellowstone', time: '9:00 PM', channel: 'Paramount', conflict: true }
+        ],
+        recentRecordings: 12,
+        expiringSoon: 3
+      }
+    },
+    {
+      id: 'xfinity-stream',
+      type: 'xfinity-stream',
+      name: 'Xfinity Stream',
+      category: 'Xfinity Services',
+      data: {
+        downloadPrompts: [
+          { title: 'Yellowstone S5E8', size: '1.2GB', expiry: '2 days', downloaded: false },
+          { title: 'The Voice - Results', size: '900MB', expiry: '1 day', downloaded: false }
+        ],
+        currentDownloads: 1,
+        availableSpace: '8.4GB',
+        recentlyWatched: 'Love Island S2E12',
+        continueWatching: true
+      }
     }
   ], []);
 
+  // Get currently active widgets based on selection
+  const widgets = useMemo(() => {
+    return selectedWidgets.map(id => availableWidgets.find(w => w.id === id)).filter(Boolean) as Widget[];
+  }, [selectedWidgets, availableWidgets]);
+
   // TV Remote Navigation - REMOVED (handled by comprehensive handler below)
 
-  // Auto-scroll to ALWAYS center the focused widget - RESPONSIVE
-  useEffect(() => {
-    if (scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
-      
-      // Get actual responsive values from CSS
-      const style = getComputedStyle(document.documentElement);
-      const widgetWidth = parseInt(style.getPropertyValue('--widget-width'));
-      const widgetGap = parseInt(style.getPropertyValue('--widget-gap'));
-      const totalWidgetWidth = widgetWidth + widgetGap;
-      
-      const containerWidth = container.offsetWidth;
-      
-      // Calculate position of focused widget
-      const widgetLeft = focusedIndex * totalWidgetWidth;
-      const widgetCenter = widgetLeft + (widgetWidth / 2);
-      
-      // Calculate scroll position to center this widget in viewport
-      const viewportCenter = containerWidth / 2;
-      const targetScroll = widgetCenter - viewportCenter;
-      
-      // Always scroll to center the focused widget
-      container.scrollTo({
-        left: Math.max(0, targetScroll), // Don't scroll past start
-        behavior: 'smooth'
-      });
-    }
-  }, [focusedIndex]);
+  // Grid layout - no auto-scroll needed
+  // Focus is handled by CSS transforms on individual widgets
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -159,15 +233,25 @@ const SamsungDailyBoard: React.FC = () => {
     return () => clearInterval(weatherUpdateTimer);
   }, []);
 
+  // SUPER SIMPLE: Just cycle through all widgets in order
+  const totalWidgets = 7; // Weather, Featured, Music, Sports, Connected, Internet, Traffic
+
   // Auto-focus component on mount and keyboard navigation
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       event.preventDefault(); // Prevent default browser behavior
       
+      // SIMPLE NAVIGATION: Left/Right cycles through ALL widgets
       if (event.key === 'ArrowLeft') {
-        setFocusedIndex(prev => Math.max(0, prev - 1));
+        setFocusedIndex((prev) => prev === 0 ? totalWidgets - 1 : prev - 1);
       } else if (event.key === 'ArrowRight') {
-        setFocusedIndex(prev => Math.min(widgets.length - 1, prev + 1));
+        setFocusedIndex((prev) => (prev + 1) % totalWidgets);
+      } else if (event.key === 'ArrowUp') {
+        // Up: Jump to previous widget
+        setFocusedIndex((prev) => prev === 0 ? totalWidgets - 1 : prev - 1);
+      } else if (event.key === 'ArrowDown') {
+        // Down: Jump to next widget  
+        setFocusedIndex((prev) => (prev + 1) % totalWidgets);
       } else if (event.key === 'v' || event.key === 'V') {
         // Toggle video simulation background (for demo purposes)
         setVideoSimulation(prev => {
@@ -175,6 +259,9 @@ const SamsungDailyBoard: React.FC = () => {
           if (prev === 'movie') return 'news';
           return 'sports';
         });
+      } else if (event.key === 'c' || event.key === 'C') {
+        // Open widget customization
+        setShowWidgetSelector(true);
       } else if (event.key === 'Enter' || event.key === ' ') {
         // Simulate interaction with focused widget
         setWeatherUpdating(true);
@@ -194,7 +281,7 @@ const SamsungDailyBoard: React.FC = () => {
 
   // Memoized widget components to prevent unnecessary re-renders
   const widgetComponents = useMemo(() => [
-    // Weather Widget - Modern Design
+    // Weather Widget - Modern Design (Position 0)
     <div key="weather" className={`samsung-widget weather-card modern-weather ${focusedIndex === 0 ? 'focused' : ''}`}>
       {/* Top Section */}
              <div className="weather-top-section">
@@ -262,7 +349,132 @@ const SamsungDailyBoard: React.FC = () => {
        </div>
     </div>,
     
-        // Connected Home Widget - Visual & Engaging
+        // Watching Widget (Position 1) 
+    <div key="watching" className={`samsung-widget watching-card ${focusedIndex === 1 ? 'focused' : ''}`}>
+             {/* Watching Badge */}
+      <div className="watching-badge">
+        <div className="play-icon">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="play-icon-svg">
+            <polygon points="5,3 19,12 5,21" fill="currentColor"/>
+          </svg>
+        </div>
+        <span>Watching</span>
+      </div>
+
+      {/* Show Title */}
+      <div className="show-title">Love Island</div>
+
+      {/* Episode Progress Section */}
+      <div className="episode-progress-section">
+        <div className="progress-header">
+          <span className="progress-label">Episode Progress</span>
+          <span className="episode-count">12/45</span>
+        </div>
+        <div className="episode-progress-bar">
+          <div className="progress-fill-watching" style={{width: `${(12/45) * 100}%`}}></div>
+        </div>
+      </div>
+
+      {/* Next Episode Section */}
+      <div className="next-episode-section">
+        <div className="next-episode-header">
+          <div className="calendar-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="calendar-icon-svg">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+              <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.5"/>
+              <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.5"/>
+              <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.5"/>
+            </svg>
+          </div>
+          <span className="next-episode-title">Next Episode</span>
+        </div>
+        <div className="next-episode-time">
+          <span className="episode-day">Tonight</span>
+          <div className="time-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="time-icon-svg">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5"/>
+              <polyline points="12,6 12,12 16,14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <span className="episode-time">9:00 PM</span>
+        </div>
+      </div>
+    </div>,
+    
+    // Music Widget - Editorial Style (Position 2)
+    <div key="music" className={`samsung-widget music-card editorial-music ${focusedIndex === 2 ? 'focused' : ''}`}>
+      {/* Now Playing Badge */}
+      <div className="now-playing-badge">
+        <div className="badge-icon">
+          <div className="audio-bar"></div>
+          <div className="audio-bar"></div>
+          <div className="audio-bar"></div>
+        </div>
+        <span>Now Playing</span>
+      </div>
+      
+      {/* Track Info Overlay */}
+      <div className="track-info-overlay">
+        <div className="track-name">Anti-Hero</div>
+        <div className="artist-name">Taylor Swift</div>
+        <div className="album-name">Midnights</div>
+        
+        {/* Progress Bar with Time */}
+        <div className="progress-container">
+          <div className="time-display">
+            <span className="current-time">1:24</span>
+            <div className="track-progress-full">
+              <div className="progress-fill-music"></div>
+            </div>
+            <span className="total-time">3:44</span>
+          </div>
+        </div>
+      </div>
+    </div>,
+    
+    // Sports Widget - Editorial Clean Layout (Position 3)
+    <div key="sports" className={`samsung-widget sports-card-clean ${focusedIndex === 3 ? 'focused' : ''}`}>
+      {/* Sports Category Badge */}
+      <div className="sports-category-badge">
+        <div className="sports-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+            <path d="M12 3c-2.5 0-4.5 2-4.5 4.5 0 1.5.7 2.8 1.8 3.7" stroke="currentColor" strokeWidth="1.5"/>
+            <path d="M12 21c2.5 0 4.5-2 4.5-4.5 0-1.5-.7-2.8-1.8-3.7" stroke="currentColor" strokeWidth="1.5"/>
+            <circle cx="12" cy="12" r="2" fill="currentColor"/>
+          </svg>
+        </div>
+        <span>Sports</span>
+        <div className="status-indicator final">Final</div>
+      </div>
+      
+      {/* Main Matchup */}
+      <div className="matchup-header">
+        <div className="team-matchup">Phillies vs Braves</div>
+        <div className="final-score">7-4</div>
+        <div className="venue-name">Citizens Bank Park</div>
+      </div>
+      
+      {/* Season Record */}
+      <div className="season-stats">
+        <div className="season-record">Season Record: 82-65</div>
+      </div>
+      
+      {/* Next Game Info */}
+      <div className="next-game-info">
+        <div className="calendar-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+            <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.5"/>
+            <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.5"/>
+            <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.5"/>
+          </svg>
+        </div>
+        <span>Next: vs Cardinals, Tomorrow 7:05 PM</span>
+      </div>
+    </div>,
+    
+    // Connected Home Widget - Visual & Engaging (Position 4)
     <div key="connected-devices" className={`samsung-widget connected-home-card ${focusedIndex === 4 ? 'focused' : ''}`}>
       {/* Gradient Background Pattern */}
       <div className="home-background-pattern">
@@ -341,59 +553,7 @@ const SamsungDailyBoard: React.FC = () => {
       </div>
     </div>,
     
-        // Watching Widget
-    <div key="watching" className={`samsung-widget watching-card ${focusedIndex === 1 ? 'focused' : ''}`}>
-             {/* Watching Badge */}
-      <div className="watching-badge">
-        <div className="play-icon">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="play-icon-svg">
-            <polygon points="5,3 19,12 5,21" fill="currentColor"/>
-          </svg>
-        </div>
-        <span>Watching</span>
-      </div>
-
-      {/* Show Title */}
-      <div className="show-title">Love Island</div>
-
-      {/* Episode Progress Section */}
-      <div className="episode-progress-section">
-        <div className="progress-header">
-          <span className="progress-label">Episode Progress</span>
-          <span className="episode-count">12/45</span>
-        </div>
-        <div className="episode-progress-bar">
-          <div className="progress-fill-watching" style={{width: `${(12/45) * 100}%`}}></div>
-        </div>
-      </div>
-
-      {/* Next Episode Section */}
-      <div className="next-episode-section">
-        <div className="next-episode-header">
-          <div className="calendar-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="calendar-icon-svg">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-              <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.5"/>
-              <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.5"/>
-              <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.5"/>
-            </svg>
-          </div>
-          <span className="next-episode-title">Next Episode</span>
-        </div>
-        <div className="next-episode-time">
-          <span className="episode-day">Tonight</span>
-          <div className="time-icon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="time-icon-svg">
-              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5"/>
-              <polyline points="12,6 12,12 16,14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-          </div>
-          <span className="episode-time">9:00 PM</span>
-        </div>
-      </div>
-    </div>,
-    
-    // Internet Usage Widget - Clean Circular Progress
+    // Internet Usage Widget - Clean Circular Progress (Position 5)
     <div key="internet-usage" className={`samsung-widget internet-usage-clean ${focusedIndex === 5 ? 'focused' : ''}`}>
       {/* Header Section */}
       <div className="usage-header">
@@ -452,152 +612,138 @@ const SamsungDailyBoard: React.FC = () => {
       <div className="remaining-badge">867 GB remaining</div>
     </div>,
     
-    // Music Widget - Editorial Style
-    <div key="music" className={`samsung-widget music-card editorial-music ${focusedIndex === 2 ? 'focused' : ''}`}>
-      {/* Now Playing Badge */}
-      <div className="now-playing-badge">
-        <div className="badge-icon">
-          <div className="audio-bar"></div>
-          <div className="audio-bar"></div>
-          <div className="audio-bar"></div>
-        </div>
-        <span>Now Playing</span>
-      </div>
-      
-      {/* Track Info Overlay */}
-      <div className="track-info-overlay">
-        <div className="track-name">Anti-Hero</div>
-        <div className="artist-name">Taylor Swift</div>
-        <div className="album-name">Midnights</div>
-        
-        {/* Progress Bar with Time */}
-        <div className="progress-container">
-          <div className="time-display">
-            <span className="current-time">1:24</span>
-            <div className="track-progress-full">
-              <div className="progress-fill-music"></div>
-            </div>
-            <span className="total-time">3:44</span>
-          </div>
-        </div>
-      </div>
-    </div>,
-    
-    // Sports Widget - Editorial Clean Layout
-    <div key="sports" className={`samsung-widget sports-card-clean ${focusedIndex === 3 ? 'focused' : ''}`}>
-      {/* Sports Category Badge */}
-      <div className="sports-category-badge">
-        <div className="sports-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-            <path d="M12 3c-2.5 0-4.5 2-4.5 4.5 0 1.5.7 2.8 1.8 3.7" stroke="currentColor" strokeWidth="1.5"/>
-            <path d="M12 21c2.5 0 4.5-2 4.5-4.5 0-1.5-.7-2.8-1.8-3.7" stroke="currentColor" strokeWidth="1.5"/>
-            <circle cx="12" cy="12" r="2" fill="currentColor"/>
-          </svg>
-        </div>
-        <span>Sports</span>
-        <div className="status-indicator final">Final</div>
-      </div>
-      
-      {/* Main Matchup */}
-      <div className="matchup-header">
-        <div className="team-matchup">Phillies vs Braves</div>
-        <div className="final-score">7-4</div>
-        <div className="venue-name">Citizens Bank Park</div>
-      </div>
-      
-      {/* Season Record */}
-      <div className="season-stats">
-        <div className="season-record">Season Record: 82-65</div>
-      </div>
-      
-      {/* Next Game Info */}
-      <div className="next-game-info">
-        <div className="calendar-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-            <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.5"/>
-            <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.5"/>
-            <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.5"/>
-          </svg>
-        </div>
-        <span>Next: vs Cardinals, Tomorrow 7:05 PM</span>
-      </div>
-    </div>,
-    
-              // Traffic Widget
-     <div key="traffic" className={`samsung-widget traffic-card ${focusedIndex === 6 ? 'focused' : ''}`}>
-       {/* Live Traffic Badge */}
-       <div className="traffic-badge">
-         <div className="traffic-icon">
-           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="traffic-icon-svg">
-             <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-             <path d="M8 12l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-           </svg>
+    // Traffic Widget - Premium Automotive Interface (Position 6)
+    <div key="traffic" className={`samsung-widget traffic-card-premium ${focusedIndex === 6 ? 'focused' : ''}`}>
+       {/* Background City Aerial View */}
+       <div className="aerial-background"></div>
+       
+       {/* Navigation Header */}
+       <div className="nav-header">
+         <div className="nav-badge">
+           <div className="nav-icon">
+             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" strokeWidth="1.5" fill="currentColor" opacity="0.2"/>
+               <circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.5" fill="currentColor"/>
+             </svg>
+           </div>
+           <span>Navigation</span>
          </div>
-         <span>Live Traffic</span>
+         <div className="arrival-time">10:13 AM</div>
        </div>
 
-       {/* CarPlay-Style Mini Map */}
-       <div className="mini-map-container">
-         <svg width="100%" height="160" viewBox="0 0 200 160" className="mini-map">
-           {/* Background Streets (subtle) */}
-           <path d="M 0 40 L 200 40" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
-           <path d="M 0 80 L 200 80" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
-           <path d="M 0 120 L 200 120" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
-           <path d="M 40 0 L 40 160" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
-           <path d="M 80 0 L 80 160" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
-           <path d="M 120 0 L 120 160" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
-           <path d="M 160 0 L 160 160" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+       {/* Premium Route Visualization */}
+       <div className="route-visualization">
+         <svg width="100%" height="180" viewBox="0 0 300 180" className="premium-route">
+           {/* Stylized City Grid */}
+           <defs>
+             <linearGradient id="routeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+               <stop offset="0%" stopColor="#007AFF" stopOpacity="0.8"/>
+               <stop offset="50%" stopColor="#FFD60A" stopOpacity="0.6"/>
+               <stop offset="100%" stopColor="#34C759" stopOpacity="0.8"/>
+             </linearGradient>
+             <filter id="glow">
+               <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+               <feMerge> 
+                 <feMergeNode in="coloredBlur"/>
+                 <feMergeNode in="SourceGraphic"/>
+               </feMerge>
+             </filter>
+           </defs>
            
-           {/* Main Route - I-95 with Traffic Segments */}
-           {/* Green segment (clear traffic) */}
-           <path d="M 20 80 L 80 80" stroke="#34D399" strokeWidth="10" strokeLinecap="round"/>
-           {/* Yellow segment (moderate traffic) */}
-           <path d="M 80 80 L 140 80" stroke="#FBBF24" strokeWidth="10" strokeLinecap="round"/>
-           {/* Green segment (clear again) */}
-           <path d="M 140 80 L 180 80" stroke="#34D399" strokeWidth="10" strokeLinecap="round"/>
+           {/* Stylized Background Roads */}
+           <g opacity="0.15">
+             <path d="M 0 60 Q 150 40 300 60" stroke="rgba(255,255,255,0.3)" strokeWidth="2" fill="none"/>
+             <path d="M 0 90 Q 150 70 300 90" stroke="rgba(255,255,255,0.3)" strokeWidth="2" fill="none"/>
+             <path d="M 0 120 Q 150 100 300 120" stroke="rgba(255,255,255,0.3)" strokeWidth="2" fill="none"/>
+             <path d="M 60 0 Q 80 90 100 180" stroke="rgba(255,255,255,0.3)" strokeWidth="2" fill="none"/>
+             <path d="M 120 0 Q 140 90 160 180" stroke="rgba(255,255,255,0.3)" strokeWidth="2" fill="none"/>
+             <path d="M 180 0 Q 200 90 220 180" stroke="rgba(255,255,255,0.3)" strokeWidth="2" fill="none"/>
+           </g>
            
-           {/* Current Location (blue dot) */}
-           <circle cx="20" cy="80" r="6" fill="#007AFF" stroke="white" strokeWidth="2">
-             <animate attributeName="r" values="6;7;6" dur="2s" repeatCount="indefinite"/>
+           {/* Main Route Path with Curves */}
+           <path d="M 30 90 Q 100 70 150 90 Q 200 110 270 90" 
+                 stroke="url(#routeGradient)" 
+                 strokeWidth="8" 
+                 strokeLinecap="round" 
+                 fill="none"
+                 filter="url(#glow)"/>
+           
+           {/* Traffic Flow Indicators */}
+           <circle cx="80" cy="80" r="3" fill="#34C759" opacity="0.8">
+             <animate attributeName="r" values="3;4;3" dur="2s" repeatCount="indefinite"/>
+           </circle>
+           <circle cx="150" cy="90" r="3" fill="#FFD60A" opacity="0.8">
+             <animate attributeName="r" values="3;4;3" dur="2.5s" repeatCount="indefinite"/>
+           </circle>
+           <circle cx="220" cy="95" r="3" fill="#34C759" opacity="0.8">
+             <animate attributeName="r" values="3;4;3" dur="1.8s" repeatCount="indefinite"/>
            </circle>
            
-           {/* Destination Pin */}
-           <g transform="translate(180,80)">
-             <circle cx="0" cy="0" r="5" fill="#FF3B30"/>
-             <path d="M 0 -12 C -5 -12 -7 -8 -7 -5 C -7 0 0 7 0 7 C 0 7 7 0 7 -5 C 7 -8 5 -12 0 -12 Z" fill="#FF3B30"/>
+           {/* Current Location (Pulsing Blue) */}
+           <circle cx="30" cy="90" r="8" fill="#007AFF" opacity="0.6">
+             <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
+           </circle>
+           <circle cx="30" cy="90" r="5" fill="#007AFF"/>
+           
+           {/* Destination (Premium Pin) */}
+           <g transform="translate(270,90)">
+             <circle cx="0" cy="0" r="6" fill="#FF3B30" opacity="0.3">
+               <animate attributeName="r" values="6;8;6" dur="3s" repeatCount="indefinite"/>
+             </circle>
+             <path d="M 0 -15 C -6 -15 -10 -10 -10 -6 C -10 0 0 10 0 10 C 0 10 10 0 10 -6 C 10 -10 6 -15 0 -15 Z" 
+                   fill="#FF3B30" filter="url(#glow)"/>
+             <circle cx="0" cy="-6" r="3" fill="white"/>
            </g>
          </svg>
        </div>
 
-       {/* Route Info */}
-       <div className="route-info-section">
-         <div className="route-instruction">Downtown Office</div>
-         <div className="route-details">
-           <span className="distance">8.2 miles</span>
-           <span className="separator">•</span>
-           <span className="eta">10:13 AM arrival</span>
-           <span className="separator">•</span>
-           <span className="route-name">I-95 North</span>
-         </div>
-       </div>
-
-       {/* Traffic Status */}
-       <div className="traffic-status-section">
-         <div className="duration-info">
-           <div className="clock-icon">
-             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="clock-icon-svg">
-               <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" fill="currentColor" opacity="0.3"/>
-               <polyline points="12,6 12,12 16,14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-             </svg>
-           </div>
-           <span className="duration">22 min</span>
-           <span className="traffic-condition">Moderate Traffic</span>
+       {/* Journey Information */}
+       <div className="journey-info">
+         <div className="destination-name">Downtown Office</div>
+         <div className="route-summary">
+           <span className="duration-large">22 min</span>
+           <span className="route-meta">8.2 mi • I-95 North • Light traffic</span>
          </div>
        </div>
      </div>
   ], [focusedIndex, weatherUpdating]); // Re-create when focusedIndex or weatherUpdating changes
+
+  // Widget selection functions
+  const toggleWidget = (widgetId: string) => {
+    setSelectedWidgets(prev => {
+      if (prev.includes(widgetId)) {
+        // Don't allow removing all widgets
+        if (prev.length === 1) return prev;
+        return prev.filter(id => id !== widgetId);
+      } else {
+        // Limit to 7 widgets to fit grid layout
+        if (prev.length >= 7) return prev;
+        return [...prev, widgetId];
+      }
+    });
+  };
+
+  const getWidgetIcon = (type: string) => {
+    const iconMap: Record<string, ReactElement> = {
+      'weather': <path d="M12.5 2C13.3 2 14 2.7 14 3.5S13.3 5 12.5 5 11 4.3 11 3.5 11.7 2 12.5 2M21 13H20L19.8 12.8C19.3 12.4 18.6 12.4 18.1 12.8C17.6 13.3 17.6 14 18.1 14.4L18.3 14.6H18V16H21V13M6.9 7.7L5.5 6.3C4.4 7.4 3.5 8.8 3.1 10.3L4.6 10.7C4.9 9.5 5.7 8.4 6.9 7.7M18.4 7.7C19.6 8.4 20.4 9.5 20.7 10.7L22.2 10.3C21.8 8.8 20.9 7.4 19.8 6.3L18.4 7.7Z" fill="currentColor"/>,
+      'watching': <path d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" fill="currentColor"/>,
+      'music': <path d="M12,3V13.55C11.41,13.21 10.73,13 10,13C7.79,13 6,14.79 6,17S7.79,21 10,21 14,19.21 14,17V7H18V3H12Z" fill="currentColor"/>,
+      'sports': <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6Z" fill="currentColor"/>,
+      'connected-devices': <path d="M4,6H20V16H4M20,18A2,2 0 0,0 22,16V6C22,4.89 21.1,4 20,4H4C2.89,4 2,4.89 2,6V16A2,2 0 0,0 4,18H0V20H24V18H20Z" fill="currentColor"/>,
+      'internet-usage': <path d="M16.36,14C16.44,13.34 16.5,12.68 16.5,12C16.5,11.32 16.44,10.66 16.36,10H19.74C19.9,10.64 20,11.31 20,12C20,12.69 19.9,13.36 19.74,14M14.59,19.56C15.19,18.45 15.65,17.25 15.97,16H18.92C17.96,17.65 16.43,18.93 14.59,19.56M14.34,14H9.66C9.56,13.34 9.5,12.68 9.5,12C9.5,11.32 9.56,10.65 9.66,10H14.34C14.43,10.65 14.5,11.32 14.5,12C14.5,12.68 14.43,13.34 14.34,14M12,19.96C11.17,18.76 10.5,17.43 10.09,16H13.91C13.5,17.43 12.83,18.76 12,19.96M8,8H5.08C6.03,6.34 7.57,5.06 9.4,4.44C8.8,5.55 8.35,6.75 8,8M5.08,16H8C8.35,17.25 8.8,18.45 9.4,19.56C7.57,18.93 6.03,17.65 5.08,16M4.26,14C4.1,13.36 4,12.69 4,12C4,11.31 4.1,10.64 4.26,10H7.64C7.56,10.66 7.5,11.32 7.5,12C7.5,12.68 7.56,13.34 7.64,14M12,4.03C12.83,5.23 13.5,6.57 13.91,8H10.09C10.5,6.57 11.17,5.23 12,4.03M18.92,8H15.97C15.65,6.75 15.19,5.55 14.59,4.44C16.43,5.07 17.96,6.34 18.92,8M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" fill="currentColor"/>,
+      'traffic': <path d="M18,18.5A1.5,1.5 0 0,1 16.5,17A1.5,1.5 0 0,1 18,15.5A1.5,1.5 0 0,1 19.5,17A1.5,1.5 0 0,1 18,18.5M19.5,9.5L21.46,6H15.46L17.5,9.5M6,18.5A1.5,1.5 0 0,1 4.5,17A1.5,1.5 0 0,1 6,15.5A1.5,1.5 0 0,1 7.5,17A1.5,1.5 0 0,1 6,18.5M20,8H4V17H6A3,3 0 0,0 9,20A3,3 0 0,0 12,17H12A3,3 0 0,0 15,20A3,3 0 0,0 18,17H20V8Z" fill="currentColor"/>,
+      'xfinity-mobile': <path d="M17,19H7V5H17M17,1H7C5.89,1 5,1.89 5,3V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3C19,1.89 18.1,1 17,1Z" fill="currentColor"/>,
+      'xfinity-home': <path d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" fill="currentColor"/>,
+      'x1-dvr': <path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12C2,6.5 6.47,2 12,2M10,16.5L16,12L10,7.5V16.5Z" fill="currentColor"/>,
+      'xfinity-stream': <path d="M13,9V15L22,12M4,4H10V10H4V4M20,4V10H14V4H20M14,15H16V13H14V15M16,15H18V13H16V15M14,11H16V9H14V11M16,11H18V9H16V11Z" fill="currentColor"/>
+    };
+    
+    return (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        {iconMap[type] || <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>}
+      </svg>
+    );
+  };
 
   return (
     <div className="samsung-daily-board-real" tabIndex={0}>
@@ -627,26 +773,113 @@ const SamsungDailyBoard: React.FC = () => {
         </div>
       </div>
 
-      {/* Widget Row with TV Remote Navigation */}
+      {/* Widget Grid with Asymmetric Layout */}
       <div className="widgets-container" ref={scrollContainerRef}>
-        {widgetComponents}
-      </div>
-
-      {/* Focus Indicator */}
-      <div className="scroll-indicator">
-        <div className="scroll-dots">
-          {widgets.map((_, i) => (
-            <span 
-              key={i} 
-              className={`scroll-dot ${focusedIndex === i ? 'active' : ''}`}
-            ></span>
-          ))}
+        {/* Main grid widgets (first 4, then traffic) */}
+        {widgetComponents.slice(0, 4)}
+        {/* Traffic Widget in network area */}
+        {widgetComponents[6]}
+        
+        {/* Bottom Strip Container */}
+        <div className="bottom-strip">
+          {/* Internet Usage Widget */}
+          {widgetComponents[5]}
+          {/* Connected Devices Widget */}
+          {widgetComponents[4]}
         </div>
       </div>
 
+      {/* Focus Indicator - Grid Layout */}
+      <div className="grid-indicator">
+        <div className="grid-dots">
+          {/* Row 1 */}
+          <div className="grid-row">
+            <span className={`grid-dot ${focusedIndex === 0 ? 'active' : ''}`}></span>
+            <span className={`grid-dot hero ${focusedIndex === 1 ? 'active' : ''}`}></span>
+            <span className={`grid-dot ${focusedIndex === 4 ? 'active' : ''}`}></span>
+          </div>
+          {/* Row 2 */}
+          <div className="grid-row">
+            <span className={`grid-dot ${focusedIndex === 2 ? 'active' : ''}`}></span>
+            <span className={`grid-dot hero ${focusedIndex === 1 ? 'active' : ''}`}></span>
+            <span className={`grid-dot ${focusedIndex === 6 ? 'active' : ''}`}></span>
+          </div>
+          {/* Row 3 - Strip */}
+          <div className="grid-row strip">
+            <span className={`grid-dot ${focusedIndex === 5 ? 'active' : ''}`}></span>
+            <span className={`grid-dot ${focusedIndex === 4 ? 'active' : ''}`}></span>
+          </div>
+        </div>
+      </div>
+
+      {/* Customization Button */}
+      <div className="customization-button" onClick={() => setShowWidgetSelector(true)}>
+        <div className="customize-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" stroke="currentColor" strokeWidth="1.5"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" strokeWidth="1.5"/>
+          </svg>
+        </div>
+        <span className="customize-text">Customize</span>
+      </div>
+
+      {/* Widget Selector Overlay */}
+      {showWidgetSelector && (
+        <div className="widget-selector-overlay">
+          <div className="widget-selector">
+            <div className="selector-header">
+              <h2>Customize Your Dashboard</h2>
+              <button className="close-selector" onClick={() => setShowWidgetSelector(false)}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+              </button>
+            </div>
+            
+            <div className="selector-content">
+              {['Entertainment', 'Lifestyle', 'Network', 'Xfinity Services'].map(category => (
+                <div key={category} className="widget-category">
+                  <h3 className="category-title">{category}</h3>
+                  <div className="widget-options">
+                    {availableWidgets
+                      .filter(widget => widget.category === category)
+                      .map(widget => (
+                        <div 
+                          key={widget.id} 
+                          className={`widget-option ${selectedWidgets.includes(widget.id) ? 'selected' : ''}`}
+                          onClick={() => toggleWidget(widget.id)}
+                        >
+                          <div className="widget-preview">
+                            <div className="widget-icon">
+                              {getWidgetIcon(widget.type)}
+                            </div>
+                            <span className="widget-name">{widget.name}</span>
+                          </div>
+                          <div className="selection-indicator">
+                            {selectedWidgets.includes(widget.id) && '✓'}
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="selector-footer">
+              <div className="selection-count">
+                {selectedWidgets.length} of {availableWidgets.length} widgets selected
+              </div>
+              <button className="apply-selection" onClick={() => setShowWidgetSelector(false)}>
+                Apply Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Instructions */}
       <div className="navigation-hint">
-        Use ← → arrow keys to navigate | Press V to change video simulation | Current: {videoSimulation} | Focus: {focusedIndex}
+        Use ← → ↑ ↓ to navigate | V: video simulation | C: customize widgets | Current: {videoSimulation} | Focus: {focusedIndex}
       </div>
     </div>
   );
